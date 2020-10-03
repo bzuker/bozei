@@ -1,6 +1,6 @@
 import Layout from "../components/layout";
 
-function IndexPage() {
+function Index() {
   return (
     <Layout>
       <div className="flex flex-col items-center justify-center">
@@ -18,4 +18,4 @@ function IndexPage() {
   );
 }
 
-export default IndexPage;
+export default Index;
