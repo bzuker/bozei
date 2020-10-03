@@ -12,8 +12,8 @@ function Landing() {
               Build the Next Great Thing
             </h1>
             <p className="text-base sm:text-lg xl:text-xl text-gray-600 mb-8 pr-0 lg:pr-20">
-              Are you ready to start your adventure and start building the next
-              greatest SAAS app on the market?
+              Are you ready to start your adventure and start building the next greatest SAAS app on
+              the market?
             </p>
             <a
               href="#_"
@@ -98,13 +98,7 @@ function Landing() {
               xmlnsXlink="http://www.w3.org/1999/xlink"
             >
               <defs>
-                <linearGradient
-                  x1="100%"
-                  y1="0%"
-                  x2="4.48%"
-                  y2="0%"
-                  id="linearGradient-1"
-                >
+                <linearGradient x1="100%" y1="0%" x2="4.48%" y2="0%" id="linearGradient-1">
                   <stop stopColor="#5C54DB" offset="0%" />
                   <stop stopColor="#6A82E7" offset="100%" />
                 </linearGradient>
@@ -116,11 +110,7 @@ function Landing() {
                   filterUnits="objectBoundingBox"
                   id="filter-3"
                 >
-                  <feOffset
-                    dy={8}
-                    in="SourceAlpha"
-                    result="shadowOffsetOuter1"
-                  />
+                  <feOffset dy={8} in="SourceAlpha" result="shadowOffsetOuter1" />
                   <feGaussianBlur
                     stdDeviation={8}
                     in="shadowOffsetOuter1"
@@ -131,14 +121,7 @@ function Landing() {
                     in="shadowBlurOuter1"
                   />
                 </filter>
-                <rect
-                  id="path-2"
-                  x={63}
-                  y={504}
-                  width={300}
-                  height={300}
-                  rx={40}
-                />
+                <rect id="path-2" x={63} y={504} width={300} height={300} rx={40} />
               </defs>
               <g
                 id="Page-1"
@@ -151,11 +134,7 @@ function Landing() {
                 <g id="Desktop-HD" transform="translate(-39 -531)">
                   <g id="Hero" transform="translate(43 83)">
                     <g id="Rectangle-6" transform="rotate(45 213 654)">
-                      <use
-                        fill="#000"
-                        filter="url(#filter-3)"
-                        xlinkHref="#path-2"
-                      />
+                      <use fill="#000" filter="url(#filter-3)" xlinkHref="#path-2" />
                       <use fill="url(#linearGradient-1)" xlinkHref="#path-2" />
                     </g>
                   </g>
@@ -226,11 +205,7 @@ function Landing() {
                       filterUnits="objectBoundingBox"
                       id="filter-3TriangleIcon1"
                     >
-                      <feOffset
-                        dy={2}
-                        in="SourceAlpha"
-                        result="shadowOffsetOuter1"
-                      />
+                      <feOffset dy={2} in="SourceAlpha" result="shadowOffsetOuter1" />
                       <feGaussianBlur
                         stdDeviation={2}
                         in="shadowOffsetOuter1"
@@ -253,22 +228,10 @@ function Landing() {
                     fill="none"
                     fillRule="evenodd"
                   >
-                    <g
-                      id="Desktop-HDTriangleIcon1"
-                      transform="translate(-291 -1278)"
-                    >
-                      <g
-                        id="FeaturesTriangleIcon1"
-                        transform="translate(170 915)"
-                      >
-                        <g
-                          id="Group-9TriangleIcon1"
-                          transform="translate(0 365)"
-                        >
-                          <g
-                            id="Group-8TriangleIcon1"
-                            transform="translate(125)"
-                          >
+                    <g id="Desktop-HDTriangleIcon1" transform="translate(-291 -1278)">
+                      <g id="FeaturesTriangleIcon1" transform="translate(170 915)">
+                        <g id="Group-9TriangleIcon1" transform="translate(0 365)">
+                          <g id="Group-8TriangleIcon1" transform="translate(125)">
                             <g id="Rectangle-9TriangleIcon1">
                               <use
                                 fill="#000"
@@ -298,12 +261,9 @@ function Landing() {
                     </g>
                   </g>
                 </svg>
-                <h4 className="font-bold text-lg mt-6 relative">
-                  Automated Tools
-                </h4>
+                <h4 className="font-bold text-lg mt-6 relative">Automated Tools</h4>
                 <p className="text-base text-gray-600 text-center mt-2 relative">
-                  Automate your workflow with these top of the line marketing
-                  tools.
+                  Automate your workflow with these top of the line marketing tools.
                 </p>
                 <a
                   href="#_"
@@ -334,13 +294,7 @@ function Landing() {
                   xmlnsXlink="http://www.w3.org/1999/xlink"
                 >
                   <defs>
-                    <linearGradient
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                      id="linearGradient-1Icon2"
-                    >
+                    <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1Icon2">
                       <stop stopColor="#F2C314" offset="0%" />
                       <stop stopColor="#FC3832" offset="100%" />
                     </linearGradient>
@@ -352,11 +306,7 @@ function Landing() {
                       filterUnits="objectBoundingBox"
                       id="filter-3Icon2"
                     >
-                      <feOffset
-                        dy={2}
-                        in="SourceAlpha"
-                        result="shadowOffsetOuter1"
-                      />
+                      <feOffset dy={2} in="SourceAlpha" result="shadowOffsetOuter1" />
                       <feGaussianBlur
                         stdDeviation={2}
                         in="shadowOffsetOuter1"
@@ -372,19 +322,10 @@ function Landing() {
                       id="path-2Icon2"
                     />
                   </defs>
-                  <g
-                    id="Page-1Icon2"
-                    stroke="none"
-                    strokeWidth={1}
-                    fill="none"
-                    fillRule="evenodd"
-                  >
+                  <g id="Page-1Icon2" stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
                     <g id="Desktop-HDIcon2" transform="translate(-691 -1278)">
                       <g id="FeaturesIcon2" transform="translate(170 915)">
-                        <g
-                          id="Group-9-CopyIcon2"
-                          transform="translate(400 365)"
-                        >
+                        <g id="Group-9-CopyIcon2" transform="translate(400 365)">
                           <g id="Group-8Icon2" transform="translate(125)">
                             <g id="Rectangle-9Icon2">
                               <use
@@ -392,10 +333,7 @@ function Landing() {
                                 filter="url(#filter-3Icon2)"
                                 xlinkHref="#path-2Icon2"
                               />
-                              <use
-                                fill="url(#linearGradient-1Icon2)"
-                                xlinkHref="#path-2Icon2"
-                              />
+                              <use fill="url(#linearGradient-1Icon2)" xlinkHref="#path-2Icon2" />
                             </g>
                             <g
                               id="machine-learningIcon2"
@@ -414,12 +352,9 @@ function Landing() {
                     </g>
                   </g>
                 </svg>
-                <h4 className="font-bold text-lg mt-6 relative">
-                  Machine Learning
-                </h4>
+                <h4 className="font-bold text-lg mt-6 relative">Machine Learning</h4>
                 <p className="text-base text-gray-600 text-center mt-2 relative">
-                  Your Marketing tools will learn how to better convert and
-                  sell.
+                  Your Marketing tools will learn how to better convert and sell.
                 </p>
                 <a
                   href="#_"
@@ -450,13 +385,7 @@ function Landing() {
                   xmlnsXlink="http://www.w3.org/1999/xlink"
                 >
                   <defs>
-                    <linearGradient
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                      id="linearGradient-1Icon3"
-                    >
+                    <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="linearGradient-1Icon3">
                       <stop stopColor="#32FBFC" offset="0%" />
                       <stop stopColor="#3214F2" offset="100%" />
                     </linearGradient>
@@ -468,11 +397,7 @@ function Landing() {
                       filterUnits="objectBoundingBox"
                       id="filter-3Icon3"
                     >
-                      <feOffset
-                        dy={2}
-                        in="SourceAlpha"
-                        result="shadowOffsetOuter1"
-                      />
+                      <feOffset dy={2} in="SourceAlpha" result="shadowOffsetOuter1" />
                       <feGaussianBlur
                         stdDeviation={2}
                         in="shadowOffsetOuter1"
@@ -488,19 +413,10 @@ function Landing() {
                       id="path-2Icon3"
                     />
                   </defs>
-                  <g
-                    id="Page-1Icon3"
-                    stroke="none"
-                    strokeWidth={1}
-                    fill="none"
-                    fillRule="evenodd"
-                  >
+                  <g id="Page-1Icon3" stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
                     <g id="Desktop-HDIcon3" transform="translate(-1091 -1278)">
                       <g id="FeaturesIcon3" transform="translate(170 915)">
-                        <g
-                          id="Group-9-Copy-2Icon3"
-                          transform="translate(800 365)"
-                        >
+                        <g id="Group-9-Copy-2Icon3" transform="translate(800 365)">
                           <g id="Group-8Icon3" transform="translate(125)">
                             <g id="Rectangle-9Icon3">
                               <use
@@ -508,10 +424,7 @@ function Landing() {
                                 filter="url(#filter-3Icon3)"
                                 xlinkHref="#path-2Icon3"
                               />
-                              <use
-                                fill="url(#linearGradient-1Icon3)"
-                                xlinkHref="#path-2Icon3"
-                              />
+                              <use fill="url(#linearGradient-1Icon3)" xlinkHref="#path-2Icon3" />
                             </g>
                             <g
                               id="smart-notificationsIcon3"
@@ -530,9 +443,7 @@ function Landing() {
                     </g>
                   </g>
                 </svg>
-                <h4 className="font-bold text-lg mt-6 relative">
-                  Smart Notifications
-                </h4>
+                <h4 className="font-bold text-lg mt-6 relative">Smart Notifications</h4>
                 <p className="text-base text-gray-600 text-center mt-2 relative">
                   Our smart notifications will notify you when users convert.
                 </p>
@@ -550,10 +461,7 @@ function Landing() {
       {/* END FEATURES SECTION */}
       {/* Pricing Section */}
       <div className="bg-white relative py-10 md:py-16 lg:py-24 xl:py-40 border-t border-gray-200 px-8 xl:px-0">
-        <div
-          id="pricing"
-          className="container max-w-6xl mx-auto h-full flex flex-col items-center"
-        >
+        <div id="pricing" className="container max-w-6xl mx-auto h-full flex flex-col items-center">
           <h2 className="text-indigo-500 uppercase text-base font-medium tracking-tight my-5">
             Our Pricing
           </h2>
@@ -570,14 +478,11 @@ function Landing() {
                       Basic<span className="font-light ml-2">Plan</span>
                     </h3>
                     <h4 className="text-4xl text-gray-900 text-center pb-6 font-bold flex items-center justify-center">
-                      <span className="text-lg text-gray-700 -ml-2 mr-1">
-                        $
-                      </span>
+                      <span className="text-lg text-gray-700 -ml-2 mr-1">$</span>
                       48
                     </h4>
                     <p className="text-gray-600 text-sm">
-                      In our basic plan you can take advantage of all these
-                      features below.
+                      In our basic plan you can take advantage of all these features below.
                     </p>
                   </div>
                   <div className="flex flex-wrap mt-8 px-6">
@@ -597,9 +502,7 @@ function Landing() {
                             <polyline points="22 4 12 14.01 9 11.01" />
                           </svg>
                         </div>
-                        <span className="text-gray-700 text-lg ml-3">
-                          Awesome Feature
-                        </span>
+                        <span className="text-gray-700 text-lg ml-3">Awesome Feature</span>
                       </li>
                       <li className="flex items-center">
                         <div className=" rounded-full p-2 fill-current text-green-500">
@@ -616,9 +519,7 @@ function Landing() {
                             <polyline points="22 4 12 14.01 9 11.01" />
                           </svg>
                         </div>
-                        <span className="text-gray-700 text-lg ml-3">
-                          And Another Cool Feature
-                        </span>
+                        <span className="text-gray-700 text-lg ml-3">And Another Cool Feature</span>
                       </li>
                       <li className="flex items-center">
                         <div className=" rounded-full p-2 fill-current text-green-500">
@@ -635,9 +536,7 @@ function Landing() {
                             <polyline points="22 4 12 14.01 9 11.01" />
                           </svg>
                         </div>
-                        <span className="text-gray-700 text-lg ml-3">
-                          One More Feature
-                        </span>
+                        <span className="text-gray-700 text-lg ml-3">One More Feature</span>
                       </li>
                     </ul>
                   </div>
@@ -665,8 +564,8 @@ function Landing() {
                     98
                   </h4>
                   <p className="text-gray-600 text-sm">
-                    Our most popular package is the Pro Plan which gives you
-                    access to the following:
+                    Our most popular package is the Pro Plan which gives you access to the
+                    following:
                   </p>
                 </div>
                 <div className="flex pl-12 justify-start sm:justify-start mt-8">
@@ -686,9 +585,7 @@ function Landing() {
                           <polyline points="22 4 12 14.01 9 11.01" />
                         </svg>
                       </div>
-                      <span className="text-gray-700 text-lg ml-3">
-                        Really Cool Features
-                      </span>
+                      <span className="text-gray-700 text-lg ml-3">Really Cool Features</span>
                     </li>
                     <li className="flex items-center">
                       <div className=" rounded-full p-2 fill-current text-green-500">
@@ -705,9 +602,7 @@ function Landing() {
                           <polyline points="22 4 12 14.01 9 11.01" />
                         </svg>
                       </div>
-                      <span className="text-gray-700 text-lg ml-3">
-                        Another Cool Feature
-                      </span>
+                      <span className="text-gray-700 text-lg ml-3">Another Cool Feature</span>
                     </li>
                     <li className="flex items-center">
                       <div className=" rounded-full p-2 fill-current text-green-500">
@@ -724,9 +619,7 @@ function Landing() {
                           <polyline points="22 4 12 14.01 9 11.01" />
                         </svg>
                       </div>
-                      <span className="text-gray-700 text-lg ml-3">
-                        And One More
-                      </span>
+                      <span className="text-gray-700 text-lg ml-3">And One More</span>
                     </li>
                   </ul>
                 </div>
@@ -747,14 +640,11 @@ function Landing() {
                       Premium<span className="font-light ml-2">Plan</span>
                     </h3>
                     <h4 className="text-4xl text-gray-900 text-center pb-6 font-bold flex items-center justify-center">
-                      <span className="text-lg text-gray-700 -ml-2 mr-1">
-                        $
-                      </span>
+                      <span className="text-lg text-gray-700 -ml-2 mr-1">$</span>
                       78
                     </h4>
                     <p className="text-gray-600 text-sm pl-2">
-                      With our premium plan you can take advantage of all the
-                      following features:
+                      With our premium plan you can take advantage of all the following features:
                     </p>
                   </div>
                   <div className="flex flex-wrap mt-8 px-8">
@@ -774,9 +664,7 @@ function Landing() {
                             <polyline points="22 4 12 14.01 9 11.01" />
                           </svg>
                         </div>
-                        <span className="text-gray-700 text-lg ml-3">
-                          Totally Tubular Feature
-                        </span>
+                        <span className="text-gray-700 text-lg ml-3">Totally Tubular Feature</span>
                       </li>
                       <li className="flex items-center">
                         <div className=" rounded-full p-2 fill-current text-green-500">
@@ -793,9 +681,7 @@ function Landing() {
                             <polyline points="22 4 12 14.01 9 11.01" />
                           </svg>
                         </div>
-                        <span className="text-gray-700 text-lg ml-3">
-                          Super Cool Feature
-                        </span>
+                        <span className="text-gray-700 text-lg ml-3">Super Cool Feature</span>
                       </li>
                       <li className="flex items-center">
                         <div className=" rounded-full p-2 fill-current text-green-500">
@@ -812,9 +698,7 @@ function Landing() {
                             <polyline points="22 4 12 14.01 9 11.01" />
                           </svg>
                         </div>
-                        <span className="text-gray-700 text-lg ml-3">
-                          And One More
-                        </span>
+                        <span className="text-gray-700 text-lg ml-3">And One More</span>
                       </li>
                     </ul>
                   </div>
@@ -848,8 +732,8 @@ function Landing() {
                 Testimonials
               </h2>
               <p className="text-gray-500 font-medium text-xl my-6">
-                Don't just take our word for it, read from our extensive list of
-                case studies and customer testimonials.
+                Don't just take our word for it, read from our extensive list of case studies and
+                customer testimonials.
               </p>
             </div>
             <div className="mx-auto flex flex-col xl:flex-row max-w-2xl xl:max-w-full items-center justify-center py-8">
@@ -865,8 +749,7 @@ function Landing() {
                         <path d="M30.7 42c0 6.1 12.6 7 12.6 22 0 11-7.9 19.2-18.9 19.2C12.7 83.1 5 72.6 5 61.5c0-19.2 18-44.6 29.2-44.6 2.8 0 7.9 2 7.9 5.4S30.7 31.6 30.7 42zM82.4 42c0 6.1 12.6 7 12.6 22 0 11-7.9 19.2-18.9 19.2-11.8 0-19.5-10.5-19.5-21.6 0-19.2 18-44.6 29.2-44.6 2.8 0 7.9 2 7.9 5.4S82.4 31.6 82.4 42z" />
                       </svg>
                       <p className="text-base text-gray-600 mt-2">
-                        I'm loving these templates! Very nice features and
-                        layouts.
+                        I'm loving these templates! Very nice features and layouts.
                       </p>
                     </div>
                     <h3 className="pl-12 text-gray-800 text-base mt-3 leading-5 font-medium truncate">
@@ -880,7 +763,6 @@ function Landing() {
                   <img
                     className="w-24 h-24 bg-gray-300 rounded-full flex-shrink-0 object-cover mb-5 md:mb-0"
                     src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2694&q=80"
-                    alt
                   />
                 </blockquote>
                 <blockquote className="w-full flex flex-col-reverse md:flex-row text-center md:text-left  items-center justify-between p-6 col-span-1 bg-gray-100 rounded-lg hover:bg-white hover:shadow transition-all duration-200 ease mt-16 mb-16 xl:mb-0">
@@ -894,8 +776,7 @@ function Landing() {
                         <path d="M30.7 42c0 6.1 12.6 7 12.6 22 0 11-7.9 19.2-18.9 19.2C12.7 83.1 5 72.6 5 61.5c0-19.2 18-44.6 29.2-44.6 2.8 0 7.9 2 7.9 5.4S30.7 31.6 30.7 42zM82.4 42c0 6.1 12.6 7 12.6 22 0 11-7.9 19.2-18.9 19.2-11.8 0-19.5-10.5-19.5-21.6 0-19.2 18-44.6 29.2-44.6 2.8 0 7.9 2 7.9 5.4S82.4 31.6 82.4 42z" />
                       </svg>
                       <p className="text-base text-gray-600 mt-2">
-                        Really digging this service. Now I can quickly bootstrap
-                        any project.
+                        Really digging this service. Now I can quickly bootstrap any project.
                       </p>
                     </div>
                     <h3 className="pl-12 text-gray-800 text-base mt-3 leading-5 font-medium truncate">
@@ -909,7 +790,6 @@ function Landing() {
                   <img
                     className="w-24 h-24 bg-gray-300 rounded-full flex-shrink-0 object-cover mb-5 md:mb-0"
                     src="https://images.unsplash.com/photo-1546820389-44d77e1f3b31?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1400&q=80"
-                    alt
                   />
                 </blockquote>
               </div>
@@ -925,8 +805,7 @@ function Landing() {
                         <path d="M30.7 42c0 6.1 12.6 7 12.6 22 0 11-7.9 19.2-18.9 19.2C12.7 83.1 5 72.6 5 61.5c0-19.2 18-44.6 29.2-44.6 2.8 0 7.9 2 7.9 5.4S30.7 31.6 30.7 42zM82.4 42c0 6.1 12.6 7 12.6 22 0 11-7.9 19.2-18.9 19.2-11.8 0-19.5-10.5-19.5-21.6 0-19.2 18-44.6 29.2-44.6 2.8 0 7.9 2 7.9 5.4S82.4 31.6 82.4 42z" />
                       </svg>
                       <p className="text-base text-gray-600 mt-2">
-                        Extremely helpful in every single project we have
-                        released.
+                        Extremely helpful in every single project we have released.
                       </p>
                     </div>
                     <h3 className="pl-12 text-gray-800 text-base mt-3 leading-5 font-medium truncate">
@@ -940,7 +819,6 @@ function Landing() {
                   <img
                     className="w-24 h-24 bg-gray-300 rounded-full flex-shrink-0 object-cover mb-5 md:mb-0"
                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1700&q=80"
-                    alt
                   />
                 </blockquote>
                 <blockquote className="w-full flex flex-col-reverse md:flex-row text-center md:text-left  items-center justify-between p-6 col-span-1 bg-gray-100 rounded-lg hover:bg-white hover:shadow transition-all duration-200 ease mt-16">
@@ -954,8 +832,7 @@ function Landing() {
                         <path d="M30.7 42c0 6.1 12.6 7 12.6 22 0 11-7.9 19.2-18.9 19.2C12.7 83.1 5 72.6 5 61.5c0-19.2 18-44.6 29.2-44.6 2.8 0 7.9 2 7.9 5.4S30.7 31.6 30.7 42zM82.4 42c0 6.1 12.6 7 12.6 22 0 11-7.9 19.2-18.9 19.2-11.8 0-19.5-10.5-19.5-21.6 0-19.2 18-44.6 29.2-44.6 2.8 0 7.9 2 7.9 5.4S82.4 31.6 82.4 42z" />
                       </svg>
                       <p className="text-base text-gray-600 mt-2">
-                        Finally a quick and easy system I can use for any type
-                        of project.
+                        Finally a quick and easy system I can use for any type of project.
                       </p>
                     </div>
                     <h3 className="pl-12 text-gray-800 text-base mt-3 leading-5 font-medium truncate">
@@ -969,7 +846,6 @@ function Landing() {
                   <img
                     className="w-24 h-24 bg-gray-300 rounded-full flex-shrink-0 object-cover mb-5 md:mb-0"
                     src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2700&q=80"
-                    alt
                   />
                 </blockquote>
               </div>

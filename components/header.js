@@ -1,9 +1,45 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useUser } from "../utils/auth/useUser";
+
+function Avatar({ photoURL, logout }) {
+  return (
+    <div className="z-40">
+      <button
+        type="button"
+        className="flex items-center focus:outline-none"
+        aria-label="toggle profile dropdown"
+      >
+        <div className="h-10 w-10 overflow-hidden rounded-full border-2">
+          <img src={photoURL} className="h-full w-full object-cover" alt="avatar" />
+        </div>
+      </button>
+      <div class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl">
+        <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+          your profile
+        </a>
+        <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+          Your projects
+        </a>
+        <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+          Help
+        </a>
+        <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+          Settings
+        </a>
+        <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200" onClick={logout}>
+          Sign Out
+        </a>
+      </div>
+    </div>
+  );
+}
 
 function Header() {
+  const { user, logout } = useUser();
+
+  console.log({ user });
   return (
-    <header className="h-24 w-full relative z-50">
+    <header className="h-12 w-full relative z-50 border-b-2">
       <div className="container max-w-6xl mx-auto h-full flex justify-center sm:justify-between items-center px-8 xl:px-0">
         <a
           href="/"
@@ -20,7 +56,7 @@ function Header() {
             </g>
           </svg>
           <span className="text-xl ml-3 text-gray-800">
-            Landmark<span className="text-pink-500">.</span>
+            Bozei<span className="text-pink-500">.</span>
           </span>
         </a>
         <nav
@@ -31,54 +67,46 @@ function Header() {
             href="#"
             className="font-bold ml-0 md:ml-12 mr-0 md:mr-3 lg:mr-8 transition-color duration-100 hover:text-indigo-600"
           >
-            Home
+            Juegos
           </a>
           <a
             href="#features"
             className="font-bold mr-0 md:mr-3 lg:mr-8 transition-color duration-100 hover:text-indigo-600"
           >
-            Features
-          </a>
-          <a
-            href="#pricing"
-            className="font-bold mr-0 md:mr-3 lg:mr-8 transition-color duration-100 hover:text-indigo-600"
-          >
-            Pricing
-          </a>
-          <a
-            href="#testimonials"
-            className="font-bold transition-color duration-100 hover:text-indigo-600"
-          >
-            Testimonials
+            Respuestas
           </a>
           <div className="block md:hidden border-t border-gray-200 font-medium flex flex-col w-full">
             <Link href="/login">
-              <a className="py-2 text-pink-500 w-full text-center font-bold">
-                Login
-              </a>
+              <a className="py-2 text-pink-500 w-full text-center font-bold">Ingresar</a>
             </Link>
             <a
               href="#_"
               className="px-5 py-3 fold-bold text-sm leading-none bg-indigo-700 text-white w-full inline-block text-center relative"
             >
-              Get Started
+              Comenzar
             </a>
           </div>
         </nav>
         <div className="absolute left-0 md:relative w-full md:w-auto md:bg-transparent border-b md:border-none border-gray-200 mt-48 md:mt-0 flex-col md:flex-row pb-8 md:p-0 justify-center items-center md:items-end hidden md:flex md:justify-between">
-          <Link href="/login">
-            <a className="px-3 md:px-5 py-2 text-sm text-pink-500 lg:text-white font-bold mr-0 sm:mr-3 relative z-40 md:mt-0">
-              Login
-            </a>
-          </Link>
-          <a
-            href="#_"
-            className="px-5 py-3 rounded fold-bold text-sm transition-all duration-300 leading-none bg-indigo-700 lg:bg-white text-white lg:text-indigo-700 w-auto sm:w-full h-full inline-block font-bold relative shadow-md lg:shadow-none hover:shadow-xl duration-100 transition z-40"
-          >
-            Get Started
-          </a>
+          {user ? (
+            <Avatar photoURL={user.photoURL} logout={logout} />
+          ) : (
+            <>
+              <Link href="/login">
+                <a className="px-3 md:px-3 py-2 text-sm text-pink-500 lg:text-white font-bold mr-0 sm:mr-3 relative z-40 md:mt-0">
+                  Ingresar
+                </a>
+              </Link>
+              <a
+                href="#_"
+                className="px-5 py-3 rounded fold-bold text-sm transition-all duration-300 leading-none bg-indigo-700 lg:bg-white text-white lg:text-indigo-700 w-auto sm:w-full h-full inline-block font-bold relative shadow-md lg:shadow-none hover:shadow-xl duration-100 transition z-40"
+              >
+                Comenzar
+              </a>
+            </>
+          )}
           <svg
-            className="hidden lg:block absolute w-screen max-w-3xl -mt-64 -ml-12 left-0 top-0"
+            className="hidden lg:block absolute w-screen max-w-3xl -mt-64 -ml-12 left-0 top-0 z-10"
             viewBox="0 0 818 815"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -153,7 +181,7 @@ function Header() {
         </div>
         <div
           id="nav-mobile-btn"
-          className="w-6 absolute block md:hidden right-0 top-0 mr-10 mt-8 sm:mt-10 z-50 cursor-pointer select-none"
+          className="w-6 absolute block md:hidden right-0 top-0 mr-5 mt-2 sm:mt-4 z-50 cursor-pointer select-none"
         >
           <span className="w-full h-1 mt-2 sm:mt-1 bg-gray-800 rounded-full block transform duration-200" />
           <span className="w-full h-1 mt-1 bg-gray-800 rounded-full block  transform duration-200" />
