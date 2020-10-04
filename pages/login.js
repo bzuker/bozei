@@ -27,7 +27,7 @@ function LoginButton({ text, icon, onClick }) {
 function Login() {
   return (
     <Layout>
-      <div className="flex items-center justify-center sm:px-6">
+      <div className="flex items-center justify-center sm:px-6 md:pt-16">
         <div className="w-full max-w-md p-4 bg-white rounded-md shadow-xl border border-gray-300">
           <div className="flex items-center justify-center">
             <span className="text-xl font-medium text-gray-900">Ingresar</span>
@@ -61,10 +61,34 @@ function Login() {
               text="Continuar con Facebook"
               icon={<FaFacebook size={"1.5em"} className="mr-3" />}
             />
-            <LoginButton
-              text="Continuar con Mail"
-              icon={<FaEnvelope size={"1.5em"} className="mr-3" />}
-            />
+            <div className="w-full my-4 flex items-center justify-between">
+              <span className="border-b w-1/5 lg:w-1/4"></span>
+
+              <a href="#" className="text-sm text-center text-gray-500 uppercase hover:underline">
+                o continuar con mail
+              </a>
+
+              <span className="border-b w-1/5 lg:w-1/4"></span>
+            </div>
+            <label htmlFor="email" className="block">
+              <span className="text-gray-700">Email</span>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                autoComplete="username"
+                className="block w-full px-3 py-2 mt-1 text-gray-700 border rounded-md form-input focus:border-indigo-600"
+                required
+              />
+            </label>
+            <div className="w-2/3 mt-6">
+              <button
+                type="submit"
+                className="w-full px-4 py-2 text-center text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
+              >
+                Ingresar
+              </button>
+            </div>
           </div>
         </div>
       </div>

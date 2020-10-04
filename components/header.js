@@ -13,7 +13,7 @@ function Avatar({ photoURL, logout }) {
           <img src={photoURL} className="h-full w-full object-cover" alt="avatar" />
         </div>
       </button>
-      <div class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl">
+      {/* <div class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl">
         <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
           your profile
         </a>
@@ -29,7 +29,7 @@ function Avatar({ photoURL, logout }) {
         <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200" onClick={logout}>
           Sign Out
         </a>
-      </div>
+      </div> */}
     </div>
   );
 }
