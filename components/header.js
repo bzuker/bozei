@@ -39,7 +39,7 @@ function Header() {
 
   console.log({ user });
   return (
-    <header className="h-12 w-full relative z-50 border-b-2">
+    <header className="bg-white h-12 w-full relative z-50 border-b-2">
       <div className="container max-w-6xl mx-auto h-full flex justify-center sm:justify-between items-center px-8 xl:px-0">
         <a
           href="/"

@@ -1,5 +1,5 @@
 import Layout from "../components/layout";
-import { FaEnvelope, FaFacebook, FaGoogle } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
 import initFirebase from "../utils/auth/initFirebase";
 import { signInWithGoogle } from "../utils/auth/signIn";
 import { useRouter } from "next/router";
@@ -15,7 +15,7 @@ function LoginButton({ text, icon, onClick }) {
   }
   return (
     <button
-      className="w-full sm:w-2/3 px-6 py-3 border border-gray-400 rounded shadow text-center rounded-md hover:bg-indigo-200 my-1 inline-flex"
+      className="w-full sm:w-2/3 px-6 py-3 border border-gray-400 rounded shadow text-center hover:bg-indigo-200 my-1 inline-flex"
       onClick={handleClick}
     >
       {icon}
