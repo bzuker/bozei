@@ -122,7 +122,10 @@ function AnswerOption() {
 
 function Question() {
   return (
-    <div className="flex flex-wrap m-3 -mx-3 border rounded-lg py-2">
+    <div className="flex flex-wrap m-3 -mx-3 border rounded-lg py-2 relative">
+      <button className="mr-3 text-lg absolute top-2 right-0">
+        <FaTimes />
+      </button>
       <div className="w-full md:w-2/3 px-3 mb-6 md:mb-3">
         <label className="block mb-2 font-bold tracking-wide text-gray-700">Pregunta</label>
         <input
@@ -150,7 +153,7 @@ function Question() {
 function Create() {
   return (
     <Layout>
-      <div className="flex p-1 pt-6 bg-white place-content-center shadow">
+      <div className="flex pt-6 bg-white place-content-center shadow">
         <div className="w-full overflow-hidden">
           {/* <Steps /> */}
           <form className="w-full">
@@ -198,17 +201,11 @@ function Create() {
               </button>
             </div>
             <div className="flex items-center justify-between p-5 text-center bg-gray-200">
-              <div className="relative flex flex-col items-start mr-1 text-sm">
-                <span className="mr-1 text-gray-500">Already have an account?</span>
-                <a href="#_" className="block font-medium text-indigo-600 underline">
-                  Login Here
-                </a>
-              </div>
               <button
                 type="button"
-                className="inline-flex items-center px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700"
+                className="inline-flex items-center px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
               >
-                Register Now
+                Guardar juego
               </button>
             </div>
           </form>
