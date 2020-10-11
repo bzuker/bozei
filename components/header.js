@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useUser } from "../utils/auth/useUser";
+import { useUser } from "../context/Auth";
 
 function Avatar({ photoURL, logout }) {
   return (
@@ -13,23 +13,27 @@ function Avatar({ photoURL, logout }) {
           <img src={photoURL} className="h-full w-full object-cover" alt="avatar" />
         </div>
       </button>
-      {/* <div class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl">
-        <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+      <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl">
+        <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
           your profile
         </a>
-        <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+        <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
           Your projects
         </a>
-        <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+        <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
           Help
         </a>
-        <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+        <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
           Settings
         </a>
-        <a href="#" class="block px-4 py-2 text-sm capitalize hover:bg-indigo-200" onClick={logout}>
+        <a
+          href="#"
+          className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200"
+          onClick={logout}
+        >
           Sign Out
         </a>
-      </div> */}
+      </div>
     </div>
   );
 }
@@ -37,14 +41,10 @@ function Avatar({ photoURL, logout }) {
 function Header() {
   const { user, logout } = useUser();
 
-  console.log({ user });
   return (
     <header className="bg-white h-12 w-full relative z-50 border-b-2">
       <div className="container max-w-6xl mx-auto h-full flex justify-center sm:justify-between items-center px-8 xl:px-0">
-        <a
-          href="/"
-          className="inline-block h-full flex items-center h-5 relative font-black leading-none"
-        >
+        <a href="/" className="flex items-center h-5 relative font-black leading-none">
           <svg
             className="h-6 w-auto fill-current text-indigo-600"
             viewBox="0 0 194 116"
@@ -99,7 +99,7 @@ function Header() {
               </Link>
               <a
                 href="#_"
-                className="px-5 py-3 rounded fold-bold text-sm transition-all duration-300 leading-none bg-indigo-700 lg:bg-white text-white lg:text-indigo-700 w-auto sm:w-full h-full inline-block font-bold relative shadow-md lg:shadow-none hover:shadow-xl duration-100 transition z-40"
+                className="px-5 py-3 rounded fold-bold text-sm transition-all duration-300 leading-none bg-indigo-700 lg:bg-white text-white lg:text-indigo-700 w-auto sm:w-full h-full inline-block font-bold relative shadow-md lg:shadow-none hover:shadow-xl z-40"
               >
                 Comenzar
               </a>

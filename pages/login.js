@@ -3,6 +3,7 @@ import { FaFacebook } from "react-icons/fa";
 import initFirebase from "../utils/auth/initFirebase";
 import { signInWithGoogle } from "../utils/auth/signIn";
 import { useRouter } from "next/router";
+import { useUser } from "../context/Auth";
 
 initFirebase();
 
@@ -25,6 +26,9 @@ function LoginButton({ text, icon, onClick }) {
 }
 
 function Login() {
+  const router = useRouter();
+  const { user, userLoading } = useUser();
+
   return (
     <Layout>
       <div className="flex items-center justify-center sm:px-6 md:pt-16">

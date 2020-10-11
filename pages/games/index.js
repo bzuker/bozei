@@ -10,7 +10,7 @@ function Game({ name, description, image, url, categories }) {
         <div className="flex-grow">
           <h2 className="text-gray-900 text-lg title-font font-medium mb-3">
             Shooting Stars
-            <span class="bg-indigo-200 text-indigo-600 px-2 py-1 rounded-full uppercase text-xs ml-3">
+            <span className="bg-indigo-200 text-indigo-600 px-2 py-1 rounded-full uppercase text-xs ml-3">
               psychology
             </span>
           </h2>
@@ -19,10 +19,10 @@ function Game({ name, description, image, url, categories }) {
             indxgo juice poutine.
           </p>
           <div className="mt-3">
-            <button class=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
+            <button className=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
               Jugar ahora!
             </button>
-            <button class=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md">
+            <button className=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md">
               Editar
             </button>
           </div>
@@ -38,7 +38,7 @@ function Games() {
       <header className="bg-white shadow">
         <div className="flex items-center justify-between max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
           <h1 className="text-xl font-bold leading-tight text-gray-900">Mis Juegos</h1>
-          <button class="hover:bg-indigo-700 bg-indigo-500 text-white text-lg font-bold py-2 px-4 border border-gray-400 shadow-xs rounded-md">
+          <button className="hover:bg-indigo-700 bg-indigo-500 text-white text-lg font-bold py-2 px-4 border border-gray-400 shadow-xs rounded-md">
             Crear nuevo
           </button>
         </div>
