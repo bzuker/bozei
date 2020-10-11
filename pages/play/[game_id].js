@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { FaArrowRight, FaCheck } from "react-icons/fa";
 import Layout from "../../components/layout";
 
 function Welcome({ startGame }) {
@@ -51,11 +52,11 @@ function getAnswerStatus(answer, selected, correct) {
   return "INCORRECT";
 }
 
-function MultipleChoiceQuestion({ question = {}, selected, onAnswerSelected }) {
+function MultipleChoiceQuestion({ question = {}, selected, onAnswerSelected, onNextQuestion }) {
   return (
     <div className="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24">
       <div className="flex max-w-screen-md overflow-hidden bg-white border rounded-lg shadow-md lg:flex-row sm:mx-auto">
-        <div className="flex flex-col w-full justify-center p-2 md:p-8 bg-white">
+        <div className="flex flex-col w-full justify-center p-2 md:p-6 bg-white">
           <div className="flex justify-between">
             <p className="px-3 py-1 text-xs font-medium tracking-wider text-purple-600 uppercase rounded-full bg-purple-200">
               {question.tag}
@@ -68,6 +69,17 @@ function MultipleChoiceQuestion({ question = {}, selected, onAnswerSelected }) {
         </div>
       </div>
       <div>
+        {selected && (
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={onNextQuestion}
+              className="flex items-center px-6 py-4 font-bold text-md md:text-2xl text-center text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
+            >
+              Siguiente pregunta
+              <FaArrowRight className="ml-2" />
+            </button>
+          </div>
+        )}
         {question.answers.map((answer, i) => (
           <Answer
             key={answer.id}
@@ -97,6 +109,35 @@ function Answer({ text, status, onClick }) {
   );
 }
 
+function GameOver() {
+  return (
+    <div className="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl">
+      <div className="flex flex-col max-w-screen-md overflow-hidden bg-white border rounded-lg shadow-xl lg:flex-row sm:mx-auto justify-center">
+        <div className="flex flex-col justify-center p-8 bg-white lg:p-12 text-center">
+          <h5 className="mb-3 text-3xl font-extrabold leading-none sm:text-4xl">
+            Terminaron las preguntas!
+          </h5>
+          <p className="mb-5 text-gray-800 py-5">Este fue tu resultado:</p>
+          <div className="flex items-center justify-between">
+            <div className="border-2 border-gray-200 px-6 py-4 rounded-lg bg-green-300 w-2/5">
+              <div className="flex flex-col items-center">
+                <h2 className="title-font font-medium text-3xl text-gray-900">7</h2>
+                <p className="leading-relaxed">Correctas</p>
+              </div>
+            </div>
+            <div className="border-2 border-gray-200 px-6 py-4 rounded-lg bg-red-300 w-2/5">
+              <div className="flex flex-col items-center">
+                <h2 className="title-font font-medium text-3xl text-gray-900">7</h2>
+                <p className="leading-relaxed">Incorrectas</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function playReducer(state, action) {
   switch (action.type) {
     case "START_GAME": {
@@ -121,6 +162,8 @@ function playReducer(state, action) {
       if (state.questions.length === 0) {
         return {
           ...state,
+          selected: null,
+          currentQuestion: null,
           status: "GAME_ENDED",
         };
       }
@@ -128,6 +171,7 @@ function playReducer(state, action) {
       const currentQuestion = state.questions.shift();
       return {
         ...state,
+        selected: null,
         currentQuestion,
         questions: state.questions,
       };
@@ -184,6 +228,7 @@ function Play() {
         <MultipleChoiceQuestion
           question={state.currentQuestion}
           onAnswerSelected={onAnswerSelected}
+          onNextQuestion={() => dispatch({ type: "NEXT_QUESTION" })}
           selected={state.selected}
         />
       </Layout>
@@ -191,7 +236,11 @@ function Play() {
   }
 
   if (state.status === "GAME_ENDED") {
-    return <Layout>Terminamos</Layout>;
+    return (
+      <Layout>
+        <GameOver />
+      </Layout>
+    );
   }
 }
 
