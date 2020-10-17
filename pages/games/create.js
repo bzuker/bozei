@@ -1,5 +1,8 @@
-import { FaPlus, FaTimes } from "react-icons/fa";
+import { useForm } from "react-hook-form";
+import { FaEdit, FaImage, FaPlus, FaTimes } from "react-icons/fa";
 import Layout from "../../components/layout";
+import Modal from "../../components/Modal";
+import { Question } from "../../components/Question";
 
 function Steps() {
   return (
@@ -101,117 +104,132 @@ function Steps() {
   );
 }
 
-function AnswerOption() {
+function CreateForm({ register }) {
   return (
-    <div className="flex items-center mb-2 md:mb-4 ">
-      <button className="mr-2 text-red-500">
-        <FaTimes />
-      </button>
-      <textarea
-        className="block w-full px-4 py-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500 overflow-y-hidden"
-        type="text"
-        placeholder="Respuesta 1"
-      />
-      <input
-        type="checkbox"
-        className="ml-5 form-checkbox text-green-500 p-2 md:p-3 border-2 border-gray-500"
-      />
-    </div>
+    <form className="w-full">
+      <div className="px-5 md:px-10 pb-6">
+        <h2 className="text-xl font-bold text-gray-700 -ml-2 md:-ml-4 mb-4">Crear Juego</h2>
+        <div className="flex flex-wrap mb-0 md:mb-6 -mx-3">
+          <div className="w-full md:w-2/3">
+            <div className="w-full px-3 mb-2">
+              <label className="block mb-2 font-bold tracking-wide text-gray-700">Nombre</label>
+              <input
+                className="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white text-sm md:text-base"
+                type="text"
+                placeholder="Título del juego"
+                name="title"
+                ref={register({ required: true })}
+              />
+            </div>
+            <div className="w-full px-3">
+              <label className="block mb-2 font-bold tracking-wide text-gray-700">
+                Descripción
+              </label>
+              <input
+                className="block w-full px-4 py-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500 text-sm md:text-base"
+                id="grid-last-name"
+                type="text"
+                placeholder="Texto que se mostrará al inicio del juego"
+                name="description"
+                ref={register}
+              />
+            </div>
+          </div>
+          <div className="w-full md:w-1/3 mt-4 md:mt-0 md:mb-0 flex justify-center">
+            <label className="flex flex-col w-full items-center px-2 py-2 md:py-10 bg-white text-blue rounded-lg shadow-sm tracking-wide border border-blue cursor-pointer hover:bg-indigo-200">
+              <FaImage size="3em" />
+              <span className="mt-2 text-base leading-normal">Imagen</span>
+              <input type="file" className="hidden" name="image" ref={register} />
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
   );
 }
 
-function Question() {
+function QuestionItem({ remove, onEdit, question }) {
   return (
-    <div className="flex flex-wrap m-3 -mx-3 border rounded-lg py-2 relative">
-      <button className="mr-3 text-lg absolute top-2 right-0">
-        <FaTimes />
-      </button>
-      <div className="w-full md:w-2/3 px-3 mb-6 md:mb-3">
-        <label className="block mb-2 font-bold tracking-wide text-gray-700">Pregunta</label>
-        <input
-          className="block w-full px-4 py-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500"
-          type="text"
-          placeholder="Una pregunta para contestar"
-        />
-      </div>
-      <div className="w-full px-3 md:w-2/3">
-        <div className="flex justify-between">
-          <label className="mb-2 font-bold tracking-wide text-gray-700">Respuestas</label>
-          <label className="mb-2 font-bold tracking-wide text-gray-700">Es Correcta?</label>
-        </div>
-        <AnswerOption />
-        <AnswerOption />
-        <AnswerOption />
-        <button type="button" className="text-gray-700 px-3 py-1 underline focus:outline-none">
-          Agregar respuesta
+    <li className="flex flex-wrap md:justify-between items-center p-4 w-full border rounded-lg border-gray-300 mb-2">
+      <p className="w-full md:w-4/5 pb-3 md:pb-0">{question.text}</p>
+      <div>
+        <button
+          type="button"
+          className="px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-blue-200"
+        >
+          <FaEdit size="1.2em" className="text-blue-600" />
+        </button>
+        <button
+          type="button"
+          className="ml-2 px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-red-200"
+          onClick={remove}
+        >
+          <FaTimes size="1.2em" color="red" />
         </button>
       </div>
-    </div>
+    </li>
   );
 }
 
 function Create() {
-  return (
-    <Layout>
-      <div className="flex pt-6 bg-white place-content-center shadow">
-        <div className="w-full overflow-hidden">
-          {/* <Steps /> */}
-          <form className="w-full">
-            <div className="px-5 md:px-10 pb-6">
-              <h2 className="text-xl font-bold text-gray-700 -ml-2 md:-ml-4 mb-4">Crear Juego</h2>
-              <div className="flex flex-wrap mb-0 md:mb-6 -mx-3">
-                <div className="w-full md:w-2/3">
-                  <div className="w-full px-3 mb-2">
-                    <label className="block mb-2 font-bold tracking-wide text-gray-700">
-                      Nombre
-                    </label>
-                    <input
-                      className="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white"
-                      type="text"
-                      placeholder="Jane"
-                    />
-                  </div>
-                  <div className="w-full px-3">
-                    <label className="block mb-2 font-bold tracking-wide text-gray-700">
-                      Descripción
-                    </label>
-                    <input
-                      className="block w-full px-4 py-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="grid-last-name"
-                      type="text"
-                      placeholder="Doe"
-                    />
-                  </div>
-                </div>
-                <div className="w-full md:w-1/3 md:mb-0">
-                  <label className="rounded-lg shadow-md bg-gray-500 border-gray-200 h-full my-2 mx-2 cursor-pointer">
-                    <input id="upload" type="file" className="hidden" />
-                  </label>
-                </div>
-              </div>
-              <h2 className="text-xl font-bold text-gray-700 -ml-2 md:-ml-4">Definir Preguntas</h2>
+  const { handleSubmit, ...formProps } = useForm();
 
-              <Question />
-              <Question />
+  const [showModal, setShowModal] = React.useState(false);
+  const [questions, setQuestions] = React.useState([]);
+
+  const onQuestionSave = (newQuestion) => {
+    console.log(newQuestion);
+    setQuestions([...questions, newQuestion]);
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <Layout>
+        <div className="flex pt-6 bg-white place-content-center shadow">
+          <div className="w-full overflow-hidden">
+            <CreateForm {...formProps} />
+          </div>
+        </div>
+        <div className="flex pt-6 bg-white place-content-center shadow mt-4 mb-16">
+          <div className="w-full overflow-hidden">
+            <div className="px-5 md:px-10 pb-6">
+              <h2 className="text-xl font-bold text-gray-700 -ml-2 md:-ml-4">Preguntas</h2>
+
+              <ul className="mt-5 mb-5">
+                {questions.map((x) => (
+                  <QuestionItem
+                    key={x.text}
+                    question={x}
+                    remove={() => setQuestions(questions.filter((q) => q.id !== x.id))}
+                  />
+                ))}
+              </ul>
+
               <button
                 type="button"
                 className="inline-flex items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700"
+                onClick={() => setShowModal(true)}
               >
                 <FaPlus className="mr-2" /> Agregar pregunta
               </button>
             </div>
-            <div className="flex items-center justify-between p-5 text-center bg-gray-200">
-              <button
-                type="button"
-                className="inline-flex items-center px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
-              >
-                Guardar juego
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
+      </Layout>
+      <div className="flex justify-end fixed w-full bottom-0 items-center p-2 md:p-5 text-center bg-gray-200">
+        <button
+          type="button"
+          className="inline-flex items-center px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
+          onClick={handleSubmit((data) => console.log(data))}
+        >
+          Guardar
+        </button>
       </div>
-    </Layout>
+      <Modal isOpen={showModal} onRequestClose={() => setShowModal(false)} title="Nueva pregunta">
+        <Question onSave={onQuestionSave} />
+      </Modal>
+    </>
   );
 }
 
