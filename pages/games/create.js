@@ -4,6 +4,7 @@ import { FaEdit, FaImage, FaPlus, FaTimes } from "react-icons/fa";
 import Layout from "../../components/layout";
 import Modal from "../../components/Modal";
 import { Question } from "../../components/Question";
+import { useUser } from "../../context/Auth";
 import gameApi from "../../models/game";
 
 function CreateForm({ register, errors }) {
@@ -110,6 +111,7 @@ function questionModalReducer(state, action) {
 }
 
 function Create() {
+  const { user } = useUser();
   const router = useRouter();
   const { handleSubmit, setError, clearErrors, errors, ...formProps } = useForm();
   const [questions, setQuestions] = React.useState([]);
@@ -147,6 +149,7 @@ function Create() {
     const gameData = {
       ...data,
       questions,
+      userId: user.id,
     };
 
     try {
@@ -200,6 +203,7 @@ function Create() {
           type="button"
           className="inline-flex items-center px-8 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
           onClick={handleSubmit(onCreateGame)}
+          disabled={isSubmitting}
         >
           {isSubmitting ? (
             <div className="flex space-x-2 animate-pulse py-1 px-1">

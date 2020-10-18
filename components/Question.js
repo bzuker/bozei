@@ -96,7 +96,8 @@ export function Question({ question, onSave }) {
         <button
           onClick={append}
           type="button"
-          className="text-gray-700 px-3 py-1 underline focus:outline-none"
+          className="text-gray-700 px-3 py-1 underline"
+          tabIndex="-1"
         >
           Agregar respuesta
         </button>
@@ -105,7 +106,8 @@ export function Question({ question, onSave }) {
       <div className="flex w-full ml-5 mt-4">
         <button
           type="submit"
-          className="inline-flex items-center px-12 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
+          className="inline-flex items-center px-12 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 active:bg-green-700"
+          tabIndex="0"
         >
           Guardar
         </button>
