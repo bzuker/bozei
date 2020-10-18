@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { FaEdit, FaImage, FaPlus, FaTimes } from "react-icons/fa";
 import Layout from "../../components/layout";
@@ -109,14 +110,15 @@ function questionModalReducer(state, action) {
 }
 
 function Create() {
+  const router = useRouter();
   const { handleSubmit, setError, clearErrors, errors, ...formProps } = useForm();
-
+  const [questions, setQuestions] = React.useState([]);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [modalState, dispatch] = React.useReducer(questionModalReducer, {
     showModal: false,
     question: null,
     title: "",
   });
-  const [questions, setQuestions] = React.useState([]);
 
   const onQuestionSave = (question) => {
     const existingQuestionIndex = questions.findIndex((x) => x.id === question.id);
@@ -140,6 +142,8 @@ function Create() {
       });
       return;
     }
+
+    setIsSubmitting(true);
     const gameData = {
       ...data,
       questions,
@@ -147,8 +151,11 @@ function Create() {
 
     try {
       await gameApi.createGame(gameData);
+      router.push("/games");
     } catch (error) {
       console.error("failed creating game", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -194,7 +201,15 @@ function Create() {
           className="inline-flex items-center px-8 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
           onClick={handleSubmit(onCreateGame)}
         >
-          Guardar
+          {isSubmitting ? (
+            <div className="flex space-x-2 animate-pulse py-1 px-1">
+              <div className="w-3 h-3 bg-white rounded-full"></div>
+              <div className="w-3 h-3 bg-white rounded-full"></div>
+              <div className="w-3 h-3 bg-white rounded-full"></div>
+            </div>
+          ) : (
+            "Guardar"
+          )}
         </button>
       </div>
       <Modal
