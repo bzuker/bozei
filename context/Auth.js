@@ -42,14 +42,6 @@ export default function ProvideAuth({ children }) {
       setLoadingUser(false);
     });
 
-    const userFromCookie = getUserFromCookie();
-    if (!userFromCookie) {
-      router.replace("/login");
-      return;
-    }
-    setUser(userFromCookie);
-    setLoadingUser(false);
-
     return () => cancelAuthListener();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
