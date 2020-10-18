@@ -1,11 +1,8 @@
 import Layout from "../components/layout";
 import { FaFacebook } from "react-icons/fa";
-import initFirebase from "../utils/auth/initFirebase";
 import { signInWithGoogle } from "../utils/auth/signIn";
 import { useRouter } from "next/router";
 import { useUser } from "../context/Auth";
-
-initFirebase();
 
 function LoginButton({ text, icon, onClick }) {
   const router = useRouter();

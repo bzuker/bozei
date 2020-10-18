@@ -1,11 +1,9 @@
-import firebase from "firebase";
-import initFirebase from "./initFirebase";
+import firebase from "firebase/app";
+import "firebase/auth";
+import { auth } from "./firebase";
 import { mapUserData } from "./mapUserData";
 import { setUserCookie } from "./userCookies";
 
-initFirebase();
-
-export const auth = firebase.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 export async function signInWithGoogle() {

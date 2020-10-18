@@ -1,47 +1,69 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 
-function AnswerOption({ answerOption, remove, prefix, register }) {
+function AnswerOption({ answerOption, remove, prefix, register, clearErrors, error = {} }) {
   return (
-    <div className="flex items-center mb-2 md:mb-4 ">
-      <button onClick={remove} className="mr-2 text-red-500">
-        <FaTimes />
-      </button>
-      <textarea
-        className="block w-full px-4 py-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500 overflow-y-hidden"
-        type="text"
-        placeholder="Respuesta"
-        name={`${prefix}.text`}
-        ref={register({ required: true })}
-        defaultValue={answerOption.text}
-      />
-      <input
-        type="checkbox"
-        className="ml-5 form-checkbox text-green-500 p-2 md:p-3 border-2 border-gray-500"
-        name={`${prefix}.isCorrect`}
-        ref={register()}
-        defaultValue={answerOption.isCorrect}
-      />
+    <div className="mb-2 md:mb-4">
+      <div className="flex items-center ">
+        <button onClick={remove} className="mr-2 text-red-500">
+          <FaTimes />
+        </button>
+        <textarea
+          className="block w-full px-4 py-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500 overflow-y-hidden"
+          type="text"
+          placeholder="Respuesta"
+          name={`${prefix}.text`}
+          ref={register({ required: true })}
+          defaultValue={answerOption.text}
+        />
+        <input
+          type="checkbox"
+          className="ml-5 form-checkbox text-green-500 p-2 md:p-3 border-2 border-gray-500"
+          name={`${prefix}.isCorrect`}
+          ref={register()}
+          defaultChecked={answerOption.isCorrect}
+          onChange={() => clearErrors("markCorrect")}
+        />
+      </div>
+      {error.text && <p className="text-red-500 mt-1">No pusiste respuesta!</p>}
     </div>
   );
 }
 
 export function Question({ question, onSave }) {
-  const { control, register, handleSubmit } = useForm({
-    defaultValues: {
+  const { control, register, errors, setError, clearErrors, handleSubmit } = useForm({
+    defaultValues: question || {
       text: "",
       answers: [{ text: "" }, { text: "" }, { text: "" }],
     },
   });
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "answers",
   });
 
-  const onSubmit = (question) => {
-    // TODO: validate only one checkbox + show errors
-    onSave({ id: Math.floor(Math.random() * 1000) + 1, ...question });
+  const onSubmit = (questionData) => {
+    const markedAsCorrect = questionData.answers.filter((x) => x.isCorrect);
+    if (markedAsCorrect.length === 0) {
+      setError("markCorrect", {
+        type: "manual",
+        message: "No marcaste ninguna respuesta como correcta!",
+      });
+      return;
+    }
+
+    if (markedAsCorrect.length > 1) {
+      setError("markCorrect", {
+        type: "manual",
+        message: "Hay más de una respuesta correcta!",
+      });
+      return;
+    }
+
+    onSave({ id: question?.id || Math.floor(Math.random() * 100000) + 1, ...questionData });
   };
+
   return (
     <form className="flex flex-wrap m-3 -mx-3 py-2 relative" onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full md:w-2/3 px-3 mb-6 md:mb-3">
@@ -53,6 +75,7 @@ export function Question({ question, onSave }) {
           ref={register({ required: true })}
           name="text"
         />
+        {errors.text && <p className="text-red-500 mt-2">No pusiste pregunta!</p>}
       </div>
       <div className="w-full px-3 md:w-2/3">
         <div className="flex justify-between">
@@ -62,10 +85,12 @@ export function Question({ question, onSave }) {
         {fields.map((answer, i) => (
           <AnswerOption
             key={answer.id}
-            prefix={`answer[${i}]`}
+            prefix={`answers[${i}]`}
             register={register}
             remove={() => remove(i)}
             answerOption={answer}
+            error={errors?.answers?.[i]}
+            clearErrors={clearErrors}
           />
         ))}
         <button
@@ -76,7 +101,8 @@ export function Question({ question, onSave }) {
           Agregar respuesta
         </button>
       </div>
-      <div className="flex w-full ml-5 mt-8">
+      {errors.markCorrect && <p className="text-red-500 ml-6 mt-1">{errors.markCorrect.message}</p>}
+      <div className="flex w-full ml-5 mt-4">
         <button
           type="submit"
           className="inline-flex items-center px-12 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700"

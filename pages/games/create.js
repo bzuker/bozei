@@ -3,108 +3,9 @@ import { FaEdit, FaImage, FaPlus, FaTimes } from "react-icons/fa";
 import Layout from "../../components/layout";
 import Modal from "../../components/Modal";
 import { Question } from "../../components/Question";
+import gameApi from "../../models/game";
 
-function Steps() {
-  return (
-    <div className="flex items-center">
-      <div className="flex items-center text-teal-600 relative">
-        <div className="rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-teal-600">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100%"
-            height="100%"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="feather feather-bookmark "
-          >
-            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-          </svg>
-        </div>
-        <div className="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-teal-600">
-          Personal
-        </div>
-      </div>
-      <div className="flex-auto border-t-2 transition duration-500 ease-in-out border-teal-600"></div>
-      <div className="flex items-center text-white relative">
-        <div className="rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 bg-teal-600 border-teal-600">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100%"
-            height="100%"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="feather feather-user-plus "
-          >
-            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="8.5" cy="7" r="4"></circle>
-            <line x1="20" y1="8" x2="20" y2="14"></line>
-            <line x1="23" y1="11" x2="17" y2="11"></line>
-          </svg>
-        </div>
-        <div className="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-teal-600">
-          Account
-        </div>
-      </div>
-      <div className="flex-auto border-t-2 transition duration-500 ease-in-out border-gray-300"></div>
-      <div className="flex items-center text-gray-500 relative">
-        <div className="rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-gray-300">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100%"
-            height="100%"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="feather feather-mail "
-          >
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-            <polyline points="22,6 12,13 2,6"></polyline>
-          </svg>
-        </div>
-        <div className="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-gray-500">
-          Message
-        </div>
-      </div>
-      <div className="flex-auto border-t-2 transition duration-500 ease-in-out border-gray-300"></div>
-      <div className="flex items-center text-gray-500 relative">
-        <div className="rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2 border-gray-300">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100%"
-            height="100%"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            className="feather feather-database "
-          >
-            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
-            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
-            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
-          </svg>
-        </div>
-        <div className="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-gray-500">
-          Confirm
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CreateForm({ register }) {
+function CreateForm({ register, errors }) {
   return (
     <form className="w-full">
       <div className="px-5 md:px-10 pb-6">
@@ -120,6 +21,7 @@ function CreateForm({ register }) {
                 name="title"
                 ref={register({ required: true })}
               />
+              {errors.title && <p className="text-red-500">* Falta completar este campo</p>}
             </div>
             <div className="w-full px-3">
               <label className="block mb-2 font-bold tracking-wide text-gray-700">
@@ -135,20 +37,20 @@ function CreateForm({ register }) {
               />
             </div>
           </div>
-          <div className="w-full md:w-1/3 mt-4 md:mt-0 md:mb-0 flex justify-center">
+          {/* <div className="w-full md:w-1/3 mt-4 md:mt-0 md:mb-0 flex justify-center">
             <label className="flex flex-col w-full items-center px-2 py-2 md:py-10 bg-white text-blue rounded-lg shadow-sm tracking-wide border border-blue cursor-pointer hover:bg-indigo-200">
               <FaImage size="3em" />
               <span className="mt-2 text-base leading-normal">Imagen</span>
               <input type="file" className="hidden" name="image" ref={register} />
             </label>
-          </div>
+          </div> */}
         </div>
       </div>
     </form>
   );
 }
 
-function QuestionItem({ remove, onEdit, question }) {
+function QuestionItem({ remove, edit, question }) {
   return (
     <li className="flex flex-wrap md:justify-between items-center p-4 w-full border rounded-lg border-gray-300 mb-2">
       <p className="w-full md:w-4/5 pb-3 md:pb-0">{question.text}</p>
@@ -156,6 +58,7 @@ function QuestionItem({ remove, onEdit, question }) {
         <button
           type="button"
           className="px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-blue-200"
+          onClick={edit}
         >
           <FaEdit size="1.2em" className="text-blue-600" />
         </button>
@@ -171,16 +74,82 @@ function QuestionItem({ remove, onEdit, question }) {
   );
 }
 
-function Create() {
-  const { handleSubmit, ...formProps } = useForm();
+function questionModalReducer(state, action) {
+  switch (action.type) {
+    case "CREATE_QUESTION": {
+      return {
+        ...state,
+        showModal: true,
+        question: null,
+        title: "Nueva pregunta",
+      };
+    }
 
-  const [showModal, setShowModal] = React.useState(false);
+    case "EDIT_QUESTION": {
+      return {
+        ...state,
+        showModal: true,
+        question: action.question,
+        title: "Editar pregunta",
+      };
+    }
+
+    case "CLOSE_MODAL": {
+      return {
+        ...state,
+        showModal: false,
+        question: null,
+        title: "",
+      };
+    }
+    default: {
+      throw Error(`Unrecognized action ${action.type}`);
+    }
+  }
+}
+
+function Create() {
+  const { handleSubmit, setError, clearErrors, errors, ...formProps } = useForm();
+
+  const [modalState, dispatch] = React.useReducer(questionModalReducer, {
+    showModal: false,
+    question: null,
+    title: "",
+  });
   const [questions, setQuestions] = React.useState([]);
 
-  const onQuestionSave = (newQuestion) => {
-    console.log(newQuestion);
-    setQuestions([...questions, newQuestion]);
-    setShowModal(false);
+  const onQuestionSave = (question) => {
+    const existingQuestionIndex = questions.findIndex((x) => x.id === question.id);
+    // We are editing
+    if (existingQuestionIndex > -1) {
+      questions[existingQuestionIndex] = question;
+      setQuestions(questions);
+    } else {
+      setQuestions([...questions, question]);
+    }
+
+    clearErrors("questions");
+    dispatch({ type: "CLOSE_MODAL" });
+  };
+
+  const onCreateGame = async (data) => {
+    if (questions.length === 0) {
+      setError("questions", {
+        type: "manual",
+        message: "No podés crear un juego sin preguntas!",
+      });
+      return;
+    }
+    const gameData = {
+      ...data,
+      questions,
+    };
+
+    try {
+      await gameApi.createGame(gameData);
+    } catch (error) {
+      console.error("failed creating game", error);
+    }
   };
 
   return (
@@ -188,7 +157,7 @@ function Create() {
       <Layout>
         <div className="flex pt-6 bg-white place-content-center shadow">
           <div className="w-full overflow-hidden">
-            <CreateForm {...formProps} />
+            <CreateForm errors={errors} {...formProps} />
           </div>
         </div>
         <div className="flex pt-6 bg-white place-content-center shadow mt-4 mb-16">
@@ -202,14 +171,16 @@ function Create() {
                     key={x.text}
                     question={x}
                     remove={() => setQuestions(questions.filter((q) => q.id !== x.id))}
+                    edit={() => dispatch({ type: "EDIT_QUESTION", question: x })}
                   />
                 ))}
               </ul>
+              {errors.questions && <p className="text-red-500 mb-4">{errors.questions.message}</p>}
 
               <button
                 type="button"
                 className="inline-flex items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700"
-                onClick={() => setShowModal(true)}
+                onClick={() => dispatch({ type: "CREATE_QUESTION" })}
               >
                 <FaPlus className="mr-2" /> Agregar pregunta
               </button>
@@ -217,17 +188,21 @@ function Create() {
           </div>
         </div>
       </Layout>
-      <div className="flex justify-end fixed w-full bottom-0 items-center p-2 md:p-5 text-center bg-gray-200">
+      <div className="flex justify-end fixed w-full bottom-0 items-center p-1 md:p-2 bg-gray-200">
         <button
           type="button"
-          className="inline-flex items-center px-6 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
-          onClick={handleSubmit((data) => console.log(data))}
+          className="inline-flex items-center px-8 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
+          onClick={handleSubmit(onCreateGame)}
         >
           Guardar
         </button>
       </div>
-      <Modal isOpen={showModal} onRequestClose={() => setShowModal(false)} title="Nueva pregunta">
-        <Question onSave={onQuestionSave} />
+      <Modal
+        isOpen={modalState.showModal}
+        onRequestClose={() => dispatch({ type: "CLOSE_MODAL" })}
+        title="Nueva pregunta"
+      >
+        <Question question={modalState.question} onSave={onQuestionSave} />
       </Modal>
     </>
   );
