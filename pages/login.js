@@ -9,7 +9,7 @@ function LoginButton({ text, icon, onClick }) {
 
   async function handleClick() {
     await onClick();
-    router.push("/landing");
+    router.push("/games");
   }
   return (
     <button
