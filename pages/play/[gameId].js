@@ -197,8 +197,24 @@ function Play() {
   const { data: game, error } = useSWR([gameId], gameApi.getGameById);
 
   if (!game) {
-    // TODO: skeleton
-    return <Layout>Loading..</Layout>;
+    return (
+      <Layout>
+        <div className="border border-gray-300 shadow-xl rounded-md p-4 mx-auto max-w-3xl">
+          <div className="animate-pulse flex space-x-4">
+            <div className="flex-1 space-y-4 py-1">
+              <div className="h-40 bg-gray-400 rounded w-full"></div>
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-400 rounded"></div>
+                <div className="h-4 bg-gray-400 rounded w-5/6"></div>
+              </div>
+              <div className="flex justify-center">
+                <div className="h-12 bg-gray-400 rounded w-1/5"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
   }
 
   return <Game game={game} />;
