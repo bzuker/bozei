@@ -26,6 +26,11 @@ function Login() {
   const router = useRouter();
   const { user, userLoading } = useUser();
 
+  if (user) {
+    router.replace("/games");
+    return null;
+  }
+
   return (
     <Layout>
       <div className="flex items-center justify-center sm:px-6 md:pt-16">
