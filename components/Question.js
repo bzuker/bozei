@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import { useFieldArray, useForm } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 
@@ -61,7 +62,7 @@ export function Question({ question, onSave }) {
       return;
     }
 
-    onSave({ id: question?.id || Math.floor(Math.random() * 100000) + 1, ...questionData });
+    onSave({ id: question?.id || uuid(), ...questionData });
   };
 
   return (

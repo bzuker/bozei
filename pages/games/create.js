@@ -189,7 +189,7 @@ function Create() {
 
               <button
                 type="button"
-                className="inline-flex items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700"
+                className="inline-flex items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700"
                 onClick={() => dispatch({ type: "CREATE_QUESTION" })}
               >
                 <FaPlus className="mr-2" /> Agregar pregunta
@@ -201,7 +201,7 @@ function Create() {
       <div className="flex justify-end fixed w-full bottom-0 items-center p-1 md:p-2 bg-gray-200">
         <button
           type="button"
-          className="inline-flex items-center px-8 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
+          className="inline-flex items-center px-8 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
           onClick={handleSubmit(onCreateGame)}
           disabled={isSubmitting}
         >

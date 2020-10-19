@@ -21,9 +21,11 @@ function Game({ game }) {
           </h2>
           <p className="text-base">{game.description}</p>
           <div className="mt-3">
-            <button className=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
-              Jugar ahora!
-            </button>
+            <Link href={`/play/${game.id}`}>
+              <button className=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
+                Jugar ahora!
+              </button>
+            </Link>
             <button className=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md">
               Editar
             </button>
@@ -38,7 +40,6 @@ function Games() {
   const { user } = useUser();
   const { data: games, error } = useSWR([user.id, "games"], gameApi.getGames);
 
-  console.log(games);
   return (
     <Layout>
       <header className="bg-white shadow">
