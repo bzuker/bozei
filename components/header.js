@@ -1,45 +1,60 @@
 import Link from "next/link";
 import { useUser } from "../context/Auth";
+import { useClickAway } from "react-use";
 
 function Avatar({ photoURL, logout }) {
+  const ref = React.useRef(null);
+  const [showSettings, setShowSettings] = React.useState(false);
+  useClickAway(ref, () => setShowSettings(false));
+
   return (
     <div className="z-40">
       <button
         type="button"
         className="flex items-center focus:outline-none"
         aria-label="toggle profile dropdown"
+        onClick={() => setShowSettings(true)}
       >
         <div className="h-10 w-10 overflow-hidden rounded-full border-2">
-          <img src={photoURL} className="h-full w-full object-cover" alt="avatar" />
+          <img
+            src={photoURL || "tailwind-logo.svg"}
+            className="h-full w-full object-cover"
+            alt="avatar"
+          />
         </div>
       </button>
-      {/* <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl">
-        <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
-          your profile
-        </a>
-        <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
-          Your projects
-        </a>
-        <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
-          Help
-        </a>
-        <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
-          Settings
-        </a>
-        <a
-          href="#"
-          className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200"
-          onClick={logout}
+      {showSettings && (
+        <div
+          ref={ref}
+          className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl border border-gray-300"
         >
-          Sign Out
-        </a>
-      </div> */}
+          <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+            your profile
+          </a>
+          <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+            Your projects
+          </a>
+          <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+            Help
+          </a>
+          <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+            Settings
+          </a>
+          <a
+            href="#"
+            className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200"
+            onClick={logout}
+          >
+            Sign Out
+          </a>
+        </div>
+      )}
     </div>
   );
 }
 
 function Header() {
-  const { user, logout } = useUser();
+  const { user, logout, loadingUser } = useUser();
 
   return (
     <header className="bg-white h-12 w-full relative z-50 border-b-2">
@@ -75,7 +90,7 @@ function Header() {
           >
             Respuestas
           </a>
-          <div className="block md:hidden border-t border-gray-200 font-medium flex flex-col w-full">
+          <div className="md:hidden border-t border-gray-200 font-medium flex flex-col w-full">
             <Link href="/login">
               <a className="py-2 text-pink-500 w-full text-center font-bold">Ingresar</a>
             </Link>
@@ -88,8 +103,8 @@ function Header() {
           </div>
         </nav>
         <div className="absolute left-0 md:relative w-full md:w-auto md:bg-transparent border-b md:border-none border-gray-200 mt-48 md:mt-0 flex-col md:flex-row pb-8 md:p-0 justify-center items-center md:items-end hidden md:flex md:justify-between">
-          {user ? (
-            <Avatar photoURL={user.photoURL} logout={logout} />
+          {loadingUser || user ? (
+            <Avatar photoURL={user?.photoURL} logout={logout} />
           ) : (
             <>
               <Link href="/login">
