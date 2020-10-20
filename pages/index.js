@@ -1,6 +1,13 @@
 import Layout from "../components/layout";
+import { useUser } from "../context/Auth";
 
 function Index() {
+  const { user } = useUser({ redirectTo: "/login" });
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <Layout>
       <div className="flex flex-col items-center justify-center">
