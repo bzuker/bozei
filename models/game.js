@@ -23,6 +23,10 @@ const createGame = async (game) => {
 };
 
 const getGames = async (userId) => {
+  if (!userId) {
+    return null;
+  }
+
   const gamesSnapshot = await gamesRef.where("userId", "==", userId).get();
   const games = gamesSnapshot.docs.map((g) => {
     const game = g.data();

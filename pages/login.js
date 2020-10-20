@@ -23,11 +23,9 @@ function LoginButton({ text, icon, onClick }) {
 }
 
 function Login() {
-  const router = useRouter();
-  const { user, userLoading } = useUser();
+  const { user, loadingUser } = useUser({ redirectTo: "/games", redirectIfFound: true });
 
-  if (user) {
-    router.replace("/games");
+  if (loadingUser || user) {
     return null;
   }
 

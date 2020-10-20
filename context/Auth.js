@@ -1,8 +1,5 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { useRouter } from "next/router";
-import firebase from "firebase/app";
-import "firebase/auth";
-import { getUserFromCookie, removeUserCookie, setUserCookie } from "../utils/auth/userCookies";
 import { mapUserData } from "../utils/auth/mapUserData";
 import { auth } from "../utils/auth/firebase";
 
@@ -32,10 +29,8 @@ export default function ProvideAuth({ children }) {
     const cancelAuthListener = auth.onIdTokenChanged((user) => {
       if (user) {
         const userData = mapUserData(user);
-        setUserCookie(userData);
         setUser(userData);
       } else {
-        removeUserCookie();
         setUser();
       }
 
@@ -53,4 +48,25 @@ export default function ProvideAuth({ children }) {
 }
 
 // Custom hook that shorthands the context
-export const useUser = () => useContext(AuthContext);
+export const useUser = ({ redirectTo = false, redirectIfFound = false } = {}) => {
+  const router = useRouter();
+  const { user, loadingUser, logout } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!redirectTo || !loadingUser) return;
+    if (
+      // If redirectTo is set, redirect if the user was not found.
+      (redirectTo && !redirectIfFound && !user) ||
+      // If redirectIfFound is also set, redirect if the user was found
+      (redirectIfFound && user)
+    ) {
+      router.push(redirectTo);
+    }
+  }, [user]);
+
+  return {
+    user,
+    loadingUser,
+    logout,
+  };
+};

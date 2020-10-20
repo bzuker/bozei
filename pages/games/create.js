@@ -111,7 +111,7 @@ function questionModalReducer(state, action) {
 }
 
 function Create() {
-  const { user } = useUser();
+  const { user } = useUser({ redirectTo: "/login" });
   const router = useRouter();
   const { handleSubmit, setError, clearErrors, errors, ...formProps } = useForm();
   const [questions, setQuestions] = React.useState([]);
@@ -161,6 +161,10 @@ function Create() {
       setIsSubmitting(false);
     }
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <>

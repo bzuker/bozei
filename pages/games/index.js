@@ -37,8 +37,12 @@ function Game({ game }) {
 }
 
 function Games() {
-  const { user } = useUser();
-  const { data: games, error } = useSWR([user.id, "games"], gameApi.getGames);
+  const { user } = useUser({ redirectTo: "/login" });
+  const { data: games, error } = useSWR([user?.id, "games"], gameApi.getGames);
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <Layout>
