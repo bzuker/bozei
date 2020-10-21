@@ -62,7 +62,7 @@ export const useUser = ({ redirectTo = false, redirectIfFound = false } = {}) =>
     ) {
       router.push(redirectTo);
     }
-  }, [user]);
+  }, [user, loadingUser]);
 
   return {
     user,
