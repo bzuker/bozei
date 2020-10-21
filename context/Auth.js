@@ -53,7 +53,7 @@ export const useUser = ({ redirectTo = false, redirectIfFound = false } = {}) =>
   const { user, loadingUser, logout } = useContext(AuthContext);
 
   useEffect(() => {
-    if (!redirectTo || !loadingUser) return;
+    if (!redirectTo || loadingUser) return;
     if (
       // If redirectTo is set, redirect if the user was not found.
       (redirectTo && !redirectIfFound && !user) ||

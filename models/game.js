@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 const { gamesRef, Timestamp } = require("../utils/auth/firebase");
 
-const createGame = async (game) => {
+const saveGame = async (game) => {
   // Set an id for each answer
   game.questions.forEach((q) => {
     q.answers = q.answers.map((a) => ({
@@ -13,9 +13,12 @@ const createGame = async (game) => {
     q.correctAnswerId = correctAnswer.id;
   });
 
-  const gameDoc = gamesRef.doc();
+  // Get reference to existing or create new one
+  const gameDoc = game.id ? gamesRef.doc(game.id) : gamesRef.doc();
+
   await gameDoc.set({
     ...game,
+    id: gameDoc.id,
     date: Timestamp.fromDate(new Date()),
   });
 
@@ -40,11 +43,14 @@ const getGames = async (userId) => {
 
 const getGameById = async (gameId) => {
   const gameSnapshot = await gamesRef.doc(gameId).get();
-  return gameSnapshot.data();
+  return {
+    id: gameId,
+    ...gameSnapshot.data(),
+  };
 };
 
 const gameApi = {
-  createGame,
+  saveGame,
   getGames,
   getGameById,
 };

@@ -26,9 +26,11 @@ function Game({ game }) {
                 Jugar ahora!
               </button>
             </Link>
-            <button className=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md">
-              Editar
-            </button>
+            <Link href={`/games/edit/${game.id}`}>
+              <button className=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md">
+                Editar
+              </button>
+            </Link>
           </div>
         </div>
       </div>
