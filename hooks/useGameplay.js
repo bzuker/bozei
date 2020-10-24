@@ -52,6 +52,7 @@ function playReducer(state, action) {
 
 function useGameplay(game) {
   const [state, dispatch] = React.useReducer(playReducer, {
+    gameId: game.id,
     status: "NOT_STARTED",
     questions: [...game.questions],
     currentQuestion: null,

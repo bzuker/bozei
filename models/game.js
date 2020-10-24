@@ -53,11 +53,30 @@ const deleteGameById = async (gameId) => {
   await gamesRef.doc(gameId).delete();
 };
 
+const saveStat = async ({ gameId, statId, stat }) => {
+  // Get reference to existing stat or create new
+  const gameDoc = gamesRef.doc(gameId);
+  const statDoc = statId
+    ? gameDoc.collection("stats").doc(statId)
+    : gameDoc.collection("stats").doc();
+
+  await statDoc.set(
+    {
+      ...stat,
+      date: Timestamp.fromDate(new Date()),
+    },
+    { merge: true }
+  );
+
+  return statDoc.id;
+};
+
 const gameApi = {
   saveGame,
   getGames,
   getGameById,
   deleteGameById,
+  saveStat,
 };
 
 export default gameApi;
