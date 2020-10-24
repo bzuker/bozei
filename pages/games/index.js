@@ -1,10 +1,57 @@
 import Link from "next/link";
 import useSWR from "swr";
 import Layout from "../../components/layout";
+import Modal from "../../components/Modal";
 import { useUser } from "../../context/Auth";
 import gameApi from "../../models/game";
 
-function Game({ game }) {
+function DeleteButton({ game, mutate }) {
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  async function onDelete() {
+    setIsSubmitting(true);
+    await gameApi.deleteGameById(game.id);
+    mutate();
+    setIsSubmitting(false);
+    setModalOpen(false);
+  }
+
+  return (
+    <>
+      <button
+        onClick={() => setModalOpen(true)}
+        className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-red-300 text-red-500 shadow-xs rounded-md"
+      >
+        Eliminar
+      </button>
+      <Modal
+        isOpen={modalOpen}
+        onRequestClose={() => setModalOpen(false)}
+        title={`Estás seguro que querés eliminar "${game.title}"?`}
+      >
+        <div className="mt-5">
+          <button
+            onClick={onDelete}
+            className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-red-300 text-red-500 shadow-xs rounded-md"
+          >
+            {isSubmitting ? (
+              <div className="flex space-x-2 animate-pulse py-1 px-1">
+                <div className="w-3 h-3 bg-white rounded-full"></div>
+                <div className="w-3 h-3 bg-white rounded-full"></div>
+                <div className="w-3 h-3 bg-white rounded-full"></div>
+              </div>
+            ) : (
+              "Eliminar"
+            )}
+          </button>
+        </div>
+      </Modal>
+    </>
+  );
+}
+
+function Game({ game, mutate }) {
   const questionsLength = game.questions.length;
   return (
     <div className="mt-4 w-full bg-white">
@@ -22,15 +69,16 @@ function Game({ game }) {
           <p className="text-base">{game.description}</p>
           <div className="mt-3">
             <Link href={`/play/${game.id}`}>
-              <button className=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
+              <button className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-indigo-500 text-indigo-600 shadow-xs rounded-md mr-2">
                 Jugar ahora!
               </button>
             </Link>
             <Link href={`/games/edit/${game.id}`}>
-              <button className=" hover:bg-indigo-300 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md">
+              <button className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
                 Editar
               </button>
             </Link>
+            <DeleteButton game={game} mutate={mutate} />
           </div>
         </div>
       </div>
@@ -40,7 +88,7 @@ function Game({ game }) {
 
 function Games() {
   const { user } = useUser({ redirectTo: "/login" });
-  const { data: games, error } = useSWR([user?.id, "games"], gameApi.getGames);
+  const { data: games, error, mutate } = useSWR([user?.id, "games"], gameApi.getGames);
 
   if (!user) {
     return null;
@@ -58,7 +106,7 @@ function Games() {
           </Link>
         </div>
       </header>
-      {games && games.map((game) => <Game key={game.id} game={game} />)}
+      {games && games.map((game) => <Game key={game.id} game={game} mutate={mutate} />)}
     </Layout>
   );
 }

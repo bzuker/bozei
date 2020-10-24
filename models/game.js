@@ -49,10 +49,15 @@ const getGameById = async (gameId) => {
   };
 };
 
+const deleteGameById = async (gameId) => {
+  await gamesRef.doc(gameId).delete();
+};
+
 const gameApi = {
   saveGame,
   getGames,
   getGameById,
+  deleteGameById,
 };
 
 export default gameApi;
