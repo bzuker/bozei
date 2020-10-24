@@ -55,31 +55,33 @@ function Game({ game, mutate }) {
   const questionsLength = game.questions.length;
   return (
     <div className="mt-4 w-full bg-white">
-      <div className="flex border rounded-lg border-gray-300 p-6 sm:flex-row flex-col">
-        <div className="w-16 h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-purple-100 text-purple-500 flex-shrink-0">
-          <img src={"tailwind-logo.svg"} />
-        </div>
-        <div className="">
-          <h2 className="text-gray-900 text-lg title-font font-medium mb-3">
-            {game.title}
-            <span className="bg-indigo-200 text-indigo-600 px-2 py-1 rounded-full uppercase text-xs ml-3">
-              {questionsLength} {questionsLength > 1 ? "preguntas" : "pregunta"}
-            </span>
-          </h2>
-          <p className="text-base">{game.description}</p>
-          <div className="mt-3">
-            <Link href={`/play/${game.id}`}>
-              <button className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-indigo-500 text-indigo-600 shadow-xs rounded-md mr-2">
-                Jugar ahora!
-              </button>
-            </Link>
-            <Link href={`/games/edit/${game.id}`}>
-              <button className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
-                Editar
-              </button>
-            </Link>
-            <DeleteButton game={game} mutate={mutate} />
+      <div className="flex flex-wrap justify-between border rounded-lg border-gray-300 p-4 md:p-6">
+        <div className="flex">
+          <div className="w-12 h-12 md:w-16 md:h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-purple-100 text-purple-500 flex-shrink-0">
+            <img src={"tailwind-logo.svg"} />
           </div>
+          <div className="ml-2 md:ml-0">
+            <h2 className="flex flex-wrap items-center text-gray-900 text-lg title-font font-medium mb-3">
+              {game.title}
+              <span className="bg-indigo-200 text-indigo-600 px-2 py-1 rounded-full uppercase text-xs ml-3">
+                {questionsLength} {questionsLength > 1 ? "preguntas" : "pregunta"}
+              </span>
+            </h2>
+            <p className="text-base">{game.description}</p>
+          </div>
+        </div>
+        <div className="flex items-center mt-4 md:mt-0">
+          <Link href={`/play/${game.id}`}>
+            <button className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-indigo-500 text-indigo-600 shadow-xs rounded-md mr-2">
+              Jugar ahora!
+            </button>
+          </Link>
+          <Link href={`/games/edit/${game.id}`}>
+            <button className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
+              Editar
+            </button>
+          </Link>
+          <DeleteButton game={game} mutate={mutate} />
         </div>
       </div>
     </div>

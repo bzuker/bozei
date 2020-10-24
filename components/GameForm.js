@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import { Question } from "./Question";
 import { useUser } from "../context/Auth";
 import gameApi from "../models/game";
+import Link from "next/link";
 
 function CreateForm({ register, errors }) {
   return (
@@ -209,6 +210,16 @@ function GameForm({ existingGame = null }) {
         </div>
       </Layout>
       <div className="flex justify-end fixed w-full bottom-0 items-center p-1 md:p-2 bg-gray-200">
+        <Link href="/games">
+          <button
+            type="button"
+            className="inline-flex items-center px-8 py-3 text-base 
+          font-medium leading-6 transition duration-150 ease-in-out border-2 
+          rounded-md hover:bg-gray-400 mr-5"
+          >
+            Volver
+          </button>
+        </Link>
         <button
           type="button"
           className="inline-flex items-center px-8 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
