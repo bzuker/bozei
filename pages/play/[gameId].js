@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import useSWR from "swr";
 import Layout from "../../components/layout";
+import { useUser } from "../../context/Auth";
 import useGameplay from "../../hooks/useGameplay";
 import gameApi from "../../models/game";
 
@@ -152,6 +153,7 @@ function GameOver({ correct, incorrect }) {
 }
 
 function useGameStats({ gameId, status, selected, currentQuestion, correctGuesses }) {
+  const { user } = useUser();
   const [statId, setStatId] = useState();
 
   useEffect(() => {
@@ -159,6 +161,7 @@ function useGameStats({ gameId, status, selected, currentQuestion, correctGuesse
       const newStatId = await gameApi.saveStat({
         gameId,
         stat: {
+          userId: user?.id || null,
           started: true,
           startTs: Date.now(),
         },
@@ -170,7 +173,7 @@ function useGameStats({ gameId, status, selected, currentQuestion, correctGuesse
     if (status === "PLAYING") {
       createStat();
     }
-  }, [status, gameId]);
+  }, [status, user, gameId]);
 
   useEffect(() => {
     // Reached the end

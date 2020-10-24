@@ -5,7 +5,7 @@ const saveGame = async (game) => {
   // Set an id for each answer
   game.questions.forEach((q) => {
     q.answers = q.answers.map((a) => ({
-      id: uuid(),
+      id: a.id || uuid(),
       ...a,
     }));
 

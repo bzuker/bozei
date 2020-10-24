@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { FaEdit, FaImage, FaPlus, FaTimes } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTimes } from "react-icons/fa";
 import Layout from "./layout";
 import Modal from "./Modal";
 import { Question } from "./Question";
 import { useUser } from "../context/Auth";
 import gameApi from "../models/game";
 import Link from "next/link";
+import { useReducer, useState } from "react";
 
 function CreateForm({ register, errors }) {
   return (
@@ -120,9 +121,9 @@ function GameForm({ existingGame = null }) {
       description: existingGame?.description,
     },
   });
-  const [questions, setQuestions] = React.useState(existingGame?.questions || []);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [modalState, dispatch] = React.useReducer(questionModalReducer, {
+  const [questions, setQuestions] = useState(existingGame?.questions || []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [modalState, dispatch] = useReducer(questionModalReducer, {
     showModal: false,
     question: null,
     title: "",
