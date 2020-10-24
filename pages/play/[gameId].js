@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { FaArrowRight, FaCheck } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaArrowRight } from "react-icons/fa";
 import useSWR from "swr";
 import Layout from "../../components/layout";
 import useGameplay from "../../hooks/useGameplay";
@@ -77,7 +78,7 @@ function MultipleChoiceQuestion({
         </div>
       </div>
       <div>
-        {question.answers.map((answer, i) => (
+        {question.answers.map((answer) => (
           <Answer
             key={answer.id}
             text={answer.text}
@@ -150,10 +151,65 @@ function GameOver({ correct, incorrect }) {
   );
 }
 
+function useGameStats({ gameId, status, selected, currentQuestion, correctGuesses }) {
+  const [statId, setStatId] = useState();
+
+  useEffect(() => {
+    const createStat = async () => {
+      const newStatId = await gameApi.saveStat({
+        gameId,
+        stat: {
+          started: true,
+          startTs: Date.now(),
+        },
+      });
+      setStatId(newStatId);
+    };
+
+    // Started playing
+    if (status === "PLAYING") {
+      createStat();
+    }
+  }, [status, gameId]);
+
+  useEffect(() => {
+    // Reached the end
+    if (status === "GAME_ENDED") {
+      gameApi.saveStat({
+        gameId,
+        statId,
+        stat: {
+          ended: true,
+          correctGuesses,
+          endTs: Date.now(),
+        },
+      });
+    }
+  }, [status, correctGuesses, gameId, statId]);
+
+  useEffect(() => {
+    // No guess yet
+    if (!selected) {
+      return;
+    }
+
+    // Send guess
+    gameApi.saveStat({
+      gameId,
+      statId,
+      stat: {
+        [currentQuestion.id]: selected,
+      },
+    });
+  }, [gameId, currentQuestion, selected, statId]);
+}
+
 function Game({ game }) {
   const { gameState, totalQuestions, startGame, onAnswerSelected, nextQuestion } = useGameplay(
     game
   );
+
+  useGameStats(gameState);
 
   console.log(gameState);
 

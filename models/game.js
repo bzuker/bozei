@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-const { gamesRef, Timestamp } = require("../utils/auth/firebase");
+import { gamesRef, Timestamp } from "../utils/auth/firebase";
 
 const saveGame = async (game) => {
   // Set an id for each answer
