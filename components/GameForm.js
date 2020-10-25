@@ -8,6 +8,7 @@ import { useUser } from "../context/Auth";
 import gameApi from "../models/game";
 import Link from "next/link";
 import { useReducer, useState } from "react";
+import clsx from "clsx";
 
 function CreateForm({ register, errors }) {
   return (
@@ -96,7 +97,10 @@ function QuestionItem({ remove, edit, question }) {
         {question.answers.map((answer) => (
           <div key={answer.id} className="flex items-center w-1/2 mt-1">
             <div
-              className={`w-3 h-3 bg-${answer.isCorrect ? "green" : "red"}-500 rounded-full mr-2`}
+              className={clsx(
+                `w-3 h-3 rounded-full mr-2`,
+                answer.isCorrect ? "bg-green-500" : "bg-red-500"
+              )}
             ></div>
             {answer.text}
           </div>
