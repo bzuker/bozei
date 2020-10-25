@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import useSWR from "swr";
 import Layout from "../../components/layout";
 import Modal from "../../components/Modal";
@@ -22,9 +23,9 @@ function DeleteButton({ game, mutate }) {
     <>
       <button
         onClick={() => setModalOpen(true)}
-        className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-red-300 text-red-500 shadow-xs rounded-md"
+        className="hover:bg-indigo-100 font-bold py-3 px-4 text-sm border border-red-300 text-red-500 shadow-xs rounded-md"
       >
-        Eliminar
+        <FaTrashAlt size="1em" />
       </button>
       <Modal
         isOpen={modalOpen}
@@ -78,8 +79,8 @@ function Game({ game, mutate }) {
             </button>
           </Link>
           <Link href={`/games/edit/${game.id}`}>
-            <button className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
-              Editar
+            <button className="hover:bg-indigo-100 font-bold py-3 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
+              <FaPencilAlt size="1em" />
             </button>
           </Link>
           <DeleteButton game={game} mutate={mutate} />
@@ -91,7 +92,7 @@ function Game({ game, mutate }) {
 
 function Games() {
   const { user } = useUser({ redirectTo: "/login" });
-  const { data: games, error, mutate } = useSWR([user?.id, "games"], gameApi.getGames);
+  const { data: games, error, mutate } = useSWR([user?.id, "games"], gameApi.getGamesForUserId);
 
   if (!user) {
     return null;

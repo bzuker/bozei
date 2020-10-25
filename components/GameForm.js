@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { FaEdit, FaPlus, FaRegTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaPlus, FaRegTrashAlt } from "react-icons/fa";
 import Layout from "./layout";
 import Modal from "./Modal";
 import { Question } from "./Question";
@@ -80,7 +80,7 @@ function QuestionItem({ remove, edit, question }) {
               className="bg-white px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-blue-200"
               onClick={edit}
             >
-              <FaEdit size="1em" className="text-blue-600" />
+              <FaPencilAlt size="1em" />
             </button>
             <button
               type="button"

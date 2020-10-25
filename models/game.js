@@ -25,7 +25,7 @@ const saveGame = async (game) => {
   return gameDoc.id;
 };
 
-const getGames = async (userId) => {
+const getGamesForUserId = async (userId) => {
   if (!userId) {
     return null;
   }
@@ -41,6 +41,37 @@ const getGames = async (userId) => {
   return games;
 };
 
+const getGames = async ({ orderBy, limit, startAfter, where }) => {
+  let query = gamesRef;
+
+  if (where) {
+    query = query.where(...where);
+  }
+
+  if (orderBy) {
+    query = query.orderBy(orderBy);
+  }
+
+  if (limit) {
+    query = query.limit(limit);
+  }
+
+  if (startAfter) {
+    query = query.startAfter(startAfter);
+  }
+
+  const gamesSnapshot = await query.get();
+  const games = gamesSnapshot.docs.map((g) => {
+    const game = g.data();
+    return {
+      ...game,
+      id: g.id,
+    };
+  });
+
+  return games;
+};
+
 const getGameById = async (gameId) => {
   const gameSnapshot = await gamesRef.doc(gameId).get();
   return {
@@ -53,12 +84,12 @@ const deleteGameById = async (gameId) => {
   await gamesRef.doc(gameId).delete();
 };
 
-const saveStat = async ({ gameId, statId, stat }) => {
+const savePlayedStat = async ({ gameId, statId, stat }) => {
   // Get reference to existing stat or create new
   const gameDoc = gamesRef.doc(gameId);
   const statDoc = statId
-    ? gameDoc.collection("stats").doc(statId)
-    : gameDoc.collection("stats").doc();
+    ? gameDoc.collection("played").doc(statId)
+    : gameDoc.collection("played").doc();
 
   await statDoc.set(
     {
@@ -73,10 +104,11 @@ const saveStat = async ({ gameId, statId, stat }) => {
 
 const gameApi = {
   saveGame,
+  getGamesForUserId,
   getGames,
   getGameById,
   deleteGameById,
-  saveStat,
+  savePlayedStat,
 };
 
 export default gameApi;

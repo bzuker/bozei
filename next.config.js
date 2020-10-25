@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: "/",
-        destination: "/games",
+        destination: "/explore",
         permanent: true,
       },
     ];

@@ -158,7 +158,7 @@ function useGameStats({ gameId, status, selected, currentQuestion, correctGuesse
 
   useEffect(() => {
     const createStat = async () => {
-      const newStatId = await gameApi.saveStat({
+      const newStatId = await gameApi.savePlayedStat({
         gameId,
         stat: {
           userId: user?.id || null,
@@ -178,7 +178,7 @@ function useGameStats({ gameId, status, selected, currentQuestion, correctGuesse
   useEffect(() => {
     // Reached the end
     if (status === "GAME_ENDED") {
-      gameApi.saveStat({
+      gameApi.savePlayedStat({
         gameId,
         statId,
         stat: {
@@ -197,7 +197,7 @@ function useGameStats({ gameId, status, selected, currentQuestion, correctGuesse
     }
 
     // Send guess
-    gameApi.saveStat({
+    gameApi.savePlayedStat({
       gameId,
       statId,
       stat: {
