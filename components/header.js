@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { useUser } from "../context/Auth";
 import { useClickAway } from "react-use";
+import { useRef, useState } from "react";
 
 function Avatar({ photoURL, logout }) {
-  const ref = React.useRef(null);
-  const [showSettings, setShowSettings] = React.useState(false);
+  const ref = useRef(null);
+  const [showSettings, setShowSettings] = useState(false);
   useClickAway(ref, () => setShowSettings(false));
 
   return (
@@ -76,7 +77,7 @@ function Header() {
         </a>
         <nav
           id="nav"
-          className="absolute left-0 w-full md:w-auto text-gray-800 flex-col md:flex-row h-64 md:h-24 justify-between text-sm lg:text-base bg-white md:bg-transparent top-0 mt-24 md:mt-0 border-t md:border-none border-gray-200 pt-5 md:py-0 z-50 flex hidden md:flex items-center md:relative"
+          className="absolute left-0 w-full md:w-auto text-gray-800 flex-col md:flex-row h-64 md:h-24 justify-between text-sm lg:text-base bg-white md:bg-transparent top-0 mt-24 md:mt-0 border-t md:border-none border-gray-200 pt-5 md:py-0 z-50 hidden md:flex items-center md:relative"
         >
           <a
             href="#"
