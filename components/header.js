@@ -60,47 +60,41 @@ function Header() {
   return (
     <header className="bg-white h-12 w-full relative z-50 border-b-2">
       <div className="container max-w-6xl mx-auto h-full flex justify-center sm:justify-between items-center px-8 xl:px-0">
-        <a href="/" className="flex items-center h-5 relative font-black leading-none">
-          <svg
-            className="h-6 w-auto fill-current text-indigo-600"
-            viewBox="0 0 194 116"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g fillRule="evenodd">
-              <path d="M96.869 0L30 116h104l-9.88-17.134H59.64l47.109-81.736zM0 116h19.831L77 17.135 67.088 0z" />
-              <path d="M87 68.732l9.926 17.143 29.893-51.59L174.15 116H194L126.817 0z" />
-            </g>
-          </svg>
-          <span className="text-xl ml-3 text-gray-800">
-            Bozei<span className="text-pink-500">.</span>
-          </span>
-        </a>
+        <Link href="/explore">
+          <a className="flex items-center h-5 relative font-black leading-none">
+            <svg
+              className="h-6 w-auto fill-current text-indigo-600"
+              viewBox="0 0 194 116"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g fillRule="evenodd">
+                <path d="M96.869 0L30 116h104l-9.88-17.134H59.64l47.109-81.736zM0 116h19.831L77 17.135 67.088 0z" />
+                <path d="M87 68.732l9.926 17.143 29.893-51.59L174.15 116H194L126.817 0z" />
+              </g>
+            </svg>
+            <span className="text-xl ml-3 text-gray-800">
+              Bozei<span className="text-pink-500">.</span>
+            </span>
+          </a>
+        </Link>
         <nav
           id="nav"
           className="absolute left-0 w-full md:w-auto text-gray-800 flex-col md:flex-row h-64 md:h-24 justify-between text-sm lg:text-base bg-white md:bg-transparent top-0 mt-24 md:mt-0 border-t md:border-none border-gray-200 pt-5 md:py-0 z-50 hidden md:flex items-center md:relative"
         >
-          <a
-            href="#"
-            className="font-bold ml-0 md:ml-12 mr-0 md:mr-3 lg:mr-8 transition-color duration-100 hover:text-indigo-600"
-          >
-            Juegos
-          </a>
-          <a
-            href="#features"
-            className="font-bold mr-0 md:mr-3 lg:mr-8 transition-color duration-100 hover:text-indigo-600"
-          >
-            Respuestas
-          </a>
+          <Link href="/explore">
+            <a className="font-bold mr-0 md:mr-3 lg:mr-8 transition-color duration-100 hover:text-indigo-600">
+              Explorar
+            </a>
+          </Link>
+          <Link href="/games">
+            <a className="font-bold ml-0 md:ml-12 mr-0 md:mr-3 lg:mr-8 transition-color duration-100 hover:text-indigo-600">
+              Mis Juegos
+            </a>
+          </Link>
           <div className="md:hidden border-t border-gray-200 font-medium flex flex-col w-full">
             <Link href="/login">
               <a className="py-2 text-pink-500 w-full text-center font-bold">Ingresar</a>
             </Link>
-            <a
-              href="#_"
-              className="px-5 py-3 fold-bold text-sm leading-none bg-indigo-700 text-white w-full inline-block text-center relative"
-            >
-              Comenzar
-            </a>
           </div>
         </nav>
         <div className="absolute left-0 md:relative w-full md:w-auto md:bg-transparent border-b md:border-none border-gray-200 mt-48 md:mt-0 flex-col md:flex-row pb-8 md:p-0 justify-center items-center md:items-end hidden md:flex md:justify-between">
@@ -113,12 +107,6 @@ function Header() {
                   Ingresar
                 </a>
               </Link>
-              <a
-                href="#_"
-                className="px-5 py-3 rounded fold-bold text-sm transition-all duration-300 leading-none bg-indigo-700 lg:bg-white text-white lg:text-indigo-700 w-auto sm:w-full h-full inline-block font-bold relative shadow-md lg:shadow-none hover:shadow-xl z-40"
-              >
-                Comenzar
-              </a>
             </>
           )}
           <svg

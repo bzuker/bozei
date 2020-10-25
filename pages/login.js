@@ -9,7 +9,7 @@ function LoginButton({ text, icon, onClick }) {
 
   async function handleClick() {
     await onClick();
-    router.push("/games");
+    router.push("/explore");
   }
   return (
     <button
@@ -23,7 +23,7 @@ function LoginButton({ text, icon, onClick }) {
 }
 
 function Login() {
-  const { user, loadingUser } = useUser({ redirectTo: "/games", redirectIfFound: true });
+  const { user, loadingUser } = useUser({ redirectTo: "/explore", redirectIfFound: true });
 
   if (loadingUser || user) {
     return null;
@@ -97,56 +97,6 @@ function Login() {
         </div>
       </div>
     </Layout>
-  );
-}
-
-function SignIn() {
-  return (
-    <form className="mt-4">
-      <label htmlFor="email" className="block">
-        <span className="text-sm text-gray-700">Email</span>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          autoComplete="username"
-          className="block w-full px-3 py-2 mt-1 text-gray-700 border rounded-md form-input focus:border-indigo-600"
-          required
-        />
-      </label>
-      <label htmlFor="password" className="block mt-3">
-        <span className="text-sm text-gray-700">Password</span>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          autoComplete="current-password"
-          className="block w-full px-3 py-2 mt-1 text-gray-700 border rounded-md form-input focus:border-indigo-600"
-          required
-        />
-      </label>
-      <div className="flex items-center justify-between mt-4">
-        <div>
-          <label className="inline-flex items-center">
-            <input type="checkbox" className="text-indigo-600 border form-checkbox" />
-            <span className="mx-2 text-sm text-gray-600">Remember me</span>
-          </label>
-        </div>
-        <div>
-          <a className="block text-sm text-indigo-700 fontme hover:underline" href="#">
-            Forgot your password?
-          </a>
-        </div>
-      </div>
-      <div className="mt-6">
-        <button
-          type="submit"
-          className="w-full px-4 py-2 text-sm text-center text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
-        >
-          Sign in
-        </button>
-      </div>
-    </form>
   );
 }
 

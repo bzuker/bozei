@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
@@ -145,6 +146,17 @@ function GameOver({ correct, incorrect }) {
                 }`}</p>
               </div>
             </div>
+          </div>
+          <div className="flex justify-center items-center mt-16">
+            <Link href="/explore">
+              <a
+                className="text-white bg-gradient-to-br from-purple-600 via-indigo-500 to-teal-400 
+              hover:scale-105 transition duration-100 ease-in-out transform  
+              px-8 py-3 border border-transparent leading-6 font-medium rounded-md md:py-4 md:text-lg md:px-10"
+              >
+                Buscar otro juego
+              </a>
+            </Link>
           </div>
         </div>
       </div>

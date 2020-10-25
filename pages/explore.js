@@ -17,9 +17,11 @@ function GameCard({ id, title, description, questions, tags, date, stats, image 
           <span className="absolute bottom-0 right-0 inline-flex items-center px-3 py-1 mr-2 -mb-3 text-xs font-medium leading-tight bg-gray-200 border rounded-full">
             {questions?.length || 10} preguntas
           </span>
-          <span className="absolute bottom-0 left-0 inline-flex items-center px-3 py-1 ml-2 -mb-3 text-xs font-medium leading-tight bg-gray-200 border rounded-full">
-            {stats?.played || 100} jugados
-          </span>
+          {stats && (
+            <span className="absolute bottom-0 left-0 inline-flex items-center px-3 py-1 ml-2 -mb-3 text-xs font-medium leading-tight bg-gray-200 border rounded-full">
+              {stats.played || 100} jugados
+            </span>
+          )}
         </div>
         <div className="flex flex-col justify-between flex-1">
           <div className="flex flex-col justify-between flex-1 p-6 bg-white">
@@ -84,8 +86,6 @@ function Explore() {
   if (!user) {
     return null;
   }
-
-  console.log(games);
 
   return (
     <Layout>
