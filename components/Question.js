@@ -6,7 +6,7 @@ function AnswerOption({ answerOption, remove, prefix, register, clearErrors, err
   return (
     <div className="mb-2 md:mb-4">
       <div className="flex items-center ">
-        <button onClick={remove} className="mr-2 text-red-500">
+        <button type="button" onClick={remove} className="mr-2 text-red-500" tabIndex="-1">
           <FaTimes />
         </button>
         <textarea
@@ -88,15 +88,15 @@ export function Question({ question, onSave }) {
             key={answer.id}
             prefix={`answers[${i}]`}
             register={register}
-            remove={() => remove(i)}
+            remove={() => (fields.length > 1 ? remove(i) : null)}
             answerOption={answer}
             error={errors?.answers?.[i]}
             clearErrors={clearErrors}
           />
         ))}
         <button
-          onClick={append}
           type="button"
+          onClick={append}
           className="text-gray-700 px-3 py-1 underline"
           tabIndex="-1"
         >

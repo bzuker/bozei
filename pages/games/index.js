@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useState } from "react";
 import useSWR from "swr";
 import Layout from "../../components/layout";
 import Modal from "../../components/Modal";
@@ -6,8 +7,8 @@ import { useUser } from "../../context/Auth";
 import gameApi from "../../models/game";
 
 function DeleteButton({ game, mutate }) {
-  const [modalOpen, setModalOpen] = React.useState(false);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function onDelete() {
     setIsSubmitting(true);
@@ -37,9 +38,9 @@ function DeleteButton({ game, mutate }) {
           >
             {isSubmitting ? (
               <div className="flex space-x-2 animate-pulse py-1 px-1">
-                <div className="w-3 h-3 bg-white rounded-full"></div>
-                <div className="w-3 h-3 bg-white rounded-full"></div>
-                <div className="w-3 h-3 bg-white rounded-full"></div>
+                <div className="w-3 h-3 bg-red-300 rounded-full"></div>
+                <div className="w-3 h-3 bg-red-300 rounded-full"></div>
+                <div className="w-3 h-3 bg-red-300 rounded-full"></div>
               </div>
             ) : (
               "Eliminar"

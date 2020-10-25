@@ -11,10 +11,10 @@ import { useReducer, useState } from "react";
 
 function CreateForm({ register, errors }) {
   return (
-    <form className="w-full">
-      <div className="px-5 md:px-10 pb-6">
+    <form className="w-full mb-2">
+      <div className="px-5 md:px-10">
         <h2 className="text-xl font-bold text-gray-700 -ml-2 md:-ml-4 mb-4">Crear Juego</h2>
-        <div className="flex flex-wrap mb-0 md:mb-6 -mx-3">
+        <div className="flex flex-wrap mb-0 md:mb-3 -mx-3">
           <div className="w-full md:w-2/3">
             <div className="w-full px-3 mb-2">
               <label className="block mb-2 font-bold tracking-wide text-gray-700">Nombre</label>
@@ -33,12 +33,26 @@ function CreateForm({ register, errors }) {
               </label>
               <input
                 className="block w-full px-4 py-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500 text-sm md:text-base"
-                id="grid-last-name"
                 type="text"
                 placeholder="Texto que se mostrará al inicio del juego"
                 name="description"
                 ref={register}
               />
+            </div>
+            <div className="w-full px-3 mt-6">
+              <label className="flex items-center mb-2 tracking-wide text-gray-700 cursor-pointer">
+                <input
+                  className="form-checkbox text-green-500 p-2 md:p-2 border-2 border-gray-500 cursor-pointer"
+                  type="checkbox"
+                  placeholder="Texto que se mostrará al inicio del juego"
+                  name="isPublic"
+                  ref={register}
+                />
+                <span className="ml-2">Hacer público</span>
+              </label>
+              <p className="-mt-1 text-gray-500 text-sm leading-6">
+                Otras personas podrán ver y jugar este juego
+              </p>
             </div>
           </div>
           {/* <div className="w-full md:w-1/3 mt-4 md:mt-0 md:mb-0 flex justify-center">
@@ -119,6 +133,7 @@ function GameForm({ existingGame = null }) {
     defaultValues: {
       title: existingGame?.title,
       description: existingGame?.description,
+      isPublic: existingGame?.isPublic,
     },
   });
   const [questions, setQuestions] = useState(existingGame?.questions || []);
@@ -214,7 +229,7 @@ function GameForm({ existingGame = null }) {
         <Link href="/games">
           <button
             type="button"
-            className="inline-flex items-center px-8 py-3 text-base 
+            className="inline-flex items-center px-5 md:px-8 py-2 md:py-3 text-base 
           font-medium leading-6 transition duration-150 ease-in-out border-2 
           rounded-md hover:bg-gray-400 mr-5"
           >
@@ -223,7 +238,7 @@ function GameForm({ existingGame = null }) {
         </Link>
         <button
           type="button"
-          className="inline-flex items-center px-8 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
+          className="inline-flex items-center px-5 md:px-8 py-2 md:py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:border-green-700 focus:shadow-outline-green active:bg-green-700"
           onClick={handleSubmit(onSaveGame)}
           disabled={isSubmitting}
         >

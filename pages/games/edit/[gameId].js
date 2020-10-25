@@ -3,7 +3,7 @@ import useSWR from "swr";
 import GameForm from "../../../components/GameForm";
 import gameApi from "../../../models/game";
 
-function Edit({}) {
+function Edit() {
   const router = useRouter();
   const { gameId } = router.query;
   const { data: game, error } = useSWR([gameId], gameApi.getGameById);
