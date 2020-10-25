@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { FaEdit, FaPlus, FaTimes } from "react-icons/fa";
+import { FaEdit, FaPlus, FaRegTrashAlt } from "react-icons/fa";
 import Layout from "./layout";
 import Modal from "./Modal";
 import { Question } from "./Question";
@@ -70,23 +70,37 @@ function CreateForm({ register, errors }) {
 
 function QuestionItem({ remove, edit, question }) {
   return (
-    <li className="flex flex-wrap md:justify-between items-center p-4 w-full border rounded-lg border-gray-300 mb-2">
-      <p className="w-full md:w-4/5 pb-3 md:pb-0">{question.text}</p>
-      <div>
-        <button
-          type="button"
-          className="px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-blue-200"
-          onClick={edit}
-        >
-          <FaEdit size="1.2em" className="text-blue-600" />
-        </button>
-        <button
-          type="button"
-          className="ml-2 px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-red-200"
-          onClick={remove}
-        >
-          <FaTimes size="1.2em" color="red" />
-        </button>
+    <li className="border rounded-lg border-gray-300 mb-4">
+      <div className="bg-gray-200 px-4 py-1 sm:px-4 sm:flex sm:flex-row-reverse">
+        <div className="flex flex-wrap justify-between items-center w-full">
+          <p className="md:w-4/5 md:pb-0">{question.text}</p>
+          <div>
+            <button
+              type="button"
+              className="bg-white px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-blue-200"
+              onClick={edit}
+            >
+              <FaEdit size="1em" className="text-blue-600" />
+            </button>
+            <button
+              type="button"
+              className="bg-white ml-2 px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-red-200"
+              onClick={remove}
+            >
+              <FaRegTrashAlt size="1em" color="red" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-wrap p-2 md:px-4">
+        {question.answers.map((answer) => (
+          <div key={answer.id} className="flex items-center w-1/2 mt-1">
+            <div
+              className={`w-3 h-3 bg-${answer.isCorrect ? "green" : "red"}-500 rounded-full mr-2`}
+            ></div>
+            {answer.text}
+          </div>
+        ))}
       </div>
     </li>
   );
@@ -197,10 +211,10 @@ function GameForm({ existingGame = null }) {
             <CreateForm errors={errors} {...formProps} />
           </div>
         </div>
-        <div className="flex pt-6 bg-white place-content-center shadow mt-4 mb-16">
+        <div className="flex pt-2 md:pt-4 bg-white place-content-center shadow mt-4 mb-16">
           <div className="w-full overflow-hidden">
-            <div className="px-5 md:px-10 pb-6">
-              <h2 className="text-xl font-bold text-gray-700 -ml-2 md:-ml-4">Preguntas</h2>
+            <div className="px-2 md:px-10 pb-6">
+              <h2 className="text-xl font-bold text-gray-700 md:-ml-4">Preguntas</h2>
 
               <ul className="mt-5 mb-5">
                 {questions.map((x) => (

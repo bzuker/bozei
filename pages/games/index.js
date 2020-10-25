@@ -64,7 +64,7 @@ function Game({ game, mutate }) {
           <div className="ml-2 md:ml-0">
             <h2 className="flex flex-wrap items-center text-gray-900 text-lg title-font font-medium mb-3">
               {game.title}
-              <span className="bg-indigo-200 text-indigo-600 px-2 py-1 rounded-full uppercase text-xs ml-3">
+              <span className="hidden sm:block bg-indigo-200 text-indigo-600 px-2 py-1 rounded-full uppercase text-xs ml-3">
                 {questionsLength} {questionsLength > 1 ? "preguntas" : "pregunta"}
               </span>
             </h2>
