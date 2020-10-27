@@ -16,7 +16,6 @@ function CreateForm({ register, errors, image, setImage }) {
   return (
     <form className="w-full mb-2">
       <div className="px-5 md:px-10">
-        <h2 className="text-xl font-bold text-gray-700 -ml-2 md:-ml-4 mb-4">Crear Juego</h2>
         <div className="flex flex-wrap mb-0 md:mb-3 -mx-3">
           <div className="w-full md:w-2/3">
             <div className="w-full px-3 mb-2">
