@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import useSWR from "swr";
 import Layout from "../components/layout";
 import { useUser } from "../context/Auth";
@@ -9,10 +10,11 @@ function GameCard({ id, title, description, questions, tags, date, stats, image 
     <Link href={`/play/${id}`}>
       <div className="flex flex-col overflow-hidden rounded-lg shadow-xl transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
         <div className="relative flex-shrink-0">
-          <img
+          <Image
             className="object-cover w-full h-40 bg-white"
-            src={image || "bozei.svg"}
-            alt="Cover image for livewire introduction course."
+            src={image || "/bozei.svg"}
+            width={800}
+            height={600}
           />
           <span className="absolute bottom-0 right-0 inline-flex items-center px-3 py-1 mr-2 -mb-3 text-xs font-medium leading-tight bg-gray-200 border rounded-full">
             {questions?.length || 10} preguntas

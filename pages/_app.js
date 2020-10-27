@@ -7,7 +7,6 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <link rel="icon" type="image/svg+xml" href="/bozei.svg" />
-        <link rel="alternate icon" href="favicon.ico" type="image/x-icon" />
         <link rel="canonical" href="https://bozei.vercel.app/" />
         <title>Bozei</title>
         <meta name="title" content="Bozei" />
