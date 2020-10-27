@@ -9,7 +9,7 @@ import { useUser } from "../../context/Auth";
 import useGameplay from "../../hooks/useGameplay";
 import gameApi from "../../models/game";
 
-function Welcome({ title, description, tags, startGame }) {
+function Welcome({ title, description, image, tags, startGame }) {
   return (
     <div className="mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl">
       <div className="flex flex-col max-w-screen-md overflow-hidden bg-white border rounded-lg shadow-xl lg:flex-row sm:mx-auto justify-center">
@@ -23,6 +23,11 @@ function Welcome({ title, description, tags, startGame }) {
             </p>
           </div>
           <h5 className="mb-3 text-3xl font-extrabold leading-none sm:text-4xl">{title}</h5>
+          {image && (
+            <div className="flex items-center justify-center">
+              <img src={image} className="h-40 md:h-64" />
+            </div>
+          )}
           <p className="mb-5 text-gray-800 py-5">{description}</p>
           <div className="flex items-center justify-center">
             <button
@@ -231,7 +236,12 @@ function Game({ game }) {
   if (gameState.status === "NOT_STARTED") {
     return (
       <Layout>
-        <Welcome title={game.title} description={game.description} startGame={startGame} />
+        <Welcome
+          title={game.title}
+          description={game.description}
+          image={game.image}
+          startGame={startGame}
+        />
       </Layout>
     );
   }
