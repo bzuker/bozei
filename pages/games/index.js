@@ -59,8 +59,8 @@ function Game({ game, mutate }) {
     <div className="mt-4 w-full bg-white">
       <div className="flex flex-wrap justify-between border rounded-lg border-gray-300 p-4 md:p-6">
         <div className="flex">
-          <div className="w-12 h-12 md:w-16 md:h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-full bg-purple-100 text-purple-500 flex-shrink-0">
-            <img src={"tailwind-logo.svg"} />
+          <div className="w-12 h-12 md:w-16 md:h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-lg bg-purple-100 text-purple-500 flex-shrink-0">
+            <img src={game.image || "tailwind-logo.svg"} />
           </div>
           <div className="ml-2 md:ml-0">
             <h2 className="flex flex-wrap items-center text-gray-900 text-lg title-font font-medium mb-3">

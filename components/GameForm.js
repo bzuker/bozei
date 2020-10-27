@@ -9,8 +9,10 @@ import gameApi from "../models/game";
 import Link from "next/link";
 import { useReducer, useState } from "react";
 import clsx from "clsx";
+import FileUpload from "./FileUpload";
+import { mutate } from "swr";
 
-function CreateForm({ register, errors }) {
+function CreateForm({ register, errors, image, setImage }) {
   return (
     <form className="w-full mb-2">
       <div className="px-5 md:px-10">
@@ -56,13 +58,9 @@ function CreateForm({ register, errors }) {
               </p>
             </div>
           </div>
-          {/* <div className="w-full md:w-1/3 mt-4 md:mt-0 md:mb-0 flex justify-center">
-            <label className="flex flex-col w-full items-center px-2 py-2 md:py-10 bg-white text-blue rounded-lg shadow-sm tracking-wide border border-blue cursor-pointer hover:bg-indigo-200">
-              <FaImage size="3em" />
-              <span className="mt-2 text-base leading-normal">Imagen</span>
-              <input type="file" className="hidden" name="image" ref={register} />
-            </label>
-          </div> */}
+          <div className="w-full md:w-1/3 mt-4 md:mt-0 md:mb-0 flex justify-center">
+            <FileUpload image={image} setImage={setImage} />
+          </div>
         </div>
       </div>
     </form>
@@ -94,8 +92,8 @@ function QuestionItem({ remove, edit, question }) {
         </div>
       </div>
       <div className="flex flex-wrap p-2 md:px-4">
-        {question.answers.map((answer) => (
-          <div key={answer.id} className="flex items-center w-1/2 mt-1">
+        {question.answers.map((answer, i) => (
+          <div key={i} className="flex items-center w-1/2 mt-1">
             <div
               className={clsx(
                 `w-3 h-3 rounded-full mr-2`,
@@ -155,6 +153,7 @@ function GameForm({ existingGame = null }) {
     },
   });
   const [questions, setQuestions] = useState(existingGame?.questions || []);
+  const [image, setImage] = useState({ preview: existingGame?.image });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [modalState, dispatch] = useReducer(questionModalReducer, {
     showModal: false,
@@ -188,6 +187,7 @@ function GameForm({ existingGame = null }) {
     setIsSubmitting(true);
     const gameData = {
       ...data,
+      image: image,
       questions,
       userId: user.id,
       id: existingGame?.id || null,
@@ -195,10 +195,10 @@ function GameForm({ existingGame = null }) {
 
     try {
       await gameApi.saveGame(gameData);
+      gameData.id ? mutate([gameData.id]) : null;
       router.push("/games");
     } catch (error) {
       console.error("failed creating game", error);
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -212,7 +212,7 @@ function GameForm({ existingGame = null }) {
       <Layout>
         <div className="flex pt-6 bg-white place-content-center shadow">
           <div className="w-full overflow-hidden">
-            <CreateForm errors={errors} {...formProps} />
+            <CreateForm errors={errors} {...formProps} image={image} setImage={setImage} />
           </div>
         </div>
         <div className="flex pt-2 md:pt-4 bg-white place-content-center shadow mt-4 mb-16">

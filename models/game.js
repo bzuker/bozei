@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { gamesRef, Timestamp } from "../utils/auth/firebase";
+import { gamesRef, Timestamp, storage } from "../utils/auth/firebase";
 
 const saveGame = async (game) => {
   // Set an id for each answer
@@ -13,14 +13,32 @@ const saveGame = async (game) => {
     q.correctAnswerId = correctAnswer.id;
   });
 
+  // Upload image
+  if (game.image?.raw) {
+    const storageRef = storage.ref();
+    const imageRef = storageRef.child(`${uuid()}-${game.image.raw.name}`);
+    await imageRef.put(game.image.raw);
+    console.log("uploaded file");
+    game.image = await imageRef.getDownloadURL();
+  } else if (game.image === null) {
+    // Do nothing, keep game.image in null so it updates it
+  } else {
+    // No changes, delete the image so the merge keeps the one in the server
+    delete game.image;
+  }
+
   // Get reference to existing or create new one
   const gameDoc = game.id ? gamesRef.doc(game.id) : gamesRef.doc();
 
-  await gameDoc.set({
-    ...game,
-    id: gameDoc.id,
-    date: Timestamp.fromDate(new Date()),
-  });
+  await gameDoc.set(
+    {
+      createdAt: Timestamp.fromDate(new Date()),
+      ...game,
+      id: gameDoc.id,
+      updatedAt: Timestamp.fromDate(new Date()),
+    },
+    { merge: true }
+  );
 
   return gameDoc.id;
 };

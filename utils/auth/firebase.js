@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/storage";
 import "firebase/firestore";
 
 const firebaseConfig = {
@@ -27,7 +28,8 @@ const { Timestamp } = firebase.firestore;
 
 const gamesRef = db.collection("games");
 const publicQuestionsRef = db.collection("publicQuestions");
+const storage = firebase.storage();
 
 const createBatch = () => db.batch();
 
-export { db, auth, createBatch, gamesRef, publicQuestionsRef, Timestamp };
+export { db, auth, storage, createBatch, gamesRef, publicQuestionsRef, Timestamp };
