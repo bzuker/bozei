@@ -1,6 +1,8 @@
 import { v4 as uuid } from "uuid";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
+import Select from "react-select";
+import { TAGS } from "../utils/constants";
 
 function AnswerOption({ answerOption, remove, prefix, register, clearErrors, error = {} }) {
   return (
@@ -36,6 +38,7 @@ export function Question({ question, onSave }) {
     defaultValues: question || {
       text: "",
       answers: [{ text: "" }, { text: "" }, { text: "" }],
+      tags: [],
     },
   });
 
@@ -67,6 +70,19 @@ export function Question({ question, onSave }) {
 
   return (
     <form className="flex flex-wrap m-3 -mx-3 py-2 relative" onSubmit={handleSubmit(onSubmit)}>
+      <div className="w-full px-3 md:w-2/3 mb-6 md:mb-3">
+        <label className="block mb-2 font-bold tracking-wide text-gray-700">Tags</label>
+        <Controller
+          as={Select}
+          options={TAGS.map((x) => ({ value: x, label: x }))}
+          name="tags"
+          isMulti
+          control={control}
+          placeholder="Elegí una o más categorías"
+          noOptionsMessage={({ inputValue }) => `${inputValue} no es una categoría válida`}
+          tabSelectsValue={false}
+        />
+      </div>
       <div className="w-full md:w-2/3 px-3 mb-6 md:mb-3">
         <label className="block mb-2 font-bold tracking-wide text-gray-700">Texto</label>
         <textarea

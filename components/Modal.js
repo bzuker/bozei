@@ -1,16 +1,21 @@
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect } from "react";
 import { FiX } from "react-icons/fi";
 import ReactModal from "react-modal";
 
 ReactModal.setAppElement("#__next");
 
-export default function Modal({ children, title, ...rest }) {
+export default function Modal({ children, title, isOpen, ...rest }) {
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "unset";
+  }, [isOpen]);
+
   return (
     <ReactModal
       {...rest}
       className="max-h-screen max-w-3xl outline-none w-full overflow-auto"
       overlayClassName="items-center bg-gray-500 bottom-0 left-0 right-0 top-0 bg-opacity-50 fixed z-50 flex justify-center"
+      isOpen={isOpen}
     >
       <div className="bg-white p-4 rounded shadow">
         <div className="flex items-start justify-between text-lg md:text-xl">
