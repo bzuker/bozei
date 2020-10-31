@@ -1,0 +1,18 @@
+export const TAGS = [
+  "matemática",
+  "inglés",
+  "física",
+  "historia",
+  "música",
+  "diversión",
+  "educación",
+  "religión",
+  "actualidad",
+  "deportes",
+  "filosofía",
+  "arte",
+  "tecnología",
+  "negocios",
+  "geografía",
+  "periodismo",
+].sort();

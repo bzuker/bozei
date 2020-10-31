@@ -12,25 +12,7 @@ import clsx from "clsx";
 import FileUpload from "./FileUpload";
 import { mutate } from "swr";
 import Select from "react-select";
-
-const tags = [
-  "matemática",
-  "inglés",
-  "física",
-  "historia",
-  "música",
-  "diversión",
-  "educación",
-  "religión",
-  "actualidad",
-  "deportes",
-  "filosofía",
-  "arte",
-  "tecnología",
-  "negocios",
-  "geografía",
-  "periodismo",
-].sort();
+import { TAGS } from "../utils/constants";
 
 function CreateForm({ register, errors, control, image, setImage }) {
   return (
@@ -65,7 +47,7 @@ function CreateForm({ register, errors, control, image, setImage }) {
               <label className="block mb-2 font-bold tracking-wide text-gray-700">Tags</label>
               <Controller
                 as={Select}
-                options={tags.map((x) => ({ value: x, label: x }))}
+                options={TAGS.map((x) => ({ value: x, label: x }))}
                 name="tags"
                 isMulti
                 control={control}
