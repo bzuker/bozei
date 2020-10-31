@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { FaPencilAlt, FaPlus, FaRegTrashAlt } from "react-icons/fa";
 import Layout from "./layout";
 import Modal from "./Modal";
@@ -11,8 +11,28 @@ import { useReducer, useState } from "react";
 import clsx from "clsx";
 import FileUpload from "./FileUpload";
 import { mutate } from "swr";
+import Select from "react-select";
 
-function CreateForm({ register, errors, image, setImage }) {
+const tags = [
+  "matemática",
+  "inglés",
+  "física",
+  "historia",
+  "música",
+  "diversión",
+  "educación",
+  "religión",
+  "actualidad",
+  "deportes",
+  "filosofía",
+  "arte",
+  "tecnología",
+  "negocios",
+  "geografía",
+  "periodismo",
+].sort();
+
+function CreateForm({ register, errors, control, image, setImage }) {
   return (
     <form className="w-full mb-2">
       <div className="px-5 md:px-10">
@@ -21,7 +41,7 @@ function CreateForm({ register, errors, image, setImage }) {
             <div className="w-full px-3 mb-2">
               <label className="block mb-2 font-bold tracking-wide text-gray-700">Nombre</label>
               <input
-                className="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white text-sm md:text-base"
+                className="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-400 rounded appearance-none focus:outline-none focus:bg-white text-sm md:text-base"
                 type="text"
                 placeholder="Título del juego"
                 name="title"
@@ -29,16 +49,30 @@ function CreateForm({ register, errors, image, setImage }) {
               />
               {errors.title && <p className="text-red-500">* Falta completar este campo</p>}
             </div>
-            <div className="w-full px-3">
+            <div className="w-full px-3 mb-2">
               <label className="block mb-2 font-bold tracking-wide text-gray-700">
                 Descripción
               </label>
               <input
-                className="block w-full px-4 py-3 leading-tight text-gray-700 bg-gray-200 border border-gray-200 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500 text-sm md:text-base"
+                className="block w-full px-4 py-3 leading-tight text-gray-700 bg-gray-200 border border-gray-400 rounded appearance-none focus:outline-none focus:bg-white focus:border-gray-500 text-sm md:text-base"
                 type="text"
                 placeholder="Texto que se mostrará al inicio del juego"
                 name="description"
                 ref={register}
+              />
+            </div>
+            <div className="w-full px-3">
+              <label className="block mb-2 font-bold tracking-wide text-gray-700">Tags</label>
+              <Controller
+                as={Select}
+                options={tags.map((x) => ({ value: x, label: x }))}
+                name="tags"
+                isMulti
+                control={control}
+                placeholder="Elegí una o más categorías"
+                noOptionsMessage={({ inputValue }) => `${inputValue} no es una categoría válida`}
+                closeMenuOnSelect={false}
+                tabSelectsValue={false}
               />
             </div>
             <div className="w-full px-3 mt-6">
@@ -57,7 +91,7 @@ function CreateForm({ register, errors, image, setImage }) {
               </p>
             </div>
           </div>
-          <div className="w-full md:w-1/3 mt-4 md:mt-0 md:mb-0 flex justify-center">
+          <div className="w-full md:w-1/3 h-56 mt-4 md:mt-0 md:mb-0 flex justify-center">
             <FileUpload image={image} setImage={setImage} />
           </div>
         </div>
@@ -149,6 +183,7 @@ function GameForm({ existingGame = null }) {
       title: existingGame?.title,
       description: existingGame?.description,
       isPublic: existingGame?.isPublic,
+      tags: existingGame?.tags || [],
     },
   });
   const [questions, setQuestions] = useState(existingGame?.questions || []);
@@ -210,7 +245,7 @@ function GameForm({ existingGame = null }) {
     <>
       <Layout>
         <div className="flex pt-6 bg-white place-content-center shadow">
-          <div className="w-full overflow-hidden">
+          <div className="w-full">
             <CreateForm errors={errors} {...formProps} image={image} setImage={setImage} />
           </div>
         </div>
