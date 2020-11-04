@@ -6,6 +6,7 @@ import { useUser } from "../context/Auth";
 import gameApi from "../models/game";
 
 function GameCard({ id, title, description, questions, tags, date, stats, image }) {
+  console.log(tags);
   return (
     <Link href={`/play/${id}`}>
       <div className="flex flex-col overflow-hidden rounded-lg shadow-xl transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
@@ -34,10 +35,10 @@ function GameCard({ id, title, description, questions, tags, date, stats, image 
             <p className="mt-3 text-sm font-medium leading-5">
               {tags?.map((tag) => (
                 <span
-                  key={tag.text}
+                  key={tag.value}
                   className="inline-flex items-center px-3 py-1 text-xs font-medium leading-tight text-blue-800 bg-blue-100 rounded-full"
                 >
-                  {tag.text}
+                  {tag.label}
                 </span>
               ))}
             </p>

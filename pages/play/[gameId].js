@@ -15,12 +15,14 @@ function Welcome({ title, description, image, tags, startGame }) {
       <div className="flex flex-col max-w-screen-md overflow-hidden bg-white border rounded-lg shadow-xl lg:flex-row sm:mx-auto justify-center">
         <div className="flex flex-col justify-center p-8 bg-white lg:p-12 text-center">
           <div>
-            <p className="inline-block px-3 py-1 mb-4 mr-1 text-xs font-medium tracking-wider text-purple-600 uppercase rounded-full bg-purple-200">
-              Cultura
-            </p>
-            <p className="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-green-600 uppercase rounded-full bg-green-200">
-              Deportes
-            </p>
+            {tags?.map((tag) => (
+              <p
+                key={tag.value}
+                className="inline-block px-3 py-1 mb-4 mr-1 text-xs font-medium tracking-wider text-blue-600 uppercase rounded-full bg-blue-200"
+              >
+                {tag.label}
+              </p>
+            ))}
           </div>
           <h5 className="mb-3 text-3xl font-extrabold leading-none sm:text-4xl">{title}</h5>
           {image && (
@@ -240,6 +242,7 @@ function Game({ game }) {
           title={game.title}
           description={game.description}
           image={game.image}
+          tags={game.tags}
           startGame={startGame}
         />
       </Layout>
