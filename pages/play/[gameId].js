@@ -16,12 +16,12 @@ function Welcome({ title, description, image, tags, startGame }) {
         <div className="flex flex-col justify-center p-8 bg-white lg:p-12 text-center">
           <div>
             {tags?.map((tag) => (
-              <p
+              <span
                 key={tag.value}
                 className="inline-block px-3 py-1 mb-4 mr-1 text-xs font-medium tracking-wider text-blue-600 uppercase rounded-full bg-blue-200"
               >
                 {tag.label}
-              </p>
+              </span>
             ))}
           </div>
           <h5 className="mb-3 text-3xl font-extrabold leading-none sm:text-4xl">{title}</h5>
@@ -74,11 +74,16 @@ function MultipleChoiceQuestion({
       <div className="flex max-w-screen-md overflow-hidden bg-white border rounded-lg shadow-md lg:flex-row sm:mx-auto">
         <div className="flex flex-col w-full justify-center p-2 md:p-6 bg-white">
           <div className="flex justify-between">
-            {question.tag && (
-              <p className="px-3 py-1 text-xs font-medium tracking-wider text-purple-600 uppercase rounded-full bg-purple-200">
-                {question.tag}
-              </p>
-            )}
+            <div className="flex">
+              {question.tags?.map((tag) => (
+                <p
+                  key={tag.value}
+                  className="inline-block px-3 py-1 mr-1 text-xs font-medium tracking-wider text-blue-600 uppercase rounded-full bg-blue-200"
+                >
+                  {tag.label}
+                </p>
+              ))}
+            </div>
             <p className="tracking-widest">{questionsLeft}</p>
           </div>
           <h5 className="mb-3 mt-3 text-2xl font-medium leading-snug md:leading-none sm:text-4xl">

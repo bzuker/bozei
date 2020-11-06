@@ -87,7 +87,17 @@ function QuestionItem({ remove, edit, question }) {
     <li className="border rounded-lg border-gray-300 mb-4">
       <div className="bg-gray-200 px-4 py-1 sm:px-4 sm:flex sm:flex-row-reverse">
         <div className="flex flex-wrap justify-between items-center w-full">
-          <p className="md:w-4/5 md:pb-0">{question.text}</p>
+          <div className="flex items-center md:w-4/5 md:pb-0">
+            <p className="">{question.text}</p>
+            {question?.tags?.map((tag) => (
+              <span
+                key={tag.value}
+                className="hidden md:flex px-3 ml-2 text-xs font-medium tracking-wider text-blue-600 uppercase rounded-full bg-blue-200"
+              >
+                {tag.label}
+              </span>
+            ))}
+          </div>
           <div>
             <button
               type="button"
