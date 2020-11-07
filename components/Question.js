@@ -69,7 +69,7 @@ export function Question({ question, onSave }) {
   };
 
   return (
-    <form className="flex flex-wrap m-3 -mx-3 py-2 relative" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-wrap m-2 py-2 relative" onSubmit={handleSubmit(onSubmit)}>
       <div className="w-full px-3 md:w-2/3 mb-6 md:mb-3">
         <label className="block mb-2 font-bold tracking-wide text-gray-700">Tags</label>
         <Controller

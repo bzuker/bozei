@@ -5,8 +5,10 @@ import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import useSWR from "swr";
 import Layout from "../../components/layout";
 import Modal from "../../components/Modal";
+import ShareButton from "../../components/ShareButton";
 import { useUser } from "../../context/Auth";
 import gameApi from "../../models/game";
+import { BASE_URL } from "../../utils/constants";
 
 function DeleteButton({ game, mutate }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -23,6 +25,7 @@ function DeleteButton({ game, mutate }) {
   return (
     <>
       <button
+        title="Eliminar"
         onClick={() => setModalOpen(true)}
         className="hover:bg-indigo-100 font-bold py-3 px-4 text-sm border border-red-300 text-red-500 shadow-xs rounded-md"
       >
@@ -33,7 +36,11 @@ function DeleteButton({ game, mutate }) {
         onRequestClose={() => setModalOpen(false)}
         title={`Estás seguro que querés eliminar "${game.title}"?`}
       >
-        <div className="mt-5">
+        <div className="px-12 py-5">
+          <p className="italic mt-1 text-gray-800">Cuidado, esta acción no puede deshacerse</p>
+        </div>
+
+        <div className="flex justify-end px-5 py-4 bg-gray-100 border-t border-gray-300">
           <button
             onClick={onDelete}
             className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-red-300 text-red-500 shadow-xs rounded-md"
@@ -75,13 +82,12 @@ function Game({ game, mutate }) {
           </div>
         </div>
         <div className="flex items-center mt-4 md:mt-0">
-          <Link href={`/play/${game.id}`}>
-            <button className="hover:bg-indigo-100 font-bold py-2 px-4 text-sm border border-indigo-500 text-indigo-600 shadow-xs rounded-md mr-2">
-              Jugar ahora!
-            </button>
-          </Link>
+          <ShareButton title={`Compartir "${game.title}"`} value={`${BASE_URL}/play/${game.id}`} />
           <Link href={`/games/edit/${game.id}`}>
-            <button className="hover:bg-indigo-100 font-bold py-3 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2">
+            <button
+              title="Editar"
+              className="hover:bg-indigo-100 font-bold py-3 px-4 text-sm border border-gray-400 shadow-xs rounded-md mr-2"
+            >
               <FaPencilAlt size="1em" />
             </button>
           </Link>
