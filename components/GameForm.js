@@ -82,13 +82,15 @@ function CreateForm({ register, errors, control, image, setImage }) {
   );
 }
 
-function QuestionItem({ remove, edit, question }) {
+function QuestionItem({ remove, edit, question, index }) {
   return (
     <li className="border rounded-lg border-gray-300 mb-4">
       <div className="bg-gray-200 px-4 py-1 sm:px-4 sm:flex sm:flex-row-reverse">
         <div className="flex flex-wrap justify-between items-center w-full">
           <div className="flex items-center md:w-4/5 md:pb-0">
-            <p className="">{question.text}</p>
+            <p className="">
+              {index}. {question.text}
+            </p>
             {question?.tags?.map((tag) => (
               <span
                 key={tag.value}
@@ -247,9 +249,10 @@ function GameForm({ existingGame = null }) {
               <h2 className="text-xl font-bold text-gray-700 md:-ml-4">Preguntas</h2>
 
               <ul className="mt-5 mb-5">
-                {questions.map((x) => (
+                {questions.map((x, i) => (
                   <QuestionItem
                     key={x.text}
+                    index={i + 1}
                     question={x}
                     remove={() => setQuestions(questions.filter((q) => q.id !== x.id))}
                     edit={() => dispatch({ type: "EDIT_QUESTION", question: x })}
