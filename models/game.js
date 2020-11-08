@@ -11,6 +11,8 @@ const saveGame = async (game) => {
 
     const correctAnswer = q.answers.find((a) => a.isCorrect);
     q.correctAnswerId = correctAnswer.id;
+
+    q.tags = q.tags || [];
   });
 
   // Upload image
