@@ -2,13 +2,12 @@ import clsx from "clsx";
 import React, { useEffect } from "react";
 import { FiX } from "react-icons/fi";
 import ReactModal from "react-modal";
+import useHideScroll from "../hooks/useHideScroll";
 
 ReactModal.setAppElement("#__next");
 
 export default function Modal({ children, title, isOpen, ...rest }) {
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "unset";
-  }, [isOpen]);
+  useHideScroll(isOpen);
 
   return (
     <ReactModal
