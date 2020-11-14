@@ -1,0 +1,77 @@
+{
+  "title": "Completá la frase",
+  "image": "https://firebasestorage.googleapis.com/v0/b/bozei-0.appspot.com/o/213ad7ad-2629-4aa8-8e42-1256d5e21534-completa2.jpg?alt=media&token=3e61dac6-209a-461f-84a3-a75c446c7c14",
+  "id": "ltmdDHB3qGBC01fcSLJT",
+  "userId": "2ymbecjqkSVGbCNEyuFvp4DjSMN2",
+  "questions": [
+    {
+      "correctAnswerId": "aaf7433a-100a-423f-8380-3c28046cd409",
+      "answers": [
+        { "id": "489211d3-9094-42b7-9533-da1d977a589e", "isCorrect": false, "text": "Menguó" },
+        { "id": "aaf7433a-100a-423f-8380-3c28046cd409", "text": "Paró", "isCorrect": true },
+        { "isCorrect": false, "text": "Avanzó", "id": "fe0f9d02-f919-4cda-956c-44434a40c100" }
+      ],
+      "id": "46f02523-1e2f-4198-8ae4-5ab66171c363",
+      "text": "Siempre que llovió"
+    },
+    {
+      "answers": [
+        { "text": "Naranja", "id": "6d3db6a5-f7fb-436d-862a-d58112468e7d", "isCorrect": false },
+        { "text": "Pájaro", "id": "ecc27726-e664-4c71-9a19-24aa441f6deb", "isCorrect": true },
+        { "id": "8de5ba98-8347-4fbe-b7dc-0b423c8b3fe0", "text": "Plátano", "isCorrect": false }
+      ],
+      "id": "c6d3e24d-69fe-4c21-9027-574de8bec670",
+      "correctAnswerId": "ecc27726-e664-4c71-9a19-24aa441f6deb",
+      "text": "Más vale _____ en mano que 100 volando"
+    },
+    {
+      "correctAnswerId": "6be40e33-e7ec-4771-be97-e3aa55212511",
+      "answers": [
+        {
+          "isCorrect": false,
+          "id": "2071b3d8-35b4-4bbe-9e56-cf312aaffd49",
+          "text": "Que le preste"
+        },
+        {
+          "isCorrect": true,
+          "text": "Que le cueste",
+          "id": "6be40e33-e7ec-4771-be97-e3aa55212511"
+        },
+        {
+          "text": "Que le cuente",
+          "isCorrect": false,
+          "id": "c805264f-36a2-4954-a5f1-92c1352f3285"
+        }
+      ],
+      "text": "El que quiere celeste...",
+      "id": "5ecc711b-f92e-4e73-a550-e1c5132d71f6"
+    },
+    {
+      "text": "Caminante no hay camino...",
+      "id": "1f641147-5b87-4573-834e-883952764c40",
+      "correctAnswerId": "32b587e2-f83a-4ab7-b352-e61b8ea437e5",
+      "answers": [
+        {
+          "isCorrect": true,
+          "text": "Se hace camino al andar",
+          "id": "32b587e2-f83a-4ab7-b352-e61b8ea437e5"
+        },
+        {
+          "isCorrect": false,
+          "text": "Se hace camino al rodar",
+          "id": "a8d2e48d-66d8-4952-80d8-0c171096e8b2"
+        },
+        {
+          "text": "Se hace fuerte al andar",
+          "id": "755b4277-ae86-409c-b6aa-488640e84cdb",
+          "isCorrect": false
+        }
+      ]
+    }
+  ],
+  "updatedAt": { "seconds": 1603936530, "nanoseconds": 212000000 },
+  "isPublic": false,
+  "date": { "seconds": 1603650607, "nanoseconds": 533000000 },
+  "createdAt": { "seconds": 1603936530, "nanoseconds": 212000000 },
+  "description": "Conjunto de frases típicas"
+}

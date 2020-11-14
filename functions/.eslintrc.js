@@ -3,21 +3,15 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
+    jest: true,
   },
-  extends: [
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
-  ],
+  extends: ["plugin:import/errors", "plugin:import/warnings", "plugin:import/typescript"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "tsconfig.json",
     sourceType: "module",
   },
-  plugins: [
-    "@typescript-eslint",
-    "import",
-  ],
+  plugins: ["@typescript-eslint", "import"],
   rules: {
     "@typescript-eslint/adjacent-overload-signatures": "error",
     "@typescript-eslint/no-empty-function": "error",
@@ -28,7 +22,8 @@ module.exports = {
     "@typescript-eslint/prefer-for-of": "warn",
     "@typescript-eslint/triple-slash-reference": "error",
     "@typescript-eslint/unified-signatures": "warn",
-    "comma-dangle": ["error", "always-multiline"],
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-unused-vars": "off",
     "constructor-super": "error",
     eqeqeq: ["warn", "always"],
     "import/no-deprecated": "warn",
@@ -48,12 +43,6 @@ module.exports = {
     "no-param-reassign": "error",
     "no-redeclare": "error",
     "no-sequences": "error",
-    "no-shadow": [
-      "error",
-      {
-        hoist: "all",
-      },
-    ],
     "no-throw-literal": "error",
     "no-unsafe-finally": "error",
     "no-unused-labels": "error",

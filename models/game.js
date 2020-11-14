@@ -61,7 +61,7 @@ const getGamesForUserId = async (userId) => {
   return games;
 };
 
-const getGames = async ({ orderBy, limit, startAfter, where }) => {
+const getGames = async ({ orderBy = null, limit = null, startAfter = null, where = null }) => {
   let query = gamesRef;
 
   if (where) {
