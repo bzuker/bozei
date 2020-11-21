@@ -20,6 +20,7 @@
   },
   "author": "Brian Zuker",
   "dependencies": {
+    "algoliasearch": "^4.8.0",
     "clsx": "^1.1.1",
     "firebase": "^7.22.0",
     "firebase-admin": "^9.2.0",
