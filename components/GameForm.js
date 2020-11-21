@@ -1,18 +1,21 @@
 import { useRouter } from "next/router";
 import { Controller, useForm } from "react-hook-form";
-import { FaPencilAlt, FaPlus, FaRegTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaPlus, FaRegTrashAlt, FaSearchPlus } from "react-icons/fa";
+import clsx from "clsx";
+import Link from "next/link";
+import { useReducer, useState } from "react";
+import { mutate } from "swr";
+import Select from "react-select";
 import Layout from "./layout";
 import Modal from "./Modal";
 import { Question } from "./Question";
 import { useUser } from "../context/Auth";
 import gameApi from "../models/game";
-import Link from "next/link";
-import { useReducer, useState } from "react";
-import clsx from "clsx";
 import FileUpload from "./FileUpload";
-import { mutate } from "swr";
-import Select from "react-select";
 import { TAGS } from "../utils/constants";
+import RightSidebar from "./RightSidebar";
+import { QuestionItem } from "./QuestionItem";
+import { QuestionsSearch } from "./QuestionsSearch";
 
 function CreateForm({ register, errors, control, image, setImage }) {
   return (
@@ -82,59 +85,6 @@ function CreateForm({ register, errors, control, image, setImage }) {
   );
 }
 
-function QuestionItem({ remove, edit, question, index }) {
-  return (
-    <li className="border rounded-lg border-gray-300 mb-4">
-      <div className="bg-gray-200 px-4 py-1 sm:px-4 sm:flex sm:flex-row-reverse">
-        <div className="flex flex-wrap justify-between items-center w-full">
-          <div className="flex items-center md:w-4/5 md:pb-0">
-            <p className="">
-              {index}. {question.text}
-            </p>
-            {question?.tags?.map((tag) => (
-              <span
-                key={tag.value}
-                className="hidden md:flex px-3 ml-2 text-xs font-medium tracking-wider text-blue-600 uppercase rounded-full bg-blue-200"
-              >
-                {tag.label}
-              </span>
-            ))}
-          </div>
-          <div>
-            <button
-              type="button"
-              className="bg-white px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-blue-200"
-              onClick={edit}
-            >
-              <FaPencilAlt size="1em" />
-            </button>
-            <button
-              type="button"
-              className="bg-white ml-2 px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-red-200"
-              onClick={remove}
-            >
-              <FaRegTrashAlt size="1em" color="red" />
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-wrap p-2 md:px-4">
-        {question.answers.map((answer, i) => (
-          <div key={i} className="flex items-center w-1/2 mt-1">
-            <div
-              className={clsx(
-                `w-3 h-3 rounded-full mr-2`,
-                answer.isCorrect ? "bg-green-500" : "bg-red-500"
-              )}
-            ></div>
-            {answer.text}
-          </div>
-        ))}
-      </div>
-    </li>
-  );
-}
-
 function questionModalReducer(state, action) {
   switch (action.type) {
     case "CREATE_QUESTION": {
@@ -170,6 +120,7 @@ function questionModalReducer(state, action) {
 }
 
 function GameForm({ existingGame = null }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useUser({ redirectTo: "/login" });
   const router = useRouter();
   const { handleSubmit, setError, clearErrors, errors, ...formProps } = useForm({
@@ -189,7 +140,7 @@ function GameForm({ existingGame = null }) {
     title: "",
   });
 
-  const onQuestionSave = (question) => {
+  const onSaveQuestion = (question) => {
     const existingQuestionIndex = questions.findIndex((x) => x.id === question.id);
     // We are editing
     if (existingQuestionIndex > -1) {
@@ -201,6 +152,11 @@ function GameForm({ existingGame = null }) {
 
     clearErrors("questions");
     dispatch({ type: "CLOSE_MODAL" });
+  };
+
+  const addExistingQuestion = (question) => {
+    setQuestions([...questions, { ...question, external: true }]);
+    // TODO: show toast or something
   };
 
   const onSaveGame = async (data) => {
@@ -238,6 +194,9 @@ function GameForm({ existingGame = null }) {
   return (
     <>
       <Layout>
+        <RightSidebar isOpen={isSidebarOpen} onRequestClose={() => setIsSidebarOpen(false)}>
+          <QuestionsSearch existingQuestions={questions} onQuestionAdd={addExistingQuestion} />
+        </RightSidebar>
         <div className="flex pt-6 bg-white place-content-center shadow">
           <div className="w-full">
             <CreateForm errors={errors} {...formProps} image={image} setImage={setImage} />
@@ -247,27 +206,59 @@ function GameForm({ existingGame = null }) {
           <div className="w-full overflow-hidden">
             <div className="px-2 md:px-10 pb-6">
               <h2 className="text-xl font-bold text-gray-700 md:-ml-4">Preguntas</h2>
-
               <ul className="mt-5 mb-5">
-                {questions.map((x, i) => (
+                {questions.map((q, i) => (
                   <QuestionItem
-                    key={x.text}
-                    index={i + 1}
-                    question={x}
-                    remove={() => setQuestions(questions.filter((q) => q.id !== x.id))}
-                    edit={() => dispatch({ type: "EDIT_QUESTION", question: x })}
+                    key={q.id}
+                    text={`${i + 1}. ${q.text}`}
+                    tags={q.tags}
+                    answers={q.answers}
+                    actions={
+                      <>
+                        <button
+                          type="button"
+                          className={clsx(
+                            "bg-white px-3 py-2 transition duration-150 ease-in-out border rounded-md",
+                            q.external ? "cursor-not-allowed bg-gray-200" : "hover:bg-blue-200"
+                          )}
+                          disabled={q.external}
+                          onClick={() => dispatch({ type: "EDIT_QUESTION", question: q })}
+                          title={
+                            q.external ? "No podés editar preguntas agregadas" : "Editar pregunta"
+                          }
+                        >
+                          <FaPencilAlt size="1em" />
+                        </button>
+                        <button
+                          type="button"
+                          className="bg-white ml-2 px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-red-200"
+                          onClick={() => setQuestions(questions.filter((x) => x.id !== q.id))}
+                          title="Borrar pregunta"
+                        >
+                          <FaRegTrashAlt size="1em" color="red" />
+                        </button>
+                      </>
+                    }
                   />
                 ))}
               </ul>
               {errors.questions && <p className="text-red-500 mb-4">{errors.questions.message}</p>}
-
-              <button
-                type="button"
-                className="inline-flex items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700"
-                onClick={() => dispatch({ type: "CREATE_QUESTION" })}
-              >
-                <FaPlus className="mr-2" /> Agregar pregunta
-              </button>
+              <div className="flex flex-col md:flex-row space-y-2 md:space-y-0">
+                <button
+                  type="button"
+                  className="inline-flex justify-center items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700"
+                  onClick={() => dispatch({ type: "CREATE_QUESTION" })}
+                >
+                  <FaPlus className="mr-2" /> Crear pregunta
+                </button>
+                <button
+                  type="button"
+                  className="md:ml-3 inline-flex justify-center items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 focus:border-purple-700 focus:shadow-outline-purple active:bg-purple-700"
+                  onClick={() => setIsSidebarOpen(true)}
+                >
+                  <FaSearchPlus className="mr-2" /> Agregar pregunta existente
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -305,7 +296,7 @@ function GameForm({ existingGame = null }) {
         onRequestClose={() => dispatch({ type: "CLOSE_MODAL" })}
         title="Nueva pregunta"
       >
-        <Question question={modalState.question} onSave={onQuestionSave} />
+        <Question question={modalState.question} onSave={onSaveQuestion} />
       </Modal>
     </>
   );

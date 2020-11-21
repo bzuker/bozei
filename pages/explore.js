@@ -6,7 +6,6 @@ import { useUser } from "../context/Auth";
 import gameApi from "../models/game";
 
 function GameCard({ id, title, description, questions, tags, date, stats, image }) {
-  console.log(tags);
   return (
     <Link href={`/play/${id}`}>
       <div className="flex flex-col overflow-hidden rounded-lg shadow-xl transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">

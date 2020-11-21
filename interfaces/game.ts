@@ -17,6 +17,8 @@ export interface Question {
   answers: Array<Answer>;
   correctAnswerId: string;
   text: string;
+  tags: Array<{ value: string; label: string }>;
+  external: boolean;
 }
 
 export interface Answer {

@@ -20,12 +20,11 @@ const saveGame = async (game) => {
     const storageRef = storage.ref();
     const imageRef = storageRef.child(`${uuid()}-${game.image.raw.name}`);
     await imageRef.put(game.image.raw);
-    console.log("uploaded file");
     game.image = await imageRef.getDownloadURL();
   } else if (game.image === null) {
     // Do nothing, keep game.image in null so it updates it
   } else {
-    // No changes, delete the image so the merge keeps the one in the server
+    // No changes, delete the image field so the merge keeps the one in the server
     delete game.image;
   }
 

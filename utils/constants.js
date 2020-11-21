@@ -15,6 +15,7 @@ export const TAGS = [
   "negocios",
   "geografía",
   "periodismo",
+  "frases célebres",
 ].sort();
 
 export const BASE_URL =
