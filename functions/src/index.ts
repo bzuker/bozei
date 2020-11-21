@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { Game } from "../../interfaces/game";
+import { onQuestionCreated, onQuestionUpdated } from "./onQuestionChange";
 
 admin.initializeApp();
 
@@ -124,3 +125,11 @@ exports.deleteQuestions = functions.firestore.document("/games/{gameId}").onDele
   console.log("deleted questions");
   return true;
 });
+
+exports.onQuestionCreated = functions.firestore
+  .document("/questions/{questionId}")
+  .onCreate(onQuestionCreated);
+
+exports.onQuestionUpdated = functions.firestore
+  .document("/questions/{questionId}")
+  .onUpdate(onQuestionUpdated);
