@@ -39,6 +39,9 @@ exports.addQuestions = functions.firestore.document("/games/{gameId}").onCreate(
 
   console.log(`Adding ${game.questions.length} questions`);
   const promises = game.questions.map((q) => {
+    if (q.external) {
+      return Promise.resolve(null);
+    }
     const questionDoc = questionsRef.doc(q.id);
     return questionDoc.set({ ...q, isPublic: true });
   });
@@ -58,6 +61,10 @@ exports.updateQuestions = functions.firestore
     // If game was public and was made private, delete all questions
     if (oldGame.isPublic && !game.isPublic) {
       const promises = oldGame.questions.map((q) => {
+        if (q.external) {
+          return Promise.resolve(null);
+        }
+
         const questionDoc = questionsRef.doc(q.id);
         return questionDoc.delete();
       });
@@ -69,6 +76,10 @@ exports.updateQuestions = functions.firestore
     // Game was private and was made public, add all questions
     if (!oldGame.isPublic && game.isPublic) {
       const promises = game.questions.map((q) => {
+        if (q.external) {
+          return Promise.resolve(null);
+        }
+
         const questionDoc = questionsRef.doc(q.id);
         return questionDoc.set(q);
       });
@@ -92,12 +103,20 @@ exports.updateQuestions = functions.firestore
 
     console.log(`deleting ${deletedQuestions.length} questions`);
     const deletePromises = deletedQuestions.map((q) => {
+      if (q.external) {
+        return Promise.resolve(null);
+      }
+
       const questionDoc = questionsRef.doc(q.id);
       return questionDoc.delete();
     });
 
     // TODO: this could be optimized to only update questions that were modified.
     const updatePromises = game.questions.map((q) => {
+      if (q.external) {
+        return Promise.resolve(null);
+      }
+
       const questionDoc = questionsRef.doc(q.id);
       return questionDoc.set(q);
     });
@@ -117,6 +136,10 @@ exports.deleteQuestions = functions.firestore.document("/games/{gameId}").onDele
 
   console.log(`deleting ${game.questions.length} questions`);
   const deletePromises = game.questions.map((q) => {
+    if (q.external) {
+      return Promise.resolve(null);
+    }
+
     const questionDoc = questionsRef.doc(q.id);
     return questionDoc.delete();
   });
