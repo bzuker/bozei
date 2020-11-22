@@ -8,9 +8,10 @@ const client = algoliasearch(
 const index = client.initIndex("questions");
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { text } = req.query;
+  const { text, page } = req.query;
   const results = await index.search(text as string, {
     hitsPerPage: 10,
+    page: parseInt(page as string),
   });
 
   res.status(200).json(results);

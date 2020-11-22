@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { FaPlusSquare } from "react-icons/fa";
 import CreatableSelect from "react-select/creatable";
 import useSWR from "swr";
@@ -7,26 +7,72 @@ import fetcher from "../utils/fetcher";
 import { QuestionItem } from "./QuestionItem";
 import { Question } from "../interfaces/game";
 import clsx from "clsx";
+import { useInView } from "react-intersection-observer";
 
 interface QuestionSearchProps {
   existingQuestions: Array<Question>;
   onQuestionAdd: (q: Question) => void;
 }
 
-const useSearchQuestions = (text: string) => {
-  const { data, error } = useSWR(text ? `/api/questions/search?text=${text}` : null, fetcher);
-  const questions = data?.hits as Array<Question>;
-
-  return {
-    questions,
-    isLoading: !error && !data,
-    error,
-  };
+const searchQuestions = (text: string, page: number) => {
+  return fetcher(`/api/questions/search?text=${text}&page=${page}`);
 };
 
 export function QuestionsSearch({ existingQuestions, onQuestionAdd }: QuestionSearchProps) {
   const [searchText, setSearchText] = useState("");
-  const { questions, isLoading, error } = useSearchQuestions(searchText);
+  const [questions, setQuestions] = useState({
+    items: null,
+    page: 0,
+    nbPages: null,
+    showMore: false,
+  });
+  const { ref, inView, entry } = useInView({ threshold: 0 });
+
+  // Initial search
+  useEffect(() => {
+    if (!searchText) {
+      return;
+    }
+
+    const handleSearch = async () => {
+      const result = await searchQuestions(searchText, 0);
+      setQuestions((prevState) => ({
+        ...prevState,
+        items: result.hits as Question[],
+        nbPages: result.nbPages,
+      }));
+    };
+
+    handleSearch();
+  }, [searchText]);
+
+  // Search more elements when user scrolls to bottom
+  useEffect(() => {
+    const loadMore = async () => {
+      const result = await searchQuestions(searchText, questions.page + 1);
+      setQuestions((prevState) => ({
+        ...prevState,
+        items: [...prevState.items, ...(result.hits as Question[])],
+        page: prevState.page + 1,
+        showMore: false,
+      }));
+    };
+
+    if (!questions.showMore || !searchText) {
+      return;
+    }
+
+    loadMore();
+  }, [searchText, questions.showMore]);
+
+  useEffect(() => {
+    if (inView) {
+      return setQuestions((prevState) => ({
+        ...prevState,
+        showMore: prevState.page + 1 < prevState.nbPages,
+      }));
+    }
+  }, [inView]);
 
   return (
     <div className="flex flex-col p-0 md:p-6 mt-4">
@@ -43,9 +89,9 @@ export function QuestionsSearch({ existingQuestions, onQuestionAdd }: QuestionSe
         />
       </div>
       <div className="w-full mt-4 border-t">
-        <div className="flex mt-4">
+        <div className="flex flex-col mt-4">
           <ul className="w-full">
-            {questions?.map((q) => {
+            {questions.items?.map((q) => {
               const alreadyAdded = existingQuestions.some((question) => question.id === q.id);
               return (
                 <QuestionItem
@@ -59,7 +105,9 @@ export function QuestionsSearch({ existingQuestions, onQuestionAdd }: QuestionSe
                         type="button"
                         className={clsx(
                           "inline-flex items-center text-white px-3 py-1 transition duration-150 ease-in-out border rounded-md",
-                          alreadyAdded ? "bg-blue-700" : "bg-blue-400 hover:bg-blue-600"
+                          alreadyAdded
+                            ? "bg-blue-700 cursor-default"
+                            : "bg-blue-400 hover:bg-blue-600"
                         )}
                         onClick={() => onQuestionAdd(q)}
                         disabled={alreadyAdded}
@@ -78,6 +126,8 @@ export function QuestionsSearch({ existingQuestions, onQuestionAdd }: QuestionSe
               );
             })}
           </ul>
+          {questions.items?.length > 0 && <div ref={ref}>No hay más resultados</div>}
+          {searchText && questions.items?.length === 0 && "No se encontraron resultados"}
         </div>
       </div>
     </div>
