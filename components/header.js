@@ -9,7 +9,7 @@ function Avatar({ photoURL, logout }) {
   useClickAway(ref, () => setShowSettings(false));
 
   return (
-    <div className="z-40">
+    <div className="z-10">
       <button
         type="button"
         className="flex items-center focus:outline-none"
@@ -29,16 +29,28 @@ function Avatar({ photoURL, logout }) {
           ref={ref}
           className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl border border-gray-300"
         >
-          <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+          <a
+            href="#"
+            className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200"
+          >
             your profile
           </a>
-          <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+          <a
+            href="#"
+            className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200"
+          >
             Your projects
           </a>
-          <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+          <a
+            href="#"
+            className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200"
+          >
             Help
           </a>
-          <a href="#" className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200">
+          <a
+            href="#"
+            className="block px-4 py-2 text-sm capitalize hover:bg-indigo-200"
+          >
             Settings
           </a>
           <a
@@ -58,7 +70,7 @@ function Header() {
   const { user, logout, loadingUser } = useUser();
 
   return (
-    <header className="bg-white h-12 w-full relative z-50 border-b-2">
+    <header className="bg-white h-12 w-full relative z-10 border-b-2">
       <div className="container max-w-6xl mx-auto h-full flex justify-center sm:justify-between items-center px-8 xl:px-0">
         <Link href="/explore">
           <a className="flex items-center h-5 relative font-black leading-none">
@@ -93,7 +105,9 @@ function Header() {
           </Link>
           <div className="md:hidden border-t border-gray-200 font-medium flex flex-col w-full">
             <Link href="/login">
-              <a className="py-2 text-pink-500 w-full text-center font-bold">Ingresar</a>
+              <a className="py-2 text-pink-500 w-full text-center font-bold">
+                Ingresar
+              </a>
             </Link>
           </div>
         </nav>
@@ -110,7 +124,7 @@ function Header() {
             </>
           )}
           <svg
-            className="hidden lg:block absolute w-screen max-w-3xl -mt-64 -ml-12 left-0 top-0 z-10"
+            className="hidden lg:block absolute w-screen max-w-3xl -mt-64 -ml-12 left-0 top-0"
             viewBox="0 0 818 815"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
