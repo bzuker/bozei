@@ -18,7 +18,7 @@ function Avatar({ photoURL, logout }) {
       >
         <div className="h-10 w-10 overflow-hidden rounded-full border-2">
           <img
-            src={photoURL || "tailwind-logo.svg"}
+            src={photoURL || "/tailwind-logo.svg"}
             className="h-full w-full object-cover"
             alt="avatar"
           />

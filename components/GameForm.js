@@ -309,7 +309,7 @@ function GameForm({ existingGame = null }) {
           </div>
         </div>
       </Layout>
-      <div className="flex justify-end fixed w-full bottom-0 items-center p-1 md:p-2 bg-gray-200">
+      <div className="flex justify-end fixed w-full bottom-0 items-center p-1 md:p-2 bg-gray-200 z-50">
         <Link href="/games">
           <button
             type="button"

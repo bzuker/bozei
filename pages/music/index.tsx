@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "../../components/layout";
 
 const CTA = ({ tag, title, description, button }) => (
-  <div className="flex flex-col max-w-screen-lg overflow-hidden border rounded-lg md:shadow-xl lg:flex-row sm:mx-auto md:mx-5">
+  <div className="flex flex-col max-w-screen-lg overflow-hidden border rounded-lg md:shadow-xl lg:flex-row sm:mx-auto md:mx-5 bg-white">
     <div className="flex flex-col justify-center p-8 lg:p-10">
       <div>
         <p className="inline-block px-3 py-1 mb-4 text-xs font-medium tracking-wider text-purple-600 uppercase bg-purple-200 rounded-full">
@@ -24,6 +24,25 @@ const CTA = ({ tag, title, description, button }) => (
     </div>
   </div>
 );
+
+// On create click, set the room ref
+// musicRoomsRef.doc(roomId).set({
+//   createdBy: user,
+//   status: RoomStatus.Settings,
+//   players: [user],
+//   playedSongs: [],
+//   timeLeft: null,
+//   time: null,
+//   round: 0,
+//   roundQuantity: 0,
+//   question: null,
+//   settings: {
+//     category: null,
+//     playlist: null,
+//     roundQuantity: 0,
+//     difficulty: null,
+//   },
+// });
 
 const Index: React.FC<Props> = ({ ...props }) => {
   return (
