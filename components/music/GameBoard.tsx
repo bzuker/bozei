@@ -1,21 +1,26 @@
 import { Line } from "rc-progress";
-import { Input } from "../input";
 import MusicSvg from "../MusicSvg";
 
-import {
+import React, {
   useState,
   useEffect,
   Fragment,
   SetStateAction,
   Dispatch,
-  useMemo,
 } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import clsx from "clsx";
-import { FaCheck, FaChevronDown, FaRegCopy } from "react-icons/fa";
+import {
+  FaCheck,
+  FaCheckSquare,
+  FaChevronDown,
+  FaRegCopy,
+  FaRegTimesCircle,
+} from "react-icons/fa";
 import { BASE_URL } from "../../utils/constants";
 import useSWR from "swr";
 import {
+  Artist,
   Category,
   RoomData,
   RoomSettings,
@@ -26,6 +31,9 @@ import fetcher from "../../utils/fetcher";
 import RacingFlagSvg from "../svg/RacingFlagSvg";
 import { CallType } from "../../models/Room";
 import DecisionMakingSvg from "../svg/DecisionMakingSvg";
+import { useAudio } from "react-use";
+import TrophySvg from "../svg/TrophySvg";
+import { arrayUnion, musicRoomsRef } from "../../utils/auth/firebase";
 
 interface CustomListboxProps<T> {
   label: string;
@@ -142,7 +150,7 @@ export const SettingsBoard: React.FC<SettingsBoardProps> = ({
   const [rounds, setRounds] = useState({ id: "10", rounds: 10 });
   const [difficulty, setDifficulty] = useState({
     id: "medium",
-    seconds: 5, //TODO CHANGE BACK
+    seconds: 20,
     description: "Media (20s)",
   });
   const { data: playlistsOptions = [] } = useSWR<
@@ -278,32 +286,135 @@ export const Starting: React.FC<StartingProps> = ({ ...props }) => {
 
 interface StartingProps {}
 
-export const Question: React.FC<QuestionProps> = ({ song, ...props }) => {
+export const Question: React.FC<QuestionProps> = ({
+  roomId,
+  currentRound,
+  ...props
+}) => {
+  const { question } = currentRound;
+  const { song } = question;
+  const [audio] = useAudio({
+    src: song.url,
+    autoPlay: true,
+  });
+  const [selectedAnswer, setSelectedAnswer] = useState<string>(null);
+
+  const submitSelectedOption = (answerId: string) => {
+    setSelectedAnswer(answerId);
+    musicRoomsRef.doc(roomId).update({
+      [`currentRound.playerAnswers`]: arrayUnion({
+        playerId: "bzuker",
+        answerId,
+      }),
+    });
+  };
+
+  const options: Artist[] | Song[] =
+    question.guessType === "artist" ? song.artistOptions : song.trackOptions;
+
   return (
     <>
+      {audio}
       <div className="flex justify-center p-5">
         <div className="flex flex-col align-middle items-center">
           <MusicSvg className="w-20 mb-2" />
-          <div className="text-lg bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-indigo-400">
-            Adiviná la canción o el artista
+          <div className="text-3xl bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-indigo-400">
+            Adiviná{" "}
+            {question.guessType === "artist" ? "quién canta" : "la canción"}
           </div>
         </div>
       </div>
-      <div className="flex justify-center p-5 pt-0">
-        <input
-          autoFocus
-          type="text"
-          placeholder=""
-          autoComplete="false"
-          className="py-4 placeholder-blue-400 text-gray-700 bg-white rounded border-indigo-300 shadow outline-none focus:outline-none focus:ring w-full text-center text-2xl"
-        />
+      <div className="flex flex-col justify-center p-5 pt-0">
+        {options.map((x) => (
+          <button
+            key={x.id}
+            className={clsx(
+              !selectedAnswer
+                ? "bg-white hover:bg-indigo-100 hover:border-indigo-400"
+                : "cursor-default",
+              selectedAnswer === x.id ? "bg-indigo-200" : "",
+              "flex w-full max-w-screen-md border rounded-lg sm:mx-auto mt-4 focus:outline-none"
+            )}
+            onClick={() => submitSelectedOption(x.id)}
+            disabled={!!selectedAnswer}
+          >
+            <div className="text-left p-2 md:p-6">
+              <h5 className="mb-1 mt-1 text-lg sm:text-2xl leading-snug md:leading-snug">
+                {x.name}
+              </h5>
+            </div>
+          </button>
+        ))}
       </div>
     </>
   );
 };
 
 interface QuestionProps {
-  song: Song;
+  roomId: string;
+  currentRound: RoomData["currentRound"];
+}
+
+export const Answers: React.FC<AnswersProps> = React.memo(
+  ({ currentRound }) => {
+    const { question } = currentRound;
+    const { song } = question;
+
+    const options: Artist[] | Song[] =
+      question.guessType === "artist" ? song.artistOptions : song.trackOptions;
+
+    const selectedAnswer = currentRound.playerAnswers.find(
+      (x) => x.playerId === "bzuker"
+    );
+    const isCorrectAnswer = (id: string) =>
+      question.guessType === "artist" ? song.artist.id === id : song.id === id;
+
+    return (
+      <>
+        <div className="flex justify-center p-5">
+          <div className="flex flex-col align-middle items-center">
+            {isCorrectAnswer(selectedAnswer?.answerId) ? (
+              <>
+                <FaCheckSquare className="w-20 h-20 mb-2 text-green-500" />
+                <div className="text-3xl text-green-500">Muy bien!</div>
+              </>
+            ) : (
+              <>
+                <FaRegTimesCircle className="w-20 h-20 mb-2 text-red-500" />
+                <div className="text-3xl text-red-500">
+                  Respuesta incorrecta
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col justify-center p-5 pt-0">
+          {options.map((x) => (
+            <button
+              key={x.id}
+              className={clsx(
+                isCorrectAnswer(x.id) && "bg-green-300 border-green-600",
+                selectedAnswer?.answerId === x.id &&
+                  "bg-red-300 border-red-500",
+                "flex w-full max-w-screen-md border rounded-lg sm:mx-auto mt-4 focus:outline-none"
+              )}
+              disabled
+            >
+              <div className="text-left p-2 md:p-6">
+                <h5 className="mb-1 mt-1 text-lg sm:text-2xl leading-snug md:leading-snug">
+                  {x.name}
+                </h5>
+              </div>
+            </button>
+          ))}
+        </div>
+      </>
+    );
+  }
+);
+
+interface AnswersProps {
+  currentRound: RoomData["currentRound"];
 }
 
 export const HeaderStats: React.FC<HeaderStatsProps> = ({
@@ -354,22 +465,23 @@ interface HeaderStatsProps {
 }
 
 export const PlayingBoard: React.FC<PlayingBoardProps> = ({
-  timeEnd,
+  roundEndsTimestamp,
   currentRound,
   status,
   players,
+  roomId,
   ...props
 }) => {
   const [timeFrom, setTimeFrom] = useState(0);
   const [timeLeft, setTimeLeft] = useState(timeFrom);
 
   useEffect(() => {
-    const newTimeFrom = (timeEnd?.toMillis() - Date.now() - 500) / 1000;
-    console.log(`Time left - ${newTimeFrom} - ${new Date().toISOString()}`);
+    const newTimeFrom =
+      (roundEndsTimestamp?.toMillis() - Date.now() - 500) / 1000;
 
     setTimeFrom(newTimeFrom * 1000);
     setTimeLeft(newTimeFrom * 1000);
-  }, [timeEnd]);
+  }, [roundEndsTimestamp?.toMillis()]);
 
   useEffect(() => {
     // exit early when we reach 0
@@ -389,21 +501,80 @@ export const PlayingBoard: React.FC<PlayingBoardProps> = ({
       <HeaderStats timeLeft={timeLeft} player={null} {...props} />
       {status === RoomStatus.Starting && <Starting />}
       {status === RoomStatus.Question && (
-        <Question song={currentRound.question.song} />
+        <Question roomId={roomId} currentRound={currentRound} />
       )}
+
+      {status === RoomStatus.Answers && <Answers currentRound={currentRound} />}
       {status === RoomStatus.RoundLeaderBoard && (
         <RoundLeaderBoard players={currentRound.playerScores} />
       )}
+      {status === RoomStatus.LeaderBoard && <LeaderBoard players={players} />}
     </div>
   );
 };
 
 interface PlayingBoardProps {
-  timeEnd: RoomData["roundEndsTimestamp"];
+  roundEndsTimestamp: RoomData["roundEndsTimestamp"];
   round: RoomData["round"];
   roundQuantity: RoomData["roundQuantity"];
   currentRound: RoomData["currentRound"];
   status: RoomData["status"];
+  players: RoomData["players"];
+  roomId: RoomData["roomId"];
+}
+
+export const LeaderBoard: React.FC<LeaderBoardProps> = ({
+  players,
+  ...props
+}) => {
+  return (
+    <>
+      <div className="flex justify-center p-5">
+        <div className="flex flex-col align-middle items-center">
+          <div className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-indigo-400">
+            Puntajes finales
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center p-5 pt-0">
+        <div className="flex flex-col items-center p-5 rounded-3xl border-yellow-200 border-4 border-dashed">
+          <TrophySvg className="w-20 mb-5" />
+          <div className="text-2xl text-gray-600 text-center">
+            {players[0].displayName}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center p-5 pt-0 divide-y-2">
+        {players.map((player) => (
+          <div
+            key={player.id}
+            className="flex flex-row items-center justify-between py-4 w-1/2"
+          >
+            <div className="flex items-center">
+              <img
+                src={player.photoURL}
+                alt={player.displayName}
+                className="w-8 h-8 rounded-full"
+              />
+              <div className="ml-4">
+                <span className="block font-semibold">
+                  {player.displayName}
+                </span>
+              </div>
+            </div>
+            <div>
+              <span className="block px-3 py-1 text-xs font-extrabold tracking-wide border border-gray-400 rounded-full bg-blue-400 text-white border-transparent">
+                {player.score || 0} pts
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+
+interface LeaderBoardProps {
   players: RoomData["players"];
 }
 
@@ -473,16 +644,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     return <SettingsBoard categories={categories} roomId={roomData.roomId} />;
   }
 
-  return (
-    <PlayingBoard
-      timeEnd={roomData.roundEndsTimestamp}
-      currentRound={roomData.currentRound}
-      players={roomData.players}
-      round={roomData.round}
-      roundQuantity={roomData.roundQuantity}
-      status={roomData.status}
-    />
-  );
+  return <PlayingBoard {...roomData} />;
 };
 
 interface GameBoardProps {

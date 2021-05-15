@@ -41,8 +41,9 @@ export class Room {
           ...roomData,
           status: RoomStatus.Question,
           currentRound: {
-            question: { song },
+            question: { song, guessType: "song" },
             playerScores: [],
+            playerAnswers: [],
           },
           tracks: roomData.tracks,
           round: 1,
@@ -55,15 +56,23 @@ export class Room {
       }
 
       case RoomStatus.Question: {
+        const roundStartTimestamp = roomData.roundEndsTimestamp;
+        const { currentRound, ...rest } = roomData;
+        return {
+          ...rest,
+          status: RoomStatus.Answers,
+          playedSongs: [...roomData.playedSongs, currentRound.question.song],
+          roundStartTimestamp,
+          roundEndsTimestamp: calculateEndTimestamp(roundStartTimestamp, 5),
+        };
+      }
+
+      case RoomStatus.Answers: {
         // If it's the last round, go to LeaderBoard
         if (roomData.round === roomData.roundQuantity) {
           return {
             ...roomData,
             status: RoomStatus.LeaderBoard,
-            playedSongs: [
-              ...roomData.playedSongs,
-              roomData.currentRound.question.song,
-            ],
             currentRound: null,
             roundStartTimestamp: roomData.roundEndsTimestamp,
             roundEndsTimestamp: null,
@@ -74,13 +83,9 @@ export class Room {
         return {
           ...roomData,
           status: RoomStatus.RoundLeaderBoard,
-          playedSongs: [
-            ...roomData.playedSongs,
-            roomData.currentRound.question.song,
-          ],
           roundStartTimestamp,
           // Fixed time between rounds
-          roundEndsTimestamp: calculateEndTimestamp(roundStartTimestamp, 5),
+          roundEndsTimestamp: calculateEndTimestamp(roundStartTimestamp, 4),
         };
       }
 
@@ -93,8 +98,12 @@ export class Room {
           ...roomData,
           status: RoomStatus.Question,
           currentRound: {
-            question: { song },
+            question: {
+              song,
+              guessType: roomData.round % 2 === 0 ? "song" : "artist",
+            },
             playerScores: [],
+            playerAnswers: [],
           },
           tracks: roomData.tracks,
           round: roomData.round + 1,

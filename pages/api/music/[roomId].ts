@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { protos } from "@google-cloud/tasks";
-import { getPlaylistItems } from "../../../lib/spotify";
+import { getPlaylistItems, getReccomendations } from "../../../lib/spotify";
 import { createTask } from "../../../lib/taskQueue";
 import { musicRoomsRef, Timestamp } from "../../../utils/auth/firebase";
 import { RoomData, RoomSettings, RoomStatus } from "../../music/room/[roomId]";
@@ -14,7 +14,7 @@ function buildTask(
   return {
     httpRequest: {
       httpMethod: protos.google.cloud.tasks.v2.HttpMethod.POST,
-      url: `https://2facace7fef7.ngrok.io/api/music/${roomId}`,
+      url: `https://025a5ddefed1.ngrok.io/api/music/${roomId}`,
       body: Buffer.from(payload).toString("base64"),
       headers: {
         "Content-Type": "application/json",
@@ -24,6 +24,34 @@ function buildTask(
       seconds: roomData.roundStartTimestamp.seconds,
     },
   };
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array;
+}
+
+function pickRandomElements<T extends { id: string }>(
+  arr: Array<T>,
+  n: number,
+  avoidId: string
+) {
+  const filteredArray = arr.filter((x) => x.id !== avoidId);
+  let result = new Array(n),
+    len = filteredArray.length,
+    taken = new Array(len);
+  if (n > len)
+    throw new RangeError("getRandom: more elements taken than available");
+  while (n--) {
+    const x = Math.floor(Math.random() * len);
+    result[n] = filteredArray[x in taken ? taken[x] : x];
+    taken[x] = --len in taken ? taken[len] : len;
+  }
+  return result;
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -54,12 +82,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         settings.roundQuantity
       );
 
+      const artists = tracks.map((x) => x.artist.id).slice(0, 5);
+      const recommendations = await getReccomendations(artists);
+
+      const tracksWithOptions = tracks.map((track) => ({
+        ...track,
+        artistOptions: shuffleArray([
+          ...pickRandomElements(recommendations.artists, 3, track.artist.id),
+          track.artist,
+        ]),
+        trackOptions: shuffleArray([
+          ...pickRandomElements(recommendations.songs, 3, track.id),
+          track,
+        ]),
+      }));
+
       const roomData: Partial<RoomData> = {
         status: RoomStatus.Starting,
         playedSongs: [],
         roundQuantity: settings.roundQuantity,
         settings,
-        tracks,
+        tracks: tracksWithOptions,
         roundStartTimestamp: Timestamp.now(),
         roundEndsTimestamp: Timestamp.fromMillis(
           Timestamp.now().toMillis() + 1000 * 5

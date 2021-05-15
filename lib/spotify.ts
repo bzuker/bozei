@@ -66,13 +66,15 @@ export async function getPlaylists(categoryId: string) {
 export async function getPlaylistItems(playlistId: string, quantity: number) {
   await getToken();
   const { body } = await spotifyApi.getPlaylistTracks(playlistId, {
-    limit: quantity,
+    limit: quantity * 2,
+    fields:
+      "items(track(id,name,preview_url,artists(id,name),album(images(url))))",
   });
 
   const { items } = body;
 
   const tracks = items
-    .filter((x) => x.track)
+    .filter((x) => x.track && x.track.preview_url)
     .map(({ track }) => ({
       id: track.id,
       name: track.name,
@@ -80,7 +82,31 @@ export async function getPlaylistItems(playlistId: string, quantity: number) {
       image: track.album?.images[0].url,
       url: track.preview_url,
       playlist: playlistId,
-    }));
+    }))
+    .slice(0, quantity);
 
   return tracks;
+}
+
+export async function getReccomendations(artists: string[]) {
+  await getToken();
+  const { body } = await spotifyApi.getRecommendations({
+    seed_artists: artists,
+  });
+
+  const { tracks } = body;
+
+  const reccomendations = tracks.reduce(
+    (prev, curr) => {
+      prev.artists = [
+        ...prev.artists,
+        ...curr.artists.map((x) => ({ id: x.id, name: x.name })),
+      ];
+      prev.songs = [...prev.songs, { id: curr.id, name: curr.name }];
+      return prev;
+    },
+    { artists: [], songs: [] }
+  );
+
+  return reccomendations;
 }
