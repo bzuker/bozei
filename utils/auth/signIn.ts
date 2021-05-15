@@ -15,3 +15,15 @@ export async function signInWithGoogle() {
     console.log(err.message);
   }
 }
+
+export async function signInAnonymously(displayName: string) {
+  try {
+    const { user } = await auth.signInAnonymously();
+    await user.updateProfile({ displayName });
+
+    const userData = mapUserData({ ...user, displayName });
+    setUserCookie(userData);
+  } catch (err) {
+    console.log(err.message);
+  }
+}

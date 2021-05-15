@@ -1,5 +1,6 @@
 import React from "react";
 import Layout from "../../components/layout";
+import { LoginModal } from "../../components/login/LoginModal";
 
 const CTA = ({ tag, title, description, button }) => (
   <div className="flex flex-col max-w-screen-lg overflow-hidden border rounded-lg md:shadow-xl lg:flex-row sm:mx-auto md:mx-5 bg-white">
@@ -25,28 +26,10 @@ const CTA = ({ tag, title, description, button }) => (
   </div>
 );
 
-// On create click, set the room ref
-// musicRoomsRef.doc(roomId).set({
-//   createdBy: user,
-//   status: RoomStatus.Settings,
-//   players: [user],
-//   playedSongs: [],
-//   timeLeft: null,
-//   time: null,
-//   round: 0,
-//   roundQuantity: 0,
-//   question: null,
-//   settings: {
-//     category: null,
-//     playlist: null,
-//     roundQuantity: 0,
-//     difficulty: null,
-//   },
-// });
-
 const Index: React.FC<Props> = ({ ...props }) => {
   return (
     <Layout>
+      <LoginModal isOpen={true} onClose={() => null} title="Ingresar" />
       <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-5 md:gap-0">
         <CTA
           tag="Jugá ahora!"

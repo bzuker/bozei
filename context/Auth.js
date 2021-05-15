@@ -43,12 +43,17 @@ export default function ProvideAuth({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loadingUser, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, loadingUser, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 
 // Custom hook that shorthands the context
-export const useUser = ({ redirectTo = false, redirectIfFound = false } = {}) => {
+export const useUser = ({
+  redirectTo = false,
+  redirectIfFound = false,
+} = {}) => {
   const router = useRouter();
   const { user, loadingUser, logout } = useContext(AuthContext);
 

@@ -9,7 +9,7 @@ function Avatar({ photoURL, logout }) {
   useClickAway(ref, () => setShowSettings(false));
 
   return (
-    <div className="z-10">
+    <div className="z-50">
       <button
         type="button"
         className="flex items-center focus:outline-none"
@@ -70,7 +70,7 @@ function Header() {
   const { user, logout, loadingUser } = useUser();
 
   return (
-    <header className="bg-white h-12 w-full relative z-10 border-b-2">
+    <header className="bg-white h-12 w-full relative border-b-2">
       <div className="container max-w-6xl mx-auto h-full flex justify-center sm:justify-between items-center px-8 xl:px-0">
         <Link href="/explore">
           <a className="flex items-center h-5 relative font-black leading-none">
