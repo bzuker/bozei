@@ -41,7 +41,7 @@ export enum RoomStatus {
   LeaderBoard = "LeaderBoard",
 }
 
-interface Question {
+export interface Question {
   song: Song;
   guessType: "song" | "artist";
 }
@@ -64,6 +64,7 @@ interface Round {
   playerAnswers: {
     playerId: string;
     answerId: string;
+    timestamp: firebase.firestore.Timestamp;
   }[];
 }
 

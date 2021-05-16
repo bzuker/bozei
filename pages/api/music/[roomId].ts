@@ -14,7 +14,7 @@ function buildTask(
   return {
     httpRequest: {
       httpMethod: protos.google.cloud.tasks.v2.HttpMethod.POST,
-      url: `https://95c4767afb83.ngrok.io/api/music/${roomId}`,
+      url: `https://20407482656a.ngrok.io/api/music/${roomId}`,
       body: Buffer.from(payload).toString("base64"),
       headers: {
         "Content-Type": "application/json",
@@ -140,6 +140,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         roundStartTimestamp,
         roundEndsTimestamp,
       };
+
+      if (fixedRoomData.status === RoomStatus.Answers) {
+        const doc = await roomRef.get();
+        const dbRoomData = doc.data() as RoomData;
+        const currentScores = Room.buildCurrentRoundPlayerScores(dbRoomData);
+        fixedRoomData[`currentRound.playerScores`] = currentScores;
+
+        fixedRoomData.players = Room.getUpdatedPlayerScores(
+          dbRoomData.players,
+          currentScores
+        );
+      }
 
       await roomRef.update(fixedRoomData);
 

@@ -28,7 +28,6 @@ const CTA = ({ tag, title, description, button, onButtonClick }) => {
             onClick={async () => {
               toggle(true);
               await onButtonClick();
-              toggle(false);
             }}
             disabled={loading}
           >

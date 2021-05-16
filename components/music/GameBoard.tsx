@@ -33,8 +33,13 @@ import { CallType } from "../../models/Room";
 import DecisionMakingSvg from "../svg/DecisionMakingSvg";
 import { useAudio } from "react-use";
 import TrophySvg from "../svg/TrophySvg";
-import { arrayUnion, musicRoomsRef } from "../../utils/auth/firebase";
+import {
+  arrayUnion,
+  musicRoomsRef,
+  Timestamp,
+} from "../../utils/auth/firebase";
 import { useUser } from "../../context/Auth";
+import { isCorrectAnswer } from "../../lib/musicHelpers";
 
 interface CustomListboxProps<T> {
   label: string;
@@ -311,6 +316,7 @@ export const Question: React.FC<QuestionProps> = ({
 }) => {
   const { question } = currentRound;
   const { song } = question;
+  const { user } = useUser();
   const [audio] = useAudio({
     src: song.url,
     autoPlay: true,
@@ -321,8 +327,9 @@ export const Question: React.FC<QuestionProps> = ({
     setSelectedAnswer(answerId);
     musicRoomsRef.doc(roomId).update({
       [`currentRound.playerAnswers`]: arrayUnion({
-        playerId: "bzuker",
+        playerId: user.id,
         answerId,
+        timestamp: Timestamp.now(),
       }),
     });
   };
@@ -375,6 +382,7 @@ interface QuestionProps {
 
 export const Answers: React.FC<AnswersProps> = React.memo(
   ({ currentRound }) => {
+    const { user } = useUser();
     const { question } = currentRound;
     const { song } = question;
 
@@ -382,16 +390,14 @@ export const Answers: React.FC<AnswersProps> = React.memo(
       question.guessType === "artist" ? song.artistOptions : song.trackOptions;
 
     const selectedAnswer = currentRound.playerAnswers.find(
-      (x) => x.playerId === "bzuker"
+      (x) => x.playerId === user.id
     );
-    const isCorrectAnswer = (id: string) =>
-      question.guessType === "artist" ? song.artist.id === id : song.id === id;
 
     return (
       <>
         <div className="flex justify-center p-5">
           <div className="flex flex-col align-middle items-center">
-            {isCorrectAnswer(selectedAnswer?.answerId) ? (
+            {isCorrectAnswer(selectedAnswer?.answerId, question) ? (
               <>
                 <FaCheckSquare className="w-20 h-20 mb-2 text-green-500" />
                 <div className="text-3xl text-green-500">Muy bien!</div>
@@ -411,7 +417,8 @@ export const Answers: React.FC<AnswersProps> = React.memo(
             <button
               key={x.id}
               className={clsx(
-                isCorrectAnswer(x.id) && "bg-green-300 border-green-600",
+                isCorrectAnswer(x.id, question) &&
+                  "bg-green-300 border-green-600",
                 selectedAnswer?.answerId === x.id &&
                   "bg-red-300 border-red-500",
                 "flex w-full max-w-screen-md border rounded-lg sm:mx-auto mt-4 focus:outline-none"
@@ -451,7 +458,7 @@ export const HeaderStats: React.FC<HeaderStatsProps> = ({
       </div>
       <div className="flex align-middle justify-center w-1/3">
         <div className="rounded-full h-16 w-16 flex items-center justify-center border-yellow-400 border-solid border-8 font-bold tracking-wide">
-          {(timeLeft / 1000).toFixed(0)}
+          {Number.isInteger(timeLeft) ? (timeLeft / 1000).toFixed(0) : "-"}
         </div>
       </div>
       <div className="flex justify-end w-1/3">
@@ -600,6 +607,7 @@ export const RoundLeaderBoard: React.FC<RoundLeaderBoardProps> = ({
   players,
   ...props
 }) => {
+  const noCorrectAnswers = !players.some((x) => x.score > 0);
   return (
     <>
       <div className="flex justify-center p-5">
@@ -611,7 +619,7 @@ export const RoundLeaderBoard: React.FC<RoundLeaderBoardProps> = ({
       </div>
       <div className="flex flex-col items-center justify-center p-5 pt-0">
         <DecisionMakingSvg className="w-20 mb-5" />
-        {players.length === 0 && (
+        {noCorrectAnswers && (
           <div className="text-2xl text-gray-600">Nadie adivinó 😔</div>
         )}
       </div>

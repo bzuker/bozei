@@ -1,3 +1,5 @@
+import firebase from "firebase";
+import { isCorrectAnswer } from "../lib/musicHelpers";
 import { RoomStatus, RoomData } from "../pages/music/room/[roomId]";
 import { Timestamp } from "../utils/auth/firebase";
 
@@ -8,6 +10,55 @@ export enum CallType {
 }
 
 export class Room {
+  static getUpdatedPlayerScores(
+    players: RoomData["players"],
+    currentScores: RoomData["players"]
+  ): RoomData["players"] {
+    return players.map((x) => ({
+      ...x,
+      score: x.score + (currentScores.find((p) => p.id === x.id)?.score || 0),
+    }));
+  }
+
+  static buildCurrentRoundPlayerScores(dbRoomData: RoomData) {
+    const {
+      currentRound: { playerAnswers, question },
+      roundStartTimestamp,
+      settings,
+      players,
+    } = dbRoomData;
+    const scores = playerAnswers.map<RoomData["players"][0]>((answer) => {
+      const player = players.find((x) => x.id === answer.playerId);
+      if (!player) return null;
+
+      // Check if the answer was correct
+      if (!isCorrectAnswer(answer.answerId, question)) {
+        return {
+          ...player,
+          score: 0,
+        };
+      }
+      // Calculate how many seconds the player took to answer
+      const secondsToAnswer =
+        (answer.timestamp.toMillis() - roundStartTimestamp.toMillis()) / 1000;
+
+      /* 1. Divide response time by the question timer. For example, a player responded 2 seconds after a 30-second question timer started. 2 divided by 30 is 0.0667. */
+      const step1 = secondsToAnswer / settings.difficulty.seconds;
+      /* 2. Divide that value by 2. For example, 0.0667 divided by 2 is 0.0333. */
+      const step2 = step1 / 2;
+      /* 3. Subtract that value from 1. For example, 1 minus 0.0333 is 0.9667. */
+      const step3 = 1 - step2;
+      /* 4. Multiply points possible by that value. For example, 1000 points possible multiplied by 0.9667 is 966.7. */
+      const step4 = step3 * 1000;
+      /* 5. Round to the nearest whole number. For example, 966.7 is 967 points. */
+      const step5 = Math.round(step4);
+
+      return { ...player, score: step5 };
+    });
+
+    return scores.filter((x) => x).sort((a, b) => b.score - a.score);
+  }
+
   static getInitialData(roomId: string, user): RoomData {
     return {
       roomId,
@@ -63,7 +114,7 @@ export class Room {
           status: RoomStatus.Answers,
           playedSongs: [...roomData.playedSongs, currentRound.question.song],
           roundStartTimestamp,
-          roundEndsTimestamp: calculateEndTimestamp(roundStartTimestamp, 5),
+          roundEndsTimestamp: calculateEndTimestamp(roundStartTimestamp, 3),
         };
       }
 
