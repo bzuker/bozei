@@ -160,8 +160,8 @@ export const SettingsBoard: React.FC<SettingsBoardProps> = ({
   const canSubmit = category && playlist;
 
   return (
-    <div className="flex flex-col h-auto bg-white rounded-lg shadow-xl">
-      <div className="flex p-5 px-10 justify-center">
+    <>
+      <div className="flex md:p-5 md:px-10 justify-center">
         <form
           className="w-full p-6"
           onSubmit={async (evt) => {
@@ -191,7 +191,7 @@ export const SettingsBoard: React.FC<SettingsBoardProps> = ({
             selected={playlist}
             setSelected={setPlaylist}
           />
-          <div className="flex justify-between space-x-5">
+          <div className="flex flex-col md:flex-row justify-between md:space-x-5">
             <div className="flex flex-col w-full">
               <CustomListbox<{ id: string; rounds: number }>
                 label="Cantidad de canciones"
@@ -240,7 +240,9 @@ export const SettingsBoard: React.FC<SettingsBoardProps> = ({
                 // onClick={handleCopy}
                 className="flex items-center rounded rounded-l-none border border-l-0 border-grey-light px-3 whitespace-no-wrap bg-gray-200 hover:bg-gray-300 focus:outline-none"
               >
-                {false ? "Copiado!" : "Copiar"}
+                <div className="hidden md:block">
+                  {false ? "Copiado!" : "Copiar"}
+                </div>
                 <FaRegCopy size="1em" className="ml-2" />
               </button>
             </div>
@@ -260,7 +262,7 @@ export const SettingsBoard: React.FC<SettingsBoardProps> = ({
           </button>
         </form>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -496,7 +498,7 @@ export const PlayingBoard: React.FC<PlayingBoardProps> = ({
   }, [timeLeft]);
 
   return (
-    <div className="flex flex-col h-auto overflow-hidden bg-white rounded-lg shadow-xl">
+    <>
       <Line percent={(timeLeft / timeFrom) * 100} strokeColor="#b794f4" />
       <HeaderStats timeLeft={timeLeft} player={null} {...props} />
       {status === RoomStatus.Starting && <Starting />}
@@ -509,7 +511,7 @@ export const PlayingBoard: React.FC<PlayingBoardProps> = ({
         <RoundLeaderBoard players={currentRound.playerScores} />
       )}
       {status === RoomStatus.LeaderBoard && <LeaderBoard players={players} />}
-    </div>
+    </>
   );
 };
 
@@ -548,7 +550,7 @@ export const LeaderBoard: React.FC<LeaderBoardProps> = ({
         {players.map((player) => (
           <div
             key={player.id}
-            className="flex flex-row items-center justify-between py-4 w-1/2"
+            className="flex flex-row items-center justify-between py-4 w-full md:w-1/2"
           >
             <div className="flex items-center">
               <img
@@ -601,7 +603,7 @@ export const RoundLeaderBoard: React.FC<RoundLeaderBoardProps> = ({
         {players.map((player) => (
           <div
             key={player.id}
-            className="flex flex-row items-center justify-between py-4 w-1/2"
+            className="flex flex-row items-center justify-between py-4 w-full md:w-1/2"
           >
             <div className="flex items-center">
               <img
@@ -640,11 +642,22 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     return null;
   }
 
+  let component;
   if (roomData.status === RoomStatus.Settings) {
-    return <SettingsBoard categories={categories} roomId={roomData.roomId} />;
+    console.log("hola");
+
+    component = (
+      <SettingsBoard categories={categories} roomId={roomData.roomId} />
+    );
+  } else {
+    component = <PlayingBoard {...roomData} />;
   }
 
-  return <PlayingBoard {...roomData} />;
+  return (
+    <div className="flex flex-col h-auto overflow-hidden bg-white rounded-lg shadow-xl">
+      {component}
+    </div>
+  );
 };
 
 interface GameBoardProps {

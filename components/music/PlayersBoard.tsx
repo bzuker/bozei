@@ -25,14 +25,14 @@ export const PlayersBoard: React.FC<PlayersBoardProps> = ({ players = [] }) => {
                 alt={player.displayName}
                 className="w-8 h-8 rounded-full"
               />
-              <div className="ml-4">
+              <div className="flex ml-4">
                 <span className="block font-semibold">
                   {i + 1}. {player.displayName}
                 </span>
               </div>
             </div>
-            <div>
-              <span className="block px-3 py-1 text-xs font-extrabold tracking-wide border border-gray-400 rounded-full bg-blue-400 text-white border-transparent">
+            <div className="flex ml-1">
+              <span className="block px-3 py-1 text-xs font-extrabold tracking-wide border border-gray-400 rounded-full bg-blue-400 text-white border-transparent whitespace-nowrap">
                 {player.score || 0} pts
               </span>
             </div>
