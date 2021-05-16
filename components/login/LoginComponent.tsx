@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
-import { FaFacebook, FaRandom, FaRegCopy, FaUser } from "react-icons/fa";
-import { signInAnonymously, signInWithGoogle } from "../../utils/auth/signIn";
+import { FaFacebook, FaRandom, FaSalesforce } from "react-icons/fa";
+import { useToggle } from "react-use";
+import { useUser } from "../../context/Auth";
 
 function LoginButton({ text, icon, onClick }) {
   async function handleClick() {
@@ -50,7 +50,9 @@ export const LoginComponent: React.FC<LoginComponentProps> = ({
   onLoginCompleted,
   ...props
 }) => {
+  const { signInAnonymously, signInWithGoogle } = useUser();
   const [displayName, setDisplayName] = useState(getRandomUsername());
+  const [isLoading, toggle] = useToggle(false);
   return (
     <div className="flex flex-col items-center justify-center mt-4 w-full">
       <LoginButton
@@ -75,9 +77,9 @@ export const LoginComponent: React.FC<LoginComponentProps> = ({
             />
           </svg>
         }
-        onClick={() => {
-          signInWithGoogle();
-          onLoginCompleted();
+        onClick={async () => {
+          const user = await signInWithGoogle();
+          onLoginCompleted(user);
         }}
       />
       <LoginButton
@@ -98,8 +100,9 @@ export const LoginComponent: React.FC<LoginComponentProps> = ({
         className="flex flex-col justify-center items-center w-full sm:w-2/3"
         onSubmit={async (evt) => {
           evt.preventDefault();
-          await signInAnonymously(displayName);
-          onLoginCompleted();
+          toggle(true);
+          const user = await signInAnonymously(displayName);
+          onLoginCompleted(user);
         }}
       >
         <label htmlFor="displayName" className="w-full">
@@ -129,9 +132,18 @@ export const LoginComponent: React.FC<LoginComponentProps> = ({
         <div className="w-full mt-6">
           <button
             type="submit"
-            className="w-full px-4 py-2 text-center text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
+            className="w-full px-4 py-3 text-center text-white bg-indigo-600 rounded-md hover:bg-indigo-500"
+            disabled={isLoading}
           >
-            Ingresar
+            {isLoading ? (
+              <div className="flex justify-center space-x-2 animate-pulse py-1 px-1">
+                <div className="w-3 h-3 bg-white rounded-full"></div>
+                <div className="w-3 h-3 bg-white rounded-full"></div>
+                <div className="w-3 h-3 bg-white rounded-full"></div>
+              </div>
+            ) : (
+              <div>Ingresar</div>
+            )}
           </button>
         </div>
       </form>
@@ -140,5 +152,5 @@ export const LoginComponent: React.FC<LoginComponentProps> = ({
 };
 
 interface LoginComponentProps {
-  onLoginCompleted: () => void;
+  onLoginCompleted: (user) => void;
 }

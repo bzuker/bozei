@@ -11,6 +11,7 @@ export async function signInWithGoogle() {
     const { user } = await auth.signInWithPopup(googleProvider);
     const userData = mapUserData(user);
     setUserCookie(userData);
+    return userData;
   } catch (err) {
     console.log(err.message);
   }
@@ -19,10 +20,14 @@ export async function signInWithGoogle() {
 export async function signInAnonymously(displayName: string) {
   try {
     const { user } = await auth.signInAnonymously();
-    await user.updateProfile({ displayName });
+    await user.updateProfile({
+      displayName,
+      photoURL: `https://avatars.dicebear.com/api/gridy/${displayName}.svg`,
+    });
 
     const userData = mapUserData({ ...user, displayName });
     setUserCookie(userData);
+    return userData;
   } catch (err) {
     console.log(err.message);
   }

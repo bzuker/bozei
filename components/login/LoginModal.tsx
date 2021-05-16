@@ -10,7 +10,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose} title={title} {...props}>
-      <div className="flex items-center justify-center p-10 mx-12">
+      <div className="flex items-center justify-center p-5 md:p-10 md:mx-12">
         <LoginComponent onLoginCompleted={onLoginCompleted} />
       </div>
     </Modal>
@@ -21,5 +21,5 @@ interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  onLoginCompleted?: () => void;
+  onLoginCompleted?: (user) => any;
 }
