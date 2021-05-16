@@ -34,6 +34,7 @@ import DecisionMakingSvg from "../svg/DecisionMakingSvg";
 import { useAudio } from "react-use";
 import TrophySvg from "../svg/TrophySvg";
 import { arrayUnion, musicRoomsRef } from "../../utils/auth/firebase";
+import { useUser } from "../../context/Auth";
 
 interface CustomListboxProps<T> {
   label: string;
@@ -41,6 +42,7 @@ interface CustomListboxProps<T> {
   renderOption: (selected: T) => string;
   selected: T;
   setSelected: Dispatch<SetStateAction<T>>;
+  disabled?: boolean;
 }
 
 function CustomListbox<T extends { id: string }>({
@@ -49,16 +51,22 @@ function CustomListbox<T extends { id: string }>({
   renderOption,
   selected,
   setSelected,
+  disabled = false,
 }: CustomListboxProps<T>) {
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox value={selected} onChange={setSelected} disabled={disabled}>
       {({ open }) => (
         <>
           <Listbox.Label className="mt-4 mb-1 block font-normal text-gray-500">
             {label}
           </Listbox.Label>
           <div className="mt-1 relative">
-            <Listbox.Button className="relative h-12 w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm md:text-base">
+            <Listbox.Button
+              className={clsx(
+                disabled && "bg-gray-300 cursor-not-allowed",
+                "relative h-12 w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm md:text-base"
+              )}
+            >
               <span className="flex items-center">
                 <span className="block truncate">{renderOption(selected)}</span>
               </span>
@@ -143,8 +151,10 @@ async function startMusicRoom(roomId: string, settings: RoomSettings) {
 export const SettingsBoard: React.FC<SettingsBoardProps> = ({
   categories,
   roomId,
+  createdBy,
   ...props
 }) => {
+  const { user } = useUser();
   const [category, setCategory] = useState<typeof categories[0]>(null);
   const [playlist, setPlaylist] = useState(null);
   const [rounds, setRounds] = useState({ id: "10", rounds: 10 });
@@ -158,117 +168,123 @@ export const SettingsBoard: React.FC<SettingsBoardProps> = ({
   >(() => `/api/spotify/playlists?categoryId=${category.id}`);
 
   const canSubmit = category && playlist;
+  const isCreatorOfGame = user?.id === createdBy.id;
 
   return (
-    <>
-      <div className="flex md:p-5 md:px-10 justify-center">
-        <form
-          className="w-full p-6"
-          onSubmit={async (evt) => {
-            evt.preventDefault();
-            await startMusicRoom(roomId, {
-              category,
-              playlist,
-              roundQuantity: rounds.rounds,
-              difficulty,
-            });
-          }}
-        >
-          <h1 className="mr-auto text-xl font-semibold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-800">
-            Creá tu juego
-          </h1>
-          <CustomListbox<typeof categories[0]>
-            label="Categoría"
-            options={categories}
-            renderOption={(category) => (category ? category.name : "-")}
-            selected={category}
-            setSelected={setCategory}
-          />
-          <CustomListbox<typeof playlistsOptions[0]>
-            label="Playlist"
-            options={playlistsOptions}
-            renderOption={(playlist) => (playlist ? playlist.name : "-")}
-            selected={playlist}
-            setSelected={setPlaylist}
-          />
-          <div className="flex flex-col md:flex-row justify-between md:space-x-5">
-            <div className="flex flex-col w-full">
-              <CustomListbox<{ id: string; rounds: number }>
-                label="Cantidad de canciones"
-                options={[
-                  { id: "5", rounds: 5 },
-                  { id: "10", rounds: 10 },
-                  { id: "15", rounds: 15 },
-                  { id: "20", rounds: 20 },
-                ]}
-                renderOption={(option) => option.rounds.toString()}
-                selected={rounds}
-                setSelected={setRounds}
-              />
-            </div>
-            <div className="flex flex-col w-full">
-              <CustomListbox<{
-                id: string;
-                seconds: number;
-                description: string;
-              }>
-                label="Dificultad"
-                options={[
-                  { id: "easy", seconds: 30, description: "Fácil (30s)" },
-                  { id: "medium", seconds: 20, description: "Media (20s)" },
-                  { id: "hard", seconds: 10, description: "Difícil (10s)" },
-                ]}
-                renderOption={(option) => option.description}
-                selected={difficulty}
-                setSelected={setDifficulty}
-              />
-            </div>
-          </div>
-          <label className="mt-4 mb-1 block font-normal text-gray-500">
-            Link para compartir
-          </label>
-          <div className="flex w-full my-2">
-            <input
-              type="text"
-              className="relative h-12 w-full bg-white border border-gray-300 border-r-0 rounded-l-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm md:text-base"
-              value={`${BASE_URL}/music/room/${roomId}`}
-              disabled
+    <div className="flex md:p-5 md:px-10 justify-center">
+      <form
+        className="w-full p-6"
+        onSubmit={async (evt) => {
+          evt.preventDefault();
+          await startMusicRoom(roomId, {
+            category,
+            playlist,
+            roundQuantity: rounds.rounds,
+            difficulty,
+          });
+        }}
+      >
+        <h1 className="mr-auto text-xl font-semibold tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-800">
+          Creá tu juego
+        </h1>
+        <CustomListbox<typeof categories[0]>
+          label="Categoría"
+          options={categories}
+          renderOption={(category) => (category ? category.name : "-")}
+          selected={category}
+          setSelected={setCategory}
+          disabled={!isCreatorOfGame}
+        />
+        <CustomListbox<typeof playlistsOptions[0]>
+          label="Playlist"
+          options={playlistsOptions}
+          renderOption={(playlist) => (playlist ? playlist.name : "-")}
+          selected={playlist}
+          setSelected={setPlaylist}
+          disabled={!isCreatorOfGame}
+        />
+        <div className="flex flex-col md:flex-row justify-between md:space-x-5">
+          <div className="flex flex-col w-full">
+            <CustomListbox<{ id: string; rounds: number }>
+              label="Cantidad de canciones"
+              options={[
+                { id: "5", rounds: 5 },
+                { id: "10", rounds: 10 },
+                { id: "15", rounds: 15 },
+                { id: "20", rounds: 20 },
+              ]}
+              renderOption={(option) => option.rounds.toString()}
+              selected={rounds}
+              setSelected={setRounds}
+              disabled={!isCreatorOfGame}
             />
-            <div className="flex">
-              <button
-                type="button"
-                // onClick={handleCopy}
-                className="flex items-center rounded rounded-l-none border border-l-0 border-grey-light px-3 whitespace-no-wrap bg-gray-200 hover:bg-gray-300 focus:outline-none"
-              >
-                <div className="hidden md:block">
-                  {false ? "Copiado!" : "Copiar"}
-                </div>
-                <FaRegCopy size="1em" className="ml-2" />
-              </button>
-            </div>
           </div>
-          <button
-            className={clsx(
-              "flex flex-row items-center justify-center mt-7 w-full p-4 pb-3 rounded-md text-white",
-              canSubmit
-                ? "bg-purple-400 hover:bg-purple-600"
-                : "bg-gray-400 opacity-50 cursor-not-allowed"
-            )}
-            disabled={!canSubmit}
-          >
-            <h2 className="text-lg font-semibold tracking-wider subpixel-antialiased">
-              Empezar
-            </h2>
-          </button>
-        </form>
-      </div>
-    </>
+          <div className="flex flex-col w-full">
+            <CustomListbox<{
+              id: string;
+              seconds: number;
+              description: string;
+            }>
+              label="Dificultad"
+              options={[
+                { id: "easy", seconds: 30, description: "Fácil (30s)" },
+                { id: "medium", seconds: 20, description: "Media (20s)" },
+                { id: "hard", seconds: 10, description: "Difícil (10s)" },
+              ]}
+              renderOption={(option) => option.description}
+              selected={difficulty}
+              setSelected={setDifficulty}
+              disabled={!isCreatorOfGame}
+            />
+          </div>
+        </div>
+        <label className="mt-4 mb-1 block font-normal text-gray-500">
+          Link para compartir
+        </label>
+        <div className="flex w-full my-2">
+          <input
+            type="text"
+            className="relative h-12 w-full bg-white border border-gray-300 border-r-0 rounded-l-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm md:text-base"
+            value={`${BASE_URL}/music/room/${roomId}`}
+            disabled
+          />
+          <div className="flex">
+            <button
+              type="button"
+              // onClick={handleCopy}
+              className="flex items-center rounded rounded-l-none border border-l-0 border-grey-light px-3 whitespace-no-wrap bg-gray-200 hover:bg-gray-300 focus:outline-none"
+            >
+              <div className="hidden md:block">
+                {false ? "Copiado!" : "Copiar"}
+              </div>
+              <FaRegCopy size="1em" className="ml-2" />
+            </button>
+          </div>
+        </div>
+        <button
+          className={clsx(
+            "flex flex-row items-center justify-center mt-7 w-full p-4 pb-3 rounded-md text-white",
+            isCreatorOfGame && canSubmit
+              ? "bg-purple-400 hover:bg-purple-600"
+              : "bg-gray-400 opacity-50 cursor-not-allowed"
+          )}
+          disabled={!canSubmit}
+        >
+          <h2 className="text-lg font-semibold tracking-wider subpixel-antialiased">
+            {isCreatorOfGame
+              ? "Empezar"
+              : `${createdBy.displayName} va a empezar el juego`}
+          </h2>
+        </button>
+      </form>
+    </div>
   );
 };
 
 interface SettingsBoardProps {
   categories: GameBoardProps["categories"];
   roomId: string;
+  createdBy: RoomData["createdBy"];
 }
 
 export const Starting: React.FC<StartingProps> = ({ ...props }) => {
@@ -644,10 +660,12 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
   let component;
   if (roomData.status === RoomStatus.Settings) {
-    console.log("hola");
-
     component = (
-      <SettingsBoard categories={categories} roomId={roomData.roomId} />
+      <SettingsBoard
+        categories={categories}
+        roomId={roomData.roomId}
+        createdBy={roomData.createdBy}
+      />
     );
   } else {
     component = <PlayingBoard {...roomData} />;
