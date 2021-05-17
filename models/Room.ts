@@ -14,10 +14,12 @@ export class Room {
     players: RoomData["players"],
     currentScores: RoomData["players"]
   ): RoomData["players"] {
-    return players.map((x) => ({
-      ...x,
-      score: x.score + (currentScores.find((p) => p.id === x.id)?.score || 0),
-    }));
+    return players
+      .map((x) => ({
+        ...x,
+        score: x.score + (currentScores.find((p) => p.id === x.id)?.score || 0),
+      }))
+      .sort((a, b) => b.score - a.score);
   }
 
   static buildCurrentRoundPlayerScores(dbRoomData: RoomData) {

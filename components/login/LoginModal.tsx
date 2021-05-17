@@ -3,8 +3,8 @@ import { LoginComponent } from "./LoginComponent";
 
 export const LoginModal: React.FC<LoginModalProps> = ({
   isOpen,
-  onClose,
   title,
+  onClose = () => null,
   onLoginCompleted = () => null,
   ...props
 }) => {
@@ -19,7 +19,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
 interface LoginModalProps {
   isOpen: boolean;
-  onClose: () => void;
   title: string;
+  onClose?: () => void;
   onLoginCompleted?: (user) => any;
 }

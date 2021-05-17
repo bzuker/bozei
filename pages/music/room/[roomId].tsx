@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { GetStaticPaths, InferGetStaticPropsType } from "next";
 import firebase from "firebase/app";
-import { useDocumentData } from "react-firebase-hooks/firestore";
+import { useDocument } from "react-firebase-hooks/firestore";
 import Layout from "../../../components/layout";
 import Room from "../../../components/music/Room";
 import { getCategories } from "../../../lib/spotify";
-import { musicRoomsRef, Timestamp } from "../../../utils/auth/firebase";
+import { arrayUnion, musicRoomsRef } from "../../../utils/auth/firebase";
 import { useUser } from "../../../context/Auth";
+import { LoginModal } from "../../../components/login/LoginModal";
 
 interface Player {
   id: string;
@@ -93,10 +94,32 @@ export interface RoomData {
 export const RoomPage: React.FC<
   InferGetStaticPropsType<typeof getStaticProps>
 > = ({ categories, roomId }) => {
-  const { user } = useUser();
-  const [roomData, loading, error] = useDocumentData<RoomData>(
+  const { user, loadingUser } = useUser();
+  const [roomDoc, loading, error] = useDocument<RoomData>(
     musicRoomsRef.doc(roomId)
   );
+  const roomData = roomDoc?.data();
+
+  useEffect(() => {
+    async function addNewPlayer() {
+      if (!user?.displayName || !roomData) return;
+      if (roomData?.players.find((x) => x.id === user.id)) return;
+
+      await roomDoc.ref.update({ players: arrayUnion(user) });
+    }
+
+    addNewPlayer();
+  }, [user, roomData?.players]);
+
+  if (loadingUser) return null;
+
+  if (!user) {
+    return (
+      <Layout>
+        <LoginModal isOpen title="Ingresar" />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
