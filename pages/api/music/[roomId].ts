@@ -6,6 +6,8 @@ import { musicRoomsRef, Timestamp } from "../../../utils/auth/firebase";
 import { RoomData, RoomSettings, RoomStatus } from "../../music/room/[roomId]";
 import { CallType, Room } from "../../../models/Room";
 
+const url = process.env.VERCEL_URL || "20407482656a.ngrok.io";
+
 function buildTask(
   roomId: string,
   roomData: Partial<RoomData>
@@ -14,7 +16,7 @@ function buildTask(
   return {
     httpRequest: {
       httpMethod: protos.google.cloud.tasks.v2.HttpMethod.POST,
-      url: `https://20407482656a.ngrok.io/api/music/${roomId}`,
+      url: `https://${url}/api/music/${roomId}`,
       body: Buffer.from(payload).toString("base64"),
       headers: {
         "Content-Type": "application/json",
@@ -126,7 +128,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     case CallType.UPDATE: {
       const { roomData }: { roomData: Partial<RoomData> } = req.body;
-      console.log({ roomData, headers: req.headers });
 
       const roundStartTimestamp =
         roomData.roundStartTimestamp &&
