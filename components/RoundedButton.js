@@ -3,11 +3,12 @@ import clsx from "clsx";
 export default function RoundedButton({
   id,
   Icon,
-  imageURL,
-  imageAlt,
+  imageURL = null,
+  imageAlt = null,
   iconBgColor,
-  label,
+  label = null,
   onClick,
+  size = 16,
 }) {
   return (
     <button
@@ -21,7 +22,7 @@ export default function RoundedButton({
     >
       <div
         className={clsx([
-          "h-16 flex items-center justify-center p-2 rounded-full w-16",
+          `h-${size} flex items-center justify-center p-2 rounded-full w-${size}`,
           iconBgColor,
         ])}
       >

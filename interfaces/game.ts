@@ -1,10 +1,10 @@
-import { firestore } from "firebase";
+import { Timestamp } from "../utils/auth/firebase";
 
 export interface Game {
   id: string;
   userId: string;
-  createdAt: firestore.Timestamp;
-  updatedAt: firestore.Timestamp;
+  createdAt: typeof Timestamp;
+  updatedAt: typeof Timestamp;
   title: string;
   description: string;
   image: string;

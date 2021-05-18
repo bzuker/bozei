@@ -24,12 +24,29 @@ if (firebase.apps.length) {
 
 const auth = firebase.auth();
 const db = firebaseApp.firestore();
-const { Timestamp } = firebase.firestore;
+const {
+  Timestamp,
+  FieldValue: { arrayRemove, arrayUnion },
+} = firebase.firestore;
+const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp();
 
 const gamesRef = db.collection("games");
 const publicQuestionsRef = db.collection("publicQuestions");
+const musicRoomsRef = db.collection("musicRooms");
 const storage = firebase.storage();
 
 const createBatch = () => db.batch();
 
-export { db, auth, storage, createBatch, gamesRef, publicQuestionsRef, Timestamp };
+export {
+  db,
+  auth,
+  storage,
+  createBatch,
+  gamesRef,
+  publicQuestionsRef,
+  musicRoomsRef,
+  Timestamp,
+  serverTimestamp,
+  arrayRemove,
+  arrayUnion,
+};

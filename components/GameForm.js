@@ -1,6 +1,11 @@
 import { useRouter } from "next/router";
 import { Controller, useForm } from "react-hook-form";
-import { FaPencilAlt, FaPlus, FaRegTrashAlt, FaSearchPlus } from "react-icons/fa";
+import {
+  FaPencilAlt,
+  FaPlus,
+  FaRegTrashAlt,
+  FaSearchPlus,
+} from "react-icons/fa";
 import clsx from "clsx";
 import Link from "next/link";
 import { useReducer, useState } from "react";
@@ -24,7 +29,9 @@ function CreateForm({ register, errors, control, image, setImage }) {
         <div className="flex flex-wrap mb-0 md:mb-3 -mx-3">
           <div className="w-full md:w-2/3">
             <div className="w-full px-3 mb-2">
-              <label className="block mb-2 font-bold tracking-wide text-gray-700">Nombre</label>
+              <label className="block mb-2 font-bold tracking-wide text-gray-700">
+                Nombre
+              </label>
               <input
                 className="block w-full px-4 py-3 mb-3 leading-tight text-gray-700 bg-gray-200 border border-gray-400 rounded appearance-none focus:outline-none focus:bg-white text-sm md:text-base"
                 type="text"
@@ -32,7 +39,9 @@ function CreateForm({ register, errors, control, image, setImage }) {
                 name="title"
                 ref={register({ required: true })}
               />
-              {errors.title && <p className="text-red-500">* Falta completar este campo</p>}
+              {errors.title && (
+                <p className="text-red-500">* Falta completar este campo</p>
+              )}
             </div>
             <div className="w-full px-3 mb-2">
               <label className="block mb-2 font-bold tracking-wide text-gray-700">
@@ -47,7 +56,9 @@ function CreateForm({ register, errors, control, image, setImage }) {
               />
             </div>
             <div className="w-full px-3">
-              <label className="block mb-2 font-bold tracking-wide text-gray-700">Tags</label>
+              <label className="block mb-2 font-bold tracking-wide text-gray-700">
+                Tags
+              </label>
               <Controller
                 as={Select}
                 options={TAGS.map((x) => ({ value: x, label: x }))}
@@ -55,7 +66,9 @@ function CreateForm({ register, errors, control, image, setImage }) {
                 isMulti
                 control={control}
                 placeholder="Elegí una o más categorías"
-                noOptionsMessage={({ inputValue }) => `${inputValue} no es una categoría válida`}
+                noOptionsMessage={({ inputValue }) =>
+                  `${inputValue} no es una categoría válida`
+                }
                 closeMenuOnSelect={false}
                 tabSelectsValue={false}
               />
@@ -123,14 +136,16 @@ function GameForm({ existingGame = null }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { user } = useUser({ redirectTo: "/login" });
   const router = useRouter();
-  const { handleSubmit, setError, clearErrors, errors, ...formProps } = useForm({
-    defaultValues: {
-      title: existingGame?.title,
-      description: existingGame?.description,
-      isPublic: existingGame?.isPublic,
-      tags: existingGame?.tags || [],
-    },
-  });
+  const { handleSubmit, setError, clearErrors, errors, ...formProps } = useForm(
+    {
+      defaultValues: {
+        title: existingGame?.title,
+        description: existingGame?.description,
+        isPublic: existingGame?.isPublic,
+        tags: existingGame?.tags || [],
+      },
+    }
+  );
   const [questions, setQuestions] = useState(existingGame?.questions || []);
   const [image, setImage] = useState({ preview: existingGame?.image });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -141,7 +156,9 @@ function GameForm({ existingGame = null }) {
   });
 
   const onSaveQuestion = (question) => {
-    const existingQuestionIndex = questions.findIndex((x) => x.id === question.id);
+    const existingQuestionIndex = questions.findIndex(
+      (x) => x.id === question.id
+    );
     // We are editing
     if (existingQuestionIndex > -1) {
       questions[existingQuestionIndex] = question;
@@ -194,76 +211,105 @@ function GameForm({ existingGame = null }) {
   return (
     <>
       <Layout>
-        <RightSidebar isOpen={isSidebarOpen} onRequestClose={() => setIsSidebarOpen(false)}>
-          <QuestionsSearch existingQuestions={questions} onQuestionAdd={addExistingQuestion} />
+        <RightSidebar
+          isOpen={isSidebarOpen}
+          onRequestClose={() => setIsSidebarOpen(false)}
+        >
+          <QuestionsSearch
+            existingQuestions={questions}
+            onQuestionAdd={addExistingQuestion}
+          />
         </RightSidebar>
-        <div className="flex pt-6 bg-white place-content-center shadow">
-          <div className="w-full">
-            <CreateForm errors={errors} {...formProps} image={image} setImage={setImage} />
+        <div className="container max-w-5xl mx-auto">
+          <div className="flex pt-6 bg-white place-content-center shadow">
+            <div className="w-full">
+              <CreateForm
+                errors={errors}
+                {...formProps}
+                image={image}
+                setImage={setImage}
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex pt-2 md:pt-4 bg-white place-content-center shadow mt-4 mb-16">
-          <div className="w-full overflow-hidden">
-            <div className="px-2 md:px-10 pb-6">
-              <h2 className="text-xl font-bold text-gray-700 md:-ml-4">Preguntas</h2>
-              <ul className="mt-5 mb-5">
-                {questions.map((q, i) => (
-                  <QuestionItem
-                    key={q.id}
-                    text={`${i + 1}. ${q.text}`}
-                    tags={q.tags}
-                    answers={q.answers}
-                    actions={
-                      <>
-                        <button
-                          type="button"
-                          className={clsx(
-                            "bg-white px-3 py-2 transition duration-150 ease-in-out border rounded-md",
-                            q.external ? "cursor-not-allowed bg-gray-200" : "hover:bg-blue-200"
-                          )}
-                          disabled={q.external}
-                          onClick={() => dispatch({ type: "EDIT_QUESTION", question: q })}
-                          title={
-                            q.external ? "No podés editar preguntas agregadas" : "Editar pregunta"
-                          }
-                        >
-                          <FaPencilAlt size="1em" />
-                        </button>
-                        <button
-                          type="button"
-                          className="bg-white ml-2 px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-red-200"
-                          onClick={() => setQuestions(questions.filter((x) => x.id !== q.id))}
-                          title="Borrar pregunta"
-                        >
-                          <FaRegTrashAlt size="1em" color="red" />
-                        </button>
-                      </>
-                    }
-                  />
-                ))}
-              </ul>
-              {errors.questions && <p className="text-red-500 mb-4">{errors.questions.message}</p>}
-              <div className="flex flex-col md:flex-row space-y-2 md:space-y-0">
-                <button
-                  type="button"
-                  className="inline-flex justify-center items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700"
-                  onClick={() => dispatch({ type: "CREATE_QUESTION" })}
-                >
-                  <FaPlus className="mr-2" /> Crear pregunta
-                </button>
-                <button
-                  type="button"
-                  className="md:ml-3 inline-flex justify-center items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 focus:border-purple-700 focus:shadow-outline-purple active:bg-purple-700"
-                  onClick={() => setIsSidebarOpen(true)}
-                >
-                  <FaSearchPlus className="mr-2" /> Agregar pregunta existente
-                </button>
+          <div className="flex pt-2 md:pt-4 bg-white place-content-center shadow mt-4 mb-16">
+            <div className="w-full overflow-hidden">
+              <div className="px-2 md:px-10 pb-6">
+                <h2 className="text-xl font-bold text-gray-700 md:-ml-4">
+                  Preguntas
+                </h2>
+                <ul className="mt-5 mb-5">
+                  {questions.map((q, i) => (
+                    <QuestionItem
+                      key={q.id}
+                      text={`${i + 1}. ${q.text}`}
+                      tags={q.tags}
+                      answers={q.answers}
+                      actions={
+                        <>
+                          <button
+                            type="button"
+                            className={clsx(
+                              "bg-white px-3 py-2 transition duration-150 ease-in-out border rounded-md",
+                              q.external
+                                ? "cursor-not-allowed bg-gray-200"
+                                : "hover:bg-blue-200"
+                            )}
+                            disabled={q.external}
+                            onClick={() =>
+                              dispatch({ type: "EDIT_QUESTION", question: q })
+                            }
+                            title={
+                              q.external
+                                ? "No podés editar preguntas agregadas"
+                                : "Editar pregunta"
+                            }
+                          >
+                            <FaPencilAlt size="1em" />
+                          </button>
+                          <button
+                            type="button"
+                            className="bg-white ml-2 px-3 py-2 transition duration-150 ease-in-out border rounded-md hover:bg-red-200"
+                            onClick={() =>
+                              setQuestions(
+                                questions.filter((x) => x.id !== q.id)
+                              )
+                            }
+                            title="Borrar pregunta"
+                          >
+                            <FaRegTrashAlt size="1em" color="red" />
+                          </button>
+                        </>
+                      }
+                    />
+                  ))}
+                </ul>
+                {errors.questions && (
+                  <p className="text-red-500 mb-4">
+                    {errors.questions.message}
+                  </p>
+                )}
+                <div className="flex flex-col md:flex-row space-y-2 md:space-y-0">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-500 focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700"
+                    onClick={() => dispatch({ type: "CREATE_QUESTION" })}
+                  >
+                    <FaPlus className="mr-2" /> Crear pregunta
+                  </button>
+                  <button
+                    type="button"
+                    className="md:ml-3 inline-flex justify-center items-center px-3 py-2 text-base font-medium leading-6 text-white transition duration-150 ease-in-out bg-purple-600 border border-transparent rounded-md hover:bg-purple-700 focus:border-purple-700 focus:shadow-outline-purple active:bg-purple-700"
+                    onClick={() => setIsSidebarOpen(true)}
+                  >
+                    <FaSearchPlus className="mr-2" /> Agregar pregunta existente
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </Layout>
-      <div className="flex justify-end fixed w-full bottom-0 items-center p-1 md:p-2 bg-gray-200">
+      <div className="flex justify-end fixed w-full bottom-0 items-center p-1 md:p-2 bg-gray-200 z-50">
         <Link href="/games">
           <button
             type="button"

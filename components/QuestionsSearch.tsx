@@ -1,7 +1,6 @@
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { FaPlusSquare } from "react-icons/fa";
 import CreatableSelect from "react-select/creatable";
-import useSWR from "swr";
 import { TAGS } from "../utils/constants";
 import fetcher from "../utils/fetcher";
 import { QuestionItem } from "./QuestionItem";
@@ -18,7 +17,10 @@ const searchQuestions = (text: string, page: number) => {
   return fetcher(`/api/questions/search?text=${text}&page=${page}`);
 };
 
-export function QuestionsSearch({ existingQuestions, onQuestionAdd }: QuestionSearchProps) {
+export function QuestionsSearch({
+  existingQuestions,
+  onQuestionAdd,
+}: QuestionSearchProps) {
   const [searchText, setSearchText] = useState("");
   const [questions, setQuestions] = useState({
     items: null,
@@ -83,7 +85,9 @@ export function QuestionsSearch({ existingQuestions, onQuestionAdd }: QuestionSe
         <CreatableSelect
           placeholder="Buscá preguntas por categoría o texto"
           options={TAGS.map((x) => ({ value: x, label: x }))}
-          formatCreateLabel={(inputValue) => `Buscar '${inputValue}' entre las preguntas`}
+          formatCreateLabel={(inputValue) =>
+            `Buscar '${inputValue}' entre las preguntas`
+          }
           onChange={({ value }) => setSearchText(value)}
           autoFocus
         />
@@ -92,7 +96,9 @@ export function QuestionsSearch({ existingQuestions, onQuestionAdd }: QuestionSe
         <div className="flex flex-col mt-4">
           <ul className="w-full">
             {questions.items?.map((q) => {
-              const alreadyAdded = existingQuestions.some((question) => question.id === q.id);
+              const alreadyAdded = existingQuestions.some(
+                (question) => question.id === q.id
+              );
               return (
                 <QuestionItem
                   key={q.id}
@@ -126,8 +132,12 @@ export function QuestionsSearch({ existingQuestions, onQuestionAdd }: QuestionSe
               );
             })}
           </ul>
-          {questions.items?.length > 0 && <div ref={ref}>No hay más resultados</div>}
-          {searchText && questions.items?.length === 0 && "No se encontraron resultados"}
+          {questions.items?.length > 0 && (
+            <div ref={ref}>No hay más resultados</div>
+          )}
+          {searchText &&
+            questions.items?.length === 0 &&
+            "No se encontraron resultados"}
         </div>
       </div>
     </div>

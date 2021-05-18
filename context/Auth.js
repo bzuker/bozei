@@ -2,6 +2,10 @@ import { useState, useEffect, createContext, useContext } from "react";
 import { useRouter } from "next/router";
 import { mapUserData } from "../utils/auth/mapUserData";
 import { auth } from "../utils/auth/firebase";
+import {
+  signInAnonymously as _signInAnonymously,
+  signInWithGoogle,
+} from "../utils/auth/signIn";
 
 export const AuthContext = createContext();
 
@@ -15,11 +19,17 @@ export default function ProvideAuth({ children }) {
       .signOut()
       .then(() => {
         // Sign-out successful.
-        router.replace("/login");
+        // router.replace("/login");
       })
       .catch((e) => {
         console.error(e);
       });
+  };
+
+  const signInAnonymously = async (displayName) => {
+    const signedInUser = await _signInAnonymously(displayName);
+    setUser(signedInUser);
+    return signedInUser;
   };
 
   useEffect(() => {
@@ -43,14 +53,22 @@ export default function ProvideAuth({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loadingUser, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ user, loadingUser, logout, signInAnonymously, signInWithGoogle }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 }
 
 // Custom hook that shorthands the context
-export const useUser = ({ redirectTo = false, redirectIfFound = false } = {}) => {
+export const useUser = ({
+  redirectTo = false,
+  redirectIfFound = false,
+} = {}) => {
   const router = useRouter();
-  const { user, loadingUser, logout } = useContext(AuthContext);
+  const { user, loadingUser, logout, signInAnonymously, signInWithGoogle } =
+    useContext(AuthContext);
 
   useEffect(() => {
     if (!redirectTo || loadingUser) return;
@@ -66,6 +84,8 @@ export const useUser = ({ redirectTo = false, redirectIfFound = false } = {}) =>
 
   return {
     user,
+    signInAnonymously,
+    signInWithGoogle,
     loadingUser,
     logout,
   };

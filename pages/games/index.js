@@ -37,7 +37,9 @@ function DeleteButton({ game, mutate }) {
         title={`Estás seguro que querés eliminar "${game.title}"?`}
       >
         <div className="px-12 py-5">
-          <p className="italic mt-1 text-gray-800">Cuidado, esta acción no puede deshacerse</p>
+          <p className="italic mt-1 text-gray-800">
+            Cuidado, esta acción no puede deshacerse
+          </p>
         </div>
 
         <div className="flex justify-end px-5 py-4 bg-gray-100 border-t border-gray-300">
@@ -69,20 +71,28 @@ function Game({ game, mutate }) {
         <div className="flex">
           <div className="w-12 h-12 md:w-16 md:h-16 sm:mr-8 sm:mb-0 mb-4 inline-flex items-center justify-center rounded-lg bg-purple-100 text-purple-500 flex-shrink-0">
             {/* <img src={game.image || "tailwind-logo.svg"} /> */}
-            <Image width={500} height={500} src={game.image || "/tailwind-logo.svg"} />
+            <Image
+              width={500}
+              height={500}
+              src={game.image || "/tailwind-logo.svg"}
+            />
           </div>
           <div className="ml-2 md:ml-0">
             <h2 className="flex flex-wrap items-center text-gray-900 text-lg title-font font-medium mb-3">
               {game.title}
               <span className="hidden sm:block bg-indigo-200 text-indigo-600 px-2 py-1 rounded-full uppercase text-xs ml-3">
-                {questionsLength} {questionsLength > 1 ? "preguntas" : "pregunta"}
+                {questionsLength}{" "}
+                {questionsLength > 1 ? "preguntas" : "pregunta"}
               </span>
             </h2>
             <p className="text-base">{game.description}</p>
           </div>
         </div>
         <div className="flex items-center mt-4 md:mt-0">
-          <ShareButton title={`Compartir "${game.title}"`} value={`${BASE_URL}/play/${game.id}`} />
+          <ShareButton
+            title={`Compartir "${game.title}"`}
+            value={`${BASE_URL}/play/${game.id}`}
+          />
           <Link href={`/games/edit/${game.id}`}>
             <button
               title="Editar"
@@ -100,7 +110,10 @@ function Game({ game, mutate }) {
 
 function Games() {
   const { user } = useUser({ redirectTo: "/login" });
-  const { data: games, error, mutate } = useSWR([user?.id, "games"], gameApi.getGamesForUserId);
+  const { data: games, error, mutate } = useSWR(
+    [user?.id, "games"],
+    gameApi.getGamesForUserId
+  );
 
   if (!user) {
     return null;
@@ -108,17 +121,24 @@ function Games() {
 
   return (
     <Layout>
-      <header className="bg-white shadow">
-        <div className="flex items-center justify-between max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-xl font-bold leading-tight text-gray-900">Mis Juegos</h1>
-          <Link href="/games/create">
-            <button className="hover:bg-indigo-700 bg-indigo-500 text-white text-lg font-bold py-2 px-4 border border-gray-400 shadow-xs rounded-md">
-              Crear nuevo
-            </button>
-          </Link>
-        </div>
-      </header>
-      {games && games.map((game) => <Game key={game.id} game={game} mutate={mutate} />)}
+      <div className="container max-w-5xl mx-auto">
+        <header className="bg-white shadow">
+          <div className="flex items-center justify-between max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            <h1 className="text-xl font-bold leading-tight text-gray-900">
+              Mis Juegos
+            </h1>
+            <Link href="/games/create">
+              <button className="hover:bg-indigo-700 bg-indigo-500 text-white text-lg font-bold py-2 px-4 border border-gray-400 shadow-xs rounded-md">
+                Crear nuevo
+              </button>
+            </Link>
+          </div>
+        </header>
+        {games &&
+          games.map((game) => (
+            <Game key={game.id} game={game} mutate={mutate} />
+          ))}
+      </div>
     </Layout>
   );
 }
