@@ -7,7 +7,13 @@ import { useUser } from "../../context/Auth";
 import { CallType } from "../../models/Room";
 import fetcher from "../../utils/fetcher";
 
-const CTA = ({ tag, title, description, button, onButtonClick }) => {
+const CTA = ({
+  tag,
+  title,
+  description,
+  button,
+  onButtonClick = () => null,
+}) => {
   const [loading, toggle] = useToggle(false);
   return (
     <div className="flex flex-col max-w-screen-lg overflow-hidden border rounded-lg md:shadow-xl lg:flex-row sm:mx-auto md:mx-5 bg-white">
